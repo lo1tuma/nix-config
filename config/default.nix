@@ -61,6 +61,10 @@ in {
     enableVim = true;
     tmuxConfig = ''
       set -sg escape-time 0
+      set -sg status-right " "
+      set -sg status-left " "
+      set -sg status-left-length 10
+      set -sg status-right-length 10
     '';
   };
 
