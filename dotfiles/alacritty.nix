@@ -18,6 +18,18 @@ tabspaces: 4
 draw_bold_text_with_bright_colors: true
 
 font:
+  normal:
+    family: Menlo
+    style: Regular
+
+  bold:
+    family: Menlo
+    style: Bold
+
+  italic:
+    family: Menlo
+    style: Italic
+
   size: 12.0
 
   offset:
