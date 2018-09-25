@@ -11,7 +11,7 @@ window:
     x: 2
     y: 2
 
-  decorations: false
+  decorations: true
 
 tabspaces: 4
 
