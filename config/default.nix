@@ -34,8 +34,6 @@ in {
 
   nixpkgs = { config = { allowUnfree = true; allowBroken = false; }; };
 
-  # Use a custom configuration.nix location.
-  # $ darwin-rebuild switch -I darwin-config=$HOME/projects/dotfiles/.nixpkgs/darwin/configuration.nix
   environment.darwinConfig = "$HOME/projects/nix-config/config/default.nix";
 
   programs.zsh = {
