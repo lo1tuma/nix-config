@@ -53,7 +53,7 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_max_depth = 40
 let g:ctrlp_max_files = 20000
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|dist\|build\/\|test_output\/'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|dist\|target\/\|build\/\|test_output\/'
 let g:ctrlp_show_hidden = 1
 
 set noswapfile
