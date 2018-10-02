@@ -101,6 +101,7 @@ mouse:
 
 selection:
   semantic_escape_chars: ",?`|:\"' ()[]{}<>"
+  save_to_clipboard: true
 
 dynamic_title: true
 
