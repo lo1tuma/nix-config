@@ -20,4 +20,5 @@ in [
   pkgs.nix-prefetch-scripts
   pkgs.alacritty
   pkgs.bat
+  pkgs.fzf
 ]
