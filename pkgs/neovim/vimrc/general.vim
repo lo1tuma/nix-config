@@ -34,7 +34,7 @@ set backspace=2
 set statusline+=%#warningmsg#
 set statusline+=%*
 
-let g:ale_fixers = {'javascript': ['eslint', 'prettier'], 'typescript': ['eslint', 'prettier', 'tslint']}
+let g:ale_fixers = {'javascript': ['eslint', 'prettier', 'xo'], 'typescript': ['eslint', 'prettier', 'tslint']}
 let g:ale_fix_on_save = 1
 
 let g:deoplete#enable_at_startup = 1
