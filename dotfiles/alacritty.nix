@@ -11,7 +11,7 @@ window:
     x: 2
     y: 2
 
-  decorations: true
+  decorations: full
 
 tabspaces: 4
 
@@ -40,13 +40,9 @@ font:
     x: 0
     y: 0
 
-  scale_with_dpi: true
-
   use_thin_strokes: true
 
 render_timer: false
-
-custom_cursor_colors: false
 
 # Base16 Default Dark 256 - alacritty color config
 # Chris Kempson (http://chriskempson.com)
@@ -60,6 +56,8 @@ colors:
   cursor:
     text: '0x181818'
     cursor: '0xd8d8d8'
+    style: Block
+    unfocused_hollow: true
 
   # Normal colors
   normal:
@@ -99,17 +97,14 @@ mouse:
 
   faux_scrolling_lines: 1
 
+  hide_when_typing: true
+
 selection:
   semantic_escape_chars: ",?`|:\"' ()[]{}<>"
   save_to_clipboard: true
 
 dynamic_title: true
 
-hide_cursor_when_typing: true
-
-cursor_style: Block
-
-unfocused_hollow_cursor: true
 
 live_config_reload: true
 
