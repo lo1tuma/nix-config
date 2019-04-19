@@ -17,6 +17,7 @@
     autohide = true;
     orientation = "left";
     tilesize = 40;
+    show-recents = false;
   };
   finder = {
     AppleShowAllExtensions = true;
