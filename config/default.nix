@@ -3,8 +3,8 @@
 let
   pureZshPrompt = pkgs.fetchgit {
     url = "https://github.com/sindresorhus/pure";
-    rev = "9325fe60f8857ae089146176c2fa73384507dfc3";
-    sha256 = "0wibv1kbp8zd1x627zcbiyvisnwzcipqdwcpmaspmpf24k235ici";
+    rev = "e7036c43487fedf608a988dde54dd1d4c0d96823";
+    sha256 = "10mdk4dn2azzrhymx0ghl8v668ydy6mz5i797nmbl2ijx9hlqb3v";
   };
 in {
   environment.etc = {
