@@ -21,4 +21,5 @@ in [
   pkgs.alacritty
   pkgs.bat
   pkgs.fzf
+  pkgs.gnupg
 ]
