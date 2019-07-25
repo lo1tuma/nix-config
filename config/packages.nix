@@ -22,4 +22,5 @@ in [
   pkgs.bat
   pkgs.fzf
   pkgs.gnupg
+  pkgs.du-dust
 ]
