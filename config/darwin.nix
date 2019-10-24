@@ -12,6 +12,7 @@
     NSAutomaticSpellingCorrectionEnabled = false;
     NSNavPanelExpandedStateForSaveMode = true;
     NSNavPanelExpandedStateForSaveMode2 = true;
+    "com.apple.trackpad.enableSecondaryClick" = true;
   };
   dock = {
     autohide = true;
