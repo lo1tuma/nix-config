@@ -34,7 +34,23 @@ set backspace=2
 set statusline+=%#warningmsg#
 set statusline+=%*
 
-let g:ale_fixers = {'javascript': ['eslint', 'prettier', 'xo'], 'typescript': ['eslint', 'prettier', 'tslint']}
+"let g:ale_fixers = {'javascript': ['xo', 'prettier'], 'typescript': ['eslint', 'prettier', 'tslint']}
+autocmd FileType javascript let g:ale_fixers = {
+\  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
+\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier', 'tslint' ] : [ 'xo', 'prettier', 'tslint' ],
+\}
+autocmd FileType javascript let g:ale_linters = {
+\  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
+\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier', 'tslint' ] : [ 'xo', 'prettier', 'tslint' ],
+\}
+autocmd FileType typescript let g:ale_fixers = {
+\  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
+\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier', 'tslint' ] : [ 'xo', 'prettier', 'tslint' ],
+\}
+autocmd FileType typescript let g:ale_linters = {
+\  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
+\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier', 'tslint' ] : [ 'xo', 'prettier', 'tslint' ],
+\}
 let g:ale_fix_on_save = 1
 
 let g:deoplete#enable_at_startup = 1
