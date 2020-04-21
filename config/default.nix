@@ -59,7 +59,7 @@ in {
     enable = true;
     enableMouse = false;
     enableVim = true;
-    tmuxConfig = ''
+    extraConfig = ''
       set -g default-terminal "screen-256color"
       set -sg escape-time 0
       set -sg status-right " "
