@@ -12,8 +12,7 @@ window:
     y: 2
 
   decorations: full
-
-tabspaces: 4
+  dynamic_title: true
 
 draw_bold_text_with_bright_colors: true
 
@@ -81,7 +80,7 @@ colors:
     cyan:    '0x86c1b9'
     white:   '0xd8d8d8'
 
-visual_bell:
+bell:
   animation: EaseOutExpo
   duration: 0
 
@@ -102,8 +101,6 @@ mouse:
 selection:
   semantic_escape_chars: ",?`|:\"' ()[]{}<>"
   save_to_clipboard: true
-
-dynamic_title: true
 
 
 live_config_reload: true
