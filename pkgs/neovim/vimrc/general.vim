@@ -51,6 +51,24 @@ autocmd FileType typescript let g:ale_linters = {
 \  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
 \  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier', 'tslint' ] : [ 'xo', 'prettier', 'tslint' ],
 \}
+autocmd FileType yaml let g:ale_fixers = {
+\  'yaml': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
+\}
+autocmd FileType yaml let g:ale_linters = {
+\  'yaml': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
+\}
+autocmd FileType json let g:ale_fixers = {
+\  'json': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
+\}
+autocmd FileType json let g:ale_linters = {
+\  'json': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
+\}
+autocmd FileType markdown let g:ale_fixers = {
+\  'markdown': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
+\}
+autocmd FileType markdown let g:ale_linters = {
+\  'markdown': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
+\}
 let g:ale_fix_on_save = 1
 
 let g:deoplete#enable_at_startup = 1
