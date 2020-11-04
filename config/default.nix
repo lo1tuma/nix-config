@@ -73,6 +73,11 @@ in {
   # $ darwin-rebuild changelog
   system.stateVersion = 3;
 
+  fonts = {
+    enableFontDir = true;
+    fonts = [ pkgs.nerdfonts ];
+  };
+
   nix.maxJobs = 32;
   nix.buildCores = 4;
 }

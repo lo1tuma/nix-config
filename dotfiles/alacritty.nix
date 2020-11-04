@@ -18,15 +18,15 @@ draw_bold_text_with_bright_colors: true
 
 font:
   normal:
-    family: Menlo
+    family: "FuraCode Nerd Font"
     style: Regular
 
   bold:
-    family: Menlo
+    family: "FuraCode Nerd Font"
     style: Bold
 
   italic:
-    family: Menlo
+    family: "FuraCode Nerd Font"
     style: Italic
 
   size: 12.0
