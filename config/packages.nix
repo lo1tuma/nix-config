@@ -23,4 +23,5 @@ in [
   pkgs.fzf
   pkgs.gnupg
   pkgs.du-dust
+  pkgs.starship
 ]

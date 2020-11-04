@@ -1,23 +1,16 @@
 { config, pkgs, ... }:
 
 let
-  pureZshPrompt = pkgs.fetchgit {
-    url = "https://github.com/sindresorhus/pure";
-    rev = "8ec575c886c8bb33a87f80b9710ee5e379a0b589";
-    sha256 = "0r4y8bglwdq85dwlxh9sm23ppzy1z7i8kmjny5mx9css0likj8qv";
-  };
+  inherit (pkgs) zsh;
 in {
   environment.etc = {
-    "per-user/alacritty/alacritty.yml".text = import ../dotfiles/alacritty.nix { zsh = pkgs.zsh; };
+    "per-user/alacritty/alacritty.yml".text = import ../dotfiles/alacritty.nix { inherit zsh; };
     "per-user/.gitconfig".text = import ../dotfiles/gitconfig.nix {};
     "per-user/.gitignore".text = import ../dotfiles/gitignore.nix {};
     "per-user/.npmrc".text = import ../dotfiles/npmrc.nix {};
   };
   system.activationScripts.extraUserActivation.text = ''
     ln -sfn /etc/per-user/alacritty ~/.config/
-    mkdir -p ~/.zfunctions
-    ln -sfn ${pureZshPrompt}/pure.zsh ~/.zfunctions/prompt_pure_setup
-    ln -sfn ${pureZshPrompt}/async.zsh ~/.zfunctions/async
     ln -sfn /etc/per-user/.gitconfig ~/
     ln -sfn /etc/per-user/.gitignore ~/
     ln -sfn /etc/per-user/.npmrc ~/
@@ -45,8 +38,7 @@ in {
     enableFzfHistory = true;
     enableSyntaxHighlighting = true;
     promptInit = ''
-      fpath=( "$HOME/.zfunctions" $fpath )
-      autoload -U promptinit && promptinit && prompt pure
+      eval "$(starship init zsh)"
     '';
     interactiveShellInit = ''
       autoload -U up-line-or-beginning-search
