@@ -2,6 +2,7 @@
   [core]
         editor = vim
         hooksPath = /non-existing-path-to-prevent-hooks
+        ignorecase = false
   [push]
       default = nothing
   [branch]
