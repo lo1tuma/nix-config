@@ -2,18 +2,22 @@
 
 let
   inherit (pkgs) zsh;
+  coc = import ../dotfiles/coc.nix;
 in {
   environment.etc = {
     "per-user/alacritty/alacritty.yml".text = import ../dotfiles/alacritty.nix { inherit zsh; };
     "per-user/.gitconfig".text = import ../dotfiles/gitconfig.nix {};
     "per-user/.gitignore".text = import ../dotfiles/gitignore.nix {};
     "per-user/.npmrc".text = import ../dotfiles/npmrc.nix {};
+    "per-user/coc-settings.json".text = builtins.toJSON (coc {});
   };
   system.activationScripts.extraUserActivation.text = ''
     ln -sfn /etc/per-user/alacritty ~/.config/
     ln -sfn /etc/per-user/.gitconfig ~/
     ln -sfn /etc/per-user/.gitignore ~/
     ln -sfn /etc/per-user/.npmrc ~/
+    mkdir -p ~/.vim
+    ln -sfn /etc/per-user/coc-settings.json ~/.vim/
   '';
   environment.shells = [ pkgs.zsh ];
   environment.variables = rec {

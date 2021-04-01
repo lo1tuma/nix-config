@@ -31,47 +31,10 @@ set softtabstop=4
 
 set backspace=2
 
+set statusline+=%{coc#status()}
 set statusline+=%#warningmsg#
 set statusline+=%*
 
-"let g:ale_fixers = {'javascript': ['xo', 'prettier'], 'typescript': ['eslint', 'prettier', 'tslint']}
-autocmd FileType javascript let g:ale_fixers = {
-\  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\}
-autocmd FileType javascript let g:ale_linters = {
-\  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\}
-autocmd FileType typescript let g:ale_fixers = {
-\  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\}
-autocmd FileType typescript let g:ale_linters = {
-\  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\}
-autocmd FileType yaml let g:ale_fixers = {
-\  'yaml': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
-\}
-autocmd FileType yaml let g:ale_linters = {
-\  'yaml': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
-\}
-autocmd FileType json let g:ale_fixers = {
-\  'json': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
-\}
-autocmd FileType json let g:ale_linters = {
-\  'json': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
-\}
-autocmd FileType markdown let g:ale_fixers = {
-\  'markdown': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
-\}
-autocmd FileType markdown let g:ale_linters = {
-\  'markdown': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
-\}
-let g:ale_fix_on_save = 1
-
-let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
 
 set cmdheight=2
@@ -106,3 +69,39 @@ let g:javascript_conceal_arrow_function = "λ"
 let g:vim_markdown_folding_disabled = 1
 
 inoremap jj <esc>
+
+
+" coc
+" ctrl space trigger completion
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" gd - go to definition of word under cursor
+nmap <silent> gd <Plug>(coc-definition)
+" gtd - go to type definition
+nmap <silent> gtd <Plug>(coc-type-definition)
+" gi - go to implementation
+nmap <silent> gi <Plug>(coc-implementation)
+" gr - find references
+nmap <silent> gr <Plug>(coc-references)
+" gh - get hint on whatever's under the cursor
+nnoremap <silent> gh :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" list commands available in tsserver (and others)
+nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
+
+" restart when tsserver gets wonky
+nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
+
+" view all errors
+nnoremap <silent> <leader>cl  :<C-u>CocList locationlist<CR>
+
+" rename the current word in the cursor
+nmap <leader>cr  <Plug>(coc-rename)

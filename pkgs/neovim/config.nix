@@ -2,11 +2,10 @@
 
 let
   vimrc = pkgs.callPackage ./vimrc.nix {};
-  plugins = pkgs.callPackage ./plugins.nix {};
 in {
   customRC = vimrc;
   vam = {
-    knownPlugins = pkgs.vimPlugins // plugins;
+    knownPlugins = pkgs.vimPlugins;
 
     pluginDictionaries = [
       { name = "vim-json"; } # elzr/vim-json
@@ -20,12 +19,17 @@ in {
       { name = "vim-surround"; } # tpope/vim-surround
       { name = "vim-repeat"; } # tpope/vim-repeat
       { name = "vim-gitgutter"; } # airblade/vim-gitgutter
-      { name = "deoplete-nvim"; } # Shougo/deoplete.nvim
-      { name = "ale"; } # w0rp/ale
+      { name = "coc-nvim"; }
+      { name = "coc-rls"; }
+      { name = "coc-yaml"; }
+      { name = "coc-neco"; }
+      { name = "coc-json"; }
+      { name = "coc-lists"; }
+      { name = "coc-eslint"; }
+      { name = "coc-tsserver"; }
+      { name = "coc-prettier"; }
       { name = "echodoc"; }
-      { name = "nvim-typescript"; }
       { name = "base16-vim"; }
-      { name = "LanguageClient-neovim"; }
       { name = "vim-toml"; }
     ];
   };
