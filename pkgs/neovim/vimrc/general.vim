@@ -37,19 +37,19 @@ set statusline+=%*
 "let g:ale_fixers = {'javascript': ['xo', 'prettier'], 'typescript': ['eslint', 'prettier', 'tslint']}
 autocmd FileType javascript let g:ale_fixers = {
 \  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier', 'tslint' ] : [ 'xo', 'prettier', 'tslint' ],
+\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
 \}
 autocmd FileType javascript let g:ale_linters = {
 \  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier', 'tslint' ] : [ 'xo', 'prettier', 'tslint' ],
+\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
 \}
 autocmd FileType typescript let g:ale_fixers = {
 \  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier', 'tslint' ] : [ 'xo', 'prettier', 'tslint' ],
+\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
 \}
 autocmd FileType typescript let g:ale_linters = {
 \  'javascript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
-\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier', 'tslint' ] : [ 'xo', 'prettier', 'tslint' ],
+\  'typescript': glob('.eslintrc*', '.;') != '' ? [ 'eslint', 'prettier' ] : [ 'xo', 'prettier' ],
 \}
 autocmd FileType yaml let g:ale_fixers = {
 \  'yaml': glob('prettier.config.js', '.;') != '' ? [ 'prettier' ] : [],
