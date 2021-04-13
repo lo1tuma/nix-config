@@ -11,4 +11,8 @@
   "diagnostic.errorSign" = "☓";
   "eslint.autoFixOnSave" = true;
   "eslint.alwaysShowStatus" = true;
+  "tsserver.disableAutomaticTypeAcquisition" = true;
+  "typescript.suggest.autoImports" = false;
+  "javascript.suggest.autoImports" = false;
+  "prettier.tabWidth" = 4;
   }

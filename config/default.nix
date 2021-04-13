@@ -16,8 +16,8 @@ in {
     ln -sfn /etc/per-user/.gitconfig ~/
     ln -sfn /etc/per-user/.gitignore ~/
     ln -sfn /etc/per-user/.npmrc ~/
-    mkdir -p ~/.vim
-    ln -sfn /etc/per-user/coc-settings.json ~/.vim/
+    mkdir -p ~/.config/nvim/
+    ln -sfn /etc/per-user/coc-settings.json ~/.config/nvim/
   '';
   environment.shells = [ pkgs.zsh ];
   environment.variables = rec {
@@ -29,7 +29,9 @@ in {
   system.defaults = import ./darwin.nix { inherit pkgs; };
   environment.systemPackages = import ./packages.nix { inherit pkgs; };
 
-  nixpkgs = { config = { allowUnfree = true; allowBroken = false; }; };
+  nixpkgs = {
+    config = { allowUnfree = true; allowBroken = false; };
+  };
 
   environment.darwinConfig = "$HOME/projects/nix-config/config/default.nix";
 

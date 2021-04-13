@@ -31,7 +31,7 @@ set softtabstop=4
 
 set backspace=2
 
-set statusline+=%{coc#status()}
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 set statusline+=%#warningmsg#
 set statusline+=%*
 
@@ -74,7 +74,8 @@ inoremap jj <esc>
 " coc
 " ctrl space trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
-
+" use `:OR` for organize import of current cursor
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 " gd - go to definition of word under cursor
 nmap <silent> gd <Plug>(coc-definition)
 " gtd - go to type definition
@@ -98,6 +99,7 @@ endfunction
 nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
 
 " restart when tsserver gets wonky
+" leader === backslash
 nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
 
 " view all errors

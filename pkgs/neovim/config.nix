@@ -11,8 +11,8 @@ in {
       { name = "vim-json"; } # elzr/vim-json
       { name = "tabular"; } # godlygeek/tabular
       { name = "vim-markdown"; } # plasticboy/vim-markdown
-      { name = "ctrlp"; } # ctrlpvim/ctrlp.vim
       { name = "vim-nix"; } # LnL7/vim-nix
+      { name = "ctrlp"; } # ctrlpvim/ctrlp.vim
       { name = "vim-javascript"; } # pangloss/vim-javascript
       { name = "typescript-vim"; } # leafgarland/typescript-vim
       { name = "editorconfig-vim"; } # editorconfig/editorconfig-vim

@@ -24,4 +24,6 @@ in [
   pkgs.gnupg
   pkgs.du-dust
   pkgs.starship
+  pkgs.watchman
+  pkgs.tokei
 ]
