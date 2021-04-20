@@ -26,4 +26,5 @@ in [
   pkgs.starship
   pkgs.watchman
   pkgs.tokei
+  pkgs.ruplacer
 ]
