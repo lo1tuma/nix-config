@@ -12,7 +12,11 @@
   "eslint.autoFixOnSave" = true;
   "eslint.alwaysShowStatus" = true;
   "tsserver.disableAutomaticTypeAcquisition" = true;
+  "tsserver.formatOnType" = false;
   "typescript.suggest.autoImports" = false;
+  "typescript.suggest.completeFunctionCalls" = false;
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets" = true;
   "javascript.suggest.autoImports" = false;
+  "javascript.suggest.completeFunctionCalls" = false;
   "prettier.tabWidth" = 4;
   }
