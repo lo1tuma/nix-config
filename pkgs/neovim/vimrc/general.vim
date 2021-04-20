@@ -113,3 +113,9 @@ nnoremap <silent> <leader>cl  :<C-u>CocList locationlist<CR>
 
 " rename the current word in the cursor
 nmap <leader>cr  <Plug>(coc-rename)
+
+" show actions for the current cursor
+nmap <leader>ac  <Plug>(coc-codeaction-cursor)
+
+" show actions for the current line
+nmap <leader>al  <Plug>(coc-codeaction)
