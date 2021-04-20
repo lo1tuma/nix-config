@@ -70,6 +70,12 @@ let g:vim_markdown_folding_disabled = 1
 
 inoremap jj <esc>
 
+" set filetype to react for jsx and tsx, needed by coc-tsserver
+augroup ReactFiletypes
+  autocmd!
+  autocmd BufRead,BufNewFile *.jsx set filetype=javascriptreact
+  autocmd BufRead,BufNewFile *.tsx set filetype=typescriptreact
+augroup END
 
 " coc
 " ctrl space trigger completion
