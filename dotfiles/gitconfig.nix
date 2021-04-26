@@ -5,6 +5,8 @@
         ignorecase = false
   [push]
       default = nothing
+  [pull]
+      rebase = true
   [branch]
       autosetuprebase = always
   [alias]
