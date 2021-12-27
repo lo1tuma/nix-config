@@ -112,3 +112,14 @@ nmap <leader>ac  <Plug>(coc-codeaction-cursor)
 
 " show actions for the current line
 nmap <leader>al  <Plug>(coc-codeaction)
+
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
+
+lua << EOF
+require('telescope').setup{ defaults = { file_ignore_patterns = {".git"} } }
+EOF
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files({ hidden = true })<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep({ additional_args = function () return { '--ignore-case', '--hidden' } end })<cr>
+
+set nofoldenable
