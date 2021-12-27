@@ -6,7 +6,7 @@ in [
   pkgs.cacert
   pkgs.git
   pkgs.python
-  pkgs.nodejs-14_x
+  pkgs.nodejs-16_x
   pkgs.zsh
   pkgs.wget
   pkgs.curl
