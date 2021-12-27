@@ -55,6 +55,7 @@ in {
 
   programs.tmux = {
     enable = true;
+    defaultCommand = "${zsh}/bin/zsh";
     enableMouse = false;
     enableVim = true;
     extraConfig = ''
@@ -64,6 +65,9 @@ in {
       set -sg status-left " "
       set -sg status-left-length 10
       set -sg status-right-length 10
+      set-option -g default-shell "${zsh}/bin/zsh"
+      set-option -g focus-events on
+      set-option -ga terminal-overrides ',screen-256color:Tc'
     '';
   };
 
