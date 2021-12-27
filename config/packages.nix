@@ -27,4 +27,5 @@ in [
   pkgs.watchman
   pkgs.tokei
   pkgs.ruplacer
+  pkgs.tree-sitter
 ]

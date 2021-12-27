@@ -12,7 +12,6 @@ in {
       { name = "tabular"; } # godlygeek/tabular
       { name = "vim-markdown"; } # plasticboy/vim-markdown
       { name = "vim-nix"; } # LnL7/vim-nix
-      { name = "ctrlp"; } # ctrlpvim/ctrlp.vim
       { name = "vim-javascript"; } # pangloss/vim-javascript
       { name = "typescript-vim"; } # leafgarland/typescript-vim
       { name = "editorconfig-vim"; } # editorconfig/editorconfig-vim
@@ -31,6 +30,11 @@ in {
       { name = "echodoc"; }
       { name = "base16-vim"; }
       { name = "vim-toml"; }
+      { name = "telescope-nvim"; }
+      { name = "popup-nvim"; } # required by telescope
+      { name = "plenary-nvim"; } # required by telescope
+      { name = "nvim-treesitter"; } # require by telescope
+      { name = "nvim-web-devicons"; }
     ];
   };
 }
