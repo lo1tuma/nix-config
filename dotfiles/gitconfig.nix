@@ -12,6 +12,7 @@
   [alias]
       lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
       clean-local-branches  = "!git branch --merged master | grep -v '^* ' | grep -v ' master$' | xargs git branch -d"
+      clean-local-branches-main  = "!git branch --merged main | grep -v '^* ' | grep -v ' main$' | xargs git branch -d"
   [user]
       name = Mathias Schreck
       email = schreck.mathias@googlemail.com
