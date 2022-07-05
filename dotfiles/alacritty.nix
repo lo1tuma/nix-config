@@ -85,7 +85,7 @@ bell:
   duration: 0
 
 # Background opacity
-background_opacity: 1.0
+window.opacity: 1.0
 
 mouse_bindings:
   - { mouse: Middle, action: PasteSelection }
