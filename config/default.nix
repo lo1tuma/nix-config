@@ -84,7 +84,10 @@ in {
     };
   };
 
-  nix.maxJobs = 32;
-  nix.buildCores = 4;
+  nix.settings = {
+      max-jobs = 32;
+      cores = 8;
+      auto-optimise-store = true;
+  };
   services.nix-daemon.enable = true;
 }
