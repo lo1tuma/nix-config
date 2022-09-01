@@ -78,10 +78,13 @@ in {
   system.stateVersion = 3;
 
   fonts = {
-    enableFontDir = true;
     fonts = [ pkgs.nerdfonts ];
+    fontDir = {
+        enable = true;
+    };
   };
 
   nix.maxJobs = 32;
   nix.buildCores = 4;
+  services.nix-daemon.enable = true;
 }
