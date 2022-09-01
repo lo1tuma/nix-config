@@ -50,6 +50,8 @@ in {
       autoload -U up-line-or-beginning-search
       bindkey '^[[A' up-line-or-beginning-search
       zle -N up-line-or-beginning-search
+      HISTSIZE=10000000
+      SAVEHIST=10000000
     '';
   };
 
