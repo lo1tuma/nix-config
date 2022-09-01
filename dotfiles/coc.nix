@@ -11,6 +11,8 @@
   "diagnostic.errorSign" = "☓";
   "eslint.autoFixOnSave" = true;
   "eslint.alwaysShowStatus" = true;
+  "eslint.format.enable" = true;
+  "eslint.fixOnSaveTimeout" = 30000;
   "tsserver.disableAutomaticTypeAcquisition" = true;
   "tsserver.formatOnType" = false;
   "typescript.suggest.autoImports" = false;
@@ -19,4 +21,8 @@
   "javascript.suggest.autoImports" = false;
   "javascript.suggest.completeFunctionCalls" = false;
   "prettier.tabWidth" = 4;
-  }
+  "prettier.disableLanguages" = [ "javascript" "typescript" "typescriptreact" "javascriptreact" "typescript.tsx" ];
+  "prettier.requireConfig" = true;
+  "prettier.onlyUseLocalVersion" = true;
+  "json.format.enable" = false;
+}
