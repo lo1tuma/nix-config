@@ -2,10 +2,11 @@
 {
   "coc.preferences.formatOnSaveFiletypes" = ["javascript" "typescript" "typescriptreact" "json" "javascriptreact" "yaml" "markdown" "typescript.tsx"];
   "coc.preferences.jumpCommand" = "drop";
-  "coc.preferences.hoverTarget" = "echo";
   "suggest.echodocSupport" = true;
   "suggest.maxCompleteItemCount" = 20;
   "suggest.snippetIndicator" = "►";
+  "signature.target" = "echo";
+  "diagnostic.enableMessage" = "always";
   "diagnostic.checkCurrentLine" = true;
   "diagnostic.messageTarget" = "echo";
   "diagnostic.errorSign" = "☓";
