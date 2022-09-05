@@ -71,6 +71,10 @@ augroup ReactFiletypes
 augroup END
 
 " coc
+set signcolumn=yes
+set updatetime=300
+" use enter to confirm completion
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 " ctrl space trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
 " use `:OR` for organize import of current cursor
