@@ -130,6 +130,9 @@ nmap <leader>al  <Plug>(coc-codeaction)
 " Run the Code Lens action on the current line.
 nmap <leader>cl  <Plug>(coc-codelens-action)
 
+" Open diagnostics window
+nmap <silent> gi <Plug>(coc-diagnostic-info)
+
 lua << EOF
 require('telescope').setup{ defaults = { file_ignore_patterns = {".git"} } }
 EOF
