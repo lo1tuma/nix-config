@@ -1,6 +1,7 @@
 { pkgs }:
 {
   NSGlobalDomain = {
+    AppleFontSmoothing = 0;
     AppleKeyboardUIMode = 3;
     ApplePressAndHoldEnabled = true;
     InitialKeyRepeat = 25;

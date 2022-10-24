@@ -39,8 +39,6 @@ font:
     x: 0
     y: 0
 
-  use_thin_strokes: true
-
 render_timer: false
 
 # Base16 Default Dark 256 - alacritty color config
