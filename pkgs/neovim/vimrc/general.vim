@@ -140,3 +140,7 @@ nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files({ hidden = 
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep({ additional_args = function () return { '--ignore-case', '--hidden' } end })<cr>
 
 set nofoldenable
+
+" disable mouse
+set mouse=
+
