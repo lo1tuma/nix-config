@@ -28,4 +28,5 @@ in [
   pkgs.tokei
   pkgs.ruplacer
   pkgs.tree-sitter
+  pkgs.xh
 ]
