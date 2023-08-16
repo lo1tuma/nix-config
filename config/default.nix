@@ -53,7 +53,7 @@ in {
       HISTSIZE=10000000
       SAVEHIST=10000000
       alias npm="node --dns-result-order=ipv4first $(which npm)"
-      alias git="git config --local core.hooksPath --unset; git"
+      alias git="git config --unset --local core.hooksPath; git"
     '';
   };
 
