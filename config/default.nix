@@ -52,6 +52,7 @@ in {
       zle -N up-line-or-beginning-search
       HISTSIZE=10000000
       SAVEHIST=10000000
+      alias npm="node --dns-result-order=ipv4first $(which npm)"
     '';
   };
 
