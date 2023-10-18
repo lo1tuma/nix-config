@@ -34,6 +34,8 @@ set backspace=2
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 set statusline+=%#warningmsg#
 set statusline+=%*
+" show file path
+set statusline+=%=%f
 
 set completeopt-=preview
 
