@@ -13,7 +13,7 @@ in [
   nvim
   pkgs.openssl
   pkgs.fd
-  pkgs.exa
+  pkgs.eza
   pkgs.git-lfs
   pkgs.ripgrep
   pkgs.bashInteractive
