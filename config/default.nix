@@ -3,6 +3,19 @@
 let
   inherit (pkgs) zsh;
   coc = import ../dotfiles/coc.nix;
+  catppuccinTmux = pkgs.tmuxPlugins.mkTmuxPlugin {
+    pluginName = "catppuccin";
+    version = "unstable-2023-09-11";
+    src = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "tmux";
+      rev = "89ad057ebd47a3052d55591c2dcab31be3825a49";
+      sha256 = "sha256-4JFuX9clpPr59vnCUm6Oc5IOiIc/v706fJmkaCiY2Hc=";
+    };
+    postInstall = ''
+      sed -i -e 's|''${PLUGIN_DIR}/catppuccin-selected-theme.tmuxtheme|''${TMUX_TMPDIR}/catppuccin-selected-theme.tmuxtheme|g' $target/catppuccin.tmux
+    '';
+  };
 in {
   environment.etc = {
     "per-user/alacritty/alacritty.yml".text = import ../dotfiles/alacritty.nix { inherit zsh; };
@@ -73,7 +86,7 @@ in {
       set -g @catppuccin_window_current_fill "all"
       set -g @catppuccin_window_current_text "#{b:pane_current_path}"
       set -g @catppuccin_window_default_text "#{b:pane_current_path}"
-      set -g @catppuccin_status_modules_right "directory user date_time"
+      set -g @catppuccin_status_modules_right "directory application session"
       set -g @catppuccin_status_left_separator ""
       set -g @catppuccin_status_right_separator "█"
       set -g @catppuccin_status_right_separator_inverse "no"
@@ -81,6 +94,7 @@ in {
       set -g @catppuccin_status_connect_separator "yes"
       set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M"
       set -g @catppuccin_directory_text "#{pane_current_path}"
+      set -g @catppuccin_session_text "#{?client_prefix,#S: prefix,#S: normal}"
 
       set -sg escape-time 0
       set-option -g default-shell "${zsh}/bin/zsh"
@@ -89,7 +103,13 @@ in {
       set -g default-terminal "alacritty"
       set-option -a terminal-overrides ",alacritty:RGB"
 
-      run-shell ${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin/catppuccin.tmux
+      run-shell ${catppuccinTmux}/share/tmux-plugins/catppuccin/catppuccin.tmux
+
+      # (ctrl-b + ctrl-d) two splits with vim open in big pane
+      bind-key C-d split-window -v -l 13 \; \
+        select-pane -T "tests/shell" \; \
+        select-pane -t 0 \; \
+        send-keys "vim '+Telescope find_files'" 'Enter' \; \
     '';
   };
 
