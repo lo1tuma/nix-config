@@ -1,5 +1,15 @@
 { pkgs }:
 {
+  menuExtraClock = {
+    Show24Hour = true;
+    IsAnalog = false;
+    ShowAMPM = false;
+    ShowDate = 0;
+    ShowDayOfMonth = false;
+    ShowDayOfWeek = false;
+    ShowSeconds = false;
+  };
+
   NSGlobalDomain = {
     AppleFontSmoothing = 0;
     AppleKeyboardUIMode = 3;
