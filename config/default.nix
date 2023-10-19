@@ -105,11 +105,14 @@ in {
 
       run-shell ${catppuccinTmux}/share/tmux-plugins/catppuccin/catppuccin.tmux
 
-      # (ctrl-b + ctrl-d) two splits with vim open in big pane
-      bind-key C-d split-window -v -l 13 \; \
+      # dev-split: (ctrl-b + ctrl-d) two splits with vim open in big pane
+      bind-key C-d split-window -c "#{pane_current_path}" -v -l 13 \; \
         select-pane -T "tests/shell" \; \
         select-pane -t 0 \; \
         send-keys "vim '+Telescope find_files'" 'Enter' \; \
+
+      # git-popup: (ctrl-b + ctrl-g)
+      bind-key C-g display-popup -E -d "#{pane_current_path}" -xC -yC -w 80% -h 75% "git status && ${zsh}/bin/zsh -i"
     '';
   };
 
