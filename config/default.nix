@@ -20,8 +20,9 @@ in {
     ln -sfn /etc/per-user/coc-settings.json ~/.config/nvim/
   '';
   environment.shells = [ pkgs.zsh ];
+  environment.loginShell = "${pkgs.zsh}/bin/zsh --login";
   environment.variables = rec {
-    TERM = "screen-256color";
+    SHELL = "${pkgs.zsh}/bin/zsh";
     LANG = "en_US.UTF-8";
     LC_ALL = LANG;
     LESSCHARSET = "utf-8";
@@ -63,15 +64,31 @@ in {
     enableMouse = false;
     enableVim = true;
     extraConfig = ''
-      set -g default-terminal "screen-256color"
+      set -g @catppuccin_flavour 'mocha'
+      set -g @catppuccin_window_left_separator ""
+      set -g @catppuccin_window_right_separator " "
+      set -g @catppuccin_window_middle_separator " | "
+      set -g @catppuccin_window_number_position "right"
+      set -g @catppuccin_window_default_fill "none"
+      set -g @catppuccin_window_current_fill "all"
+      set -g @catppuccin_window_current_text "#{b:pane_current_path}"
+      set -g @catppuccin_window_default_text "#{b:pane_current_path}"
+      set -g @catppuccin_status_modules_right "directory user date_time"
+      set -g @catppuccin_status_left_separator ""
+      set -g @catppuccin_status_right_separator "█"
+      set -g @catppuccin_status_right_separator_inverse "no"
+      set -g @catppuccin_status_fill "icon"
+      set -g @catppuccin_status_connect_separator "yes"
+      set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M"
+      set -g @catppuccin_directory_text "#{pane_current_path}"
+
       set -sg escape-time 0
-      set -sg status-right " "
-      set -sg status-left " "
-      set -sg status-left-length 10
-      set -sg status-right-length 10
       set-option -g default-shell "${zsh}/bin/zsh"
       set-option -g focus-events on
-      set-option -ga terminal-overrides ',screen-256color:Tc'
+
+      set-option -a terminal-overrides ",alacritty:RGB"
+
+      run-shell ${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin/catppuccin.tmux
     '';
   };
 

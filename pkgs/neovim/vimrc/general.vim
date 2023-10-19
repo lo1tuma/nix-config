@@ -4,9 +4,8 @@ set nocompatible
 filetype off
 
 syntax enable
-let base16colorspace=256
 set termguicolors
-colorscheme base16-default-dark
+colorscheme catppuccin-mocha
 
 let g:python_host_skip_check = 1
 

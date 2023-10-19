@@ -3,7 +3,7 @@
 let
   vimrc = pkgs.callPackage ./vimrc.nix {};
   plugins = [
-    pkgs.vimPlugins.base16-vim
+    pkgs.vimPlugins.catppuccin-nvim
     pkgs.vimPlugins.echodoc
     pkgs.vimPlugins.vim-json
     pkgs.vimPlugins.tabular

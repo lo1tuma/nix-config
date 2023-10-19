@@ -1,6 +1,9 @@
-{ zsh }:''
+{ zsh }:
+let
+  colorScheme = import ./alacritty-catppuccin-mocha-color-scheme.nix;
+in ''
 env:
-  TERM: screen-256color
+  TERM: alacritty-direct
 
 window:
   dimensions:
@@ -41,42 +44,7 @@ font:
 
 render_timer: false
 
-# Base16 Default Dark 256 - alacritty color config
-# Chris Kempson (http://chriskempson.com)
-colors:
-  # Default colors
-  primary:
-    background: '0x181818'
-    foreground: '0xd8d8d8'
-
-  # Colors the cursor will use if `custom_cursor_colors` is true
-  cursor:
-    text: '0x181818'
-    cursor: '0xd8d8d8'
-    style: Block
-    unfocused_hollow: true
-
-  # Normal colors
-  normal:
-    black:   '0x181818'
-    red:     '0xab4642'
-    green:   '0xa1b56c'
-    yellow:  '0xf7ca88'
-    blue:    '0x7cafc2'
-    magenta: '0xba8baf'
-    cyan:    '0x86c1b9'
-    white:   '0xd8d8d8'
-
-  # Bright colors
-  bright:
-    black:   '0x585858'
-    red:     '0xab4642'
-    green:   '0xa1b56c'
-    yellow:  '0xf7ca88'
-    blue:    '0x7cafc2'
-    magenta: '0xba8baf'
-    cyan:    '0x86c1b9'
-    white:   '0xd8d8d8'
+${colorScheme}
 
 bell:
   animation: EaseOutExpo
