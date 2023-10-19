@@ -86,6 +86,7 @@ in {
       set-option -g default-shell "${zsh}/bin/zsh"
       set-option -g focus-events on
 
+      set -g default-terminal "alacritty"
       set-option -a terminal-overrides ",alacritty:RGB"
 
       run-shell ${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin/catppuccin.tmux
