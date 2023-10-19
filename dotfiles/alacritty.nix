@@ -5,10 +5,13 @@ in ''
 env:
   TERM: alacritty-direct
 
+
 window:
   dimensions:
     columns: 0
     lines: 0
+
+  startup_mode: 'Maximized'
 
   padding:
     x: 2
