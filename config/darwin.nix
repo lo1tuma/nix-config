@@ -11,6 +11,8 @@
   };
 
   NSGlobalDomain = {
+    AppleMeasurementUnits = "Centimeters";
+    AppleMetricUnits = 0;
     AppleFontSmoothing = 0;
     AppleKeyboardUIMode = 3;
     ApplePressAndHoldEnabled = true;
