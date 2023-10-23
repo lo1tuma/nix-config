@@ -1,39 +1,35 @@
 { pkgs }:
 
 let
-  vimrc = pkgs.callPackage ./vimrc.nix {};
+  nviminit = pkgs.vimUtils.buildVimPlugin {
+    name = "nviminit";
+    src = ./nviminit;
+  };
   plugins = [
     pkgs.vimPlugins.catppuccin-nvim
-    pkgs.vimPlugins.echodoc
-    pkgs.vimPlugins.vim-json
-    pkgs.vimPlugins.tabular
-    pkgs.vimPlugins.vim-markdown
-    pkgs.vimPlugins.vim-nix
-    pkgs.vimPlugins.typescript-vim
-    pkgs.vimPlugins.vim-javascript
-    pkgs.vimPlugins.vim-nix
-    pkgs.vimPlugins.editorconfig-vim
-    pkgs.vimPlugins.vim-surround
-    pkgs.vimPlugins.vim-repeat
-    pkgs.vimPlugins.vim-gitgutter
-    pkgs.vimPlugins.coc-nvim
-    pkgs.vimPlugins.coc-rls
-    pkgs.vimPlugins.coc-yaml
-    pkgs.vimPlugins.coc-neco
-    pkgs.vimPlugins.coc-json
-    pkgs.vimPlugins.coc-lists
-    pkgs.vimPlugins.coc-eslint
-    pkgs.vimPlugins.coc-tsserver
-    pkgs.vimPlugins.coc-prettier
-    pkgs.vimPlugins.vim-toml
-    pkgs.vimPlugins.telescope-nvim
     pkgs.vimPlugins.popup-nvim
     pkgs.vimPlugins.plenary-nvim
-    pkgs.vimPlugins.nvim-treesitter
+    pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+    pkgs.vimPlugins.vim-javascript
+    pkgs.vimPlugins.editorconfig-vim
+    pkgs.vimPlugins.nvim-surround
+    pkgs.vimPlugins.vim-repeat
+    pkgs.vimPlugins.vim-gitgutter
+    pkgs.vimPlugins.telescope-nvim
     pkgs.vimPlugins.nvim-web-devicons
+    pkgs.vimPlugins.nvim-lspconfig
+    pkgs.vimPlugins.nvim-cmp
+    pkgs.vimPlugins.cmp-buffer
+    pkgs.vimPlugins.cmp-emoji
+    pkgs.vimPlugins.cmp-path
+    pkgs.vimPlugins.cmp-nvim-lsp
+    pkgs.vimPlugins.SchemaStore-nvim
+    pkgs.vimPlugins.which-key-nvim
+    pkgs.vimPlugins.none-ls-nvim
+    nviminit
   ];
 in {
-  customRC = vimrc;
+  customRC = "lua require('nviminit')";
   packages.myPlugins.start = plugins;
 }
 
