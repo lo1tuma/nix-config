@@ -86,14 +86,13 @@ in {
       set -g @catppuccin_window_current_fill "all"
       set -g @catppuccin_window_current_text "#{b:pane_current_path}"
       set -g @catppuccin_window_default_text "#{b:pane_current_path}"
-      set -g @catppuccin_status_modules_right "directory application session"
+      set -g @catppuccin_status_modules_right "application session"
       set -g @catppuccin_status_left_separator ""
       set -g @catppuccin_status_right_separator "█"
       set -g @catppuccin_status_right_separator_inverse "no"
       set -g @catppuccin_status_fill "icon"
       set -g @catppuccin_status_connect_separator "yes"
       set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M"
-      set -g @catppuccin_directory_text "#{pane_current_path}"
       set -g @catppuccin_session_text "#{?client_prefix,#S: prefix,#S: normal}"
 
       set -sg escape-time 0
