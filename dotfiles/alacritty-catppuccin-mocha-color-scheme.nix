@@ -4,7 +4,7 @@ colors:
         background: "#1E1E2E" # base
         foreground: "#CDD6F4" # text
         # Bright and dim foreground colors
-        dim_foreground: "#CDD6F4" # text
+        dim_foreground: "#7f849C"
         bright_foreground: "#CDD6F4" # text
 
     # Cursor colors
