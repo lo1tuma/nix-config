@@ -109,17 +109,13 @@ lspconfig.jsonls.setup({
                     "Stryker Mutator",
                     "AVA Configuration",
                     "AWS CDK cdk.json",
-                    "cspell",
+                    "CSpell (cspell.json)",
                     "jscpd Configuration",
-                },
-                extra = {
-                    {
-                        name = "Dependency Cruiser",
-                        description = "Dependency Cruiser configuration file",
-                        fileMatch = { "dependency-cruiser.config.json" },
-                        url = "https://raw.githubusercontent.com/sverweij/dependency-cruiser/main/src/schema/configuration.schema.json",
-                    },
-                },
+                    "Dependency cruiser",
+                    "GitHub Action",
+                    "GitHub Workflow",
+                    "gitlab-ci"
+                }
             }),
             validate = { enable = true },
         },
