@@ -114,68 +114,10 @@ lspconfig.jsonls.setup({
                     "Dependency cruiser",
                     "GitHub Action",
                     "GitHub Workflow",
-                    "gitlab-ci"
-                }
+                    "gitlab-ci",
+                },
             }),
             validate = { enable = true },
         },
     },
-})
-
-local none_ls = require("null-ls")
-
-none_ls.setup({
-    capabilities = capabilities,
-    fallback_severity = vim.diagnostic.severity.HINT,
-    sources = {
-        none_ls.builtins.code_actions.cspell,
-        none_ls.builtins.code_actions.shellcheck,
-
-        none_ls.builtins.diagnostics.cspell.with({
-            diagnostic_config = {
-                virtual_text = false,
-            },
-        }),
-        none_ls.builtins.diagnostics.shellcheck,
-
-        none_ls.builtins.formatting.prettier.with({
-            only_local = "node_modules/.bin",
-            filetypes = { "html", "json", "yaml", "markdown", "css" },
-            condition = function(utils)
-                return utils.root_has_file({
-                    ".prettierrc",
-                    ".prettierrc.json",
-                    ".prettierrc.yml",
-                    ".prettierrc.yaml",
-                    ".prettierrc.js",
-                    "prettier.config.js",
-                    ".prettierrc.mjs",
-                    "prettier.config.mjs",
-                    ".prettierrc.cjs",
-                    "prettier.config.cjs",
-                    ".prettierrc.toml",
-                })
-            end,
-        }),
-        none_ls.builtins.formatting.stylua,
-        none_ls.builtins.formatting.shfmt,
-    },
-    on_attach = function(client, bufnr)
-        -- Format files on save
-        if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                group = augroup,
-                buffer = bufnr,
-                callback = function()
-                    vim.lsp.buf.format({
-                        bufnr = bufnr,
-                        filter = function(client)
-                            return client.name == "null-ls"
-                        end,
-                    })
-                end,
-            })
-        end
-    end,
 })

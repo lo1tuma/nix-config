@@ -25,7 +25,8 @@ let
     pkgs.vimPlugins.cmp-nvim-lsp
     pkgs.vimPlugins.SchemaStore-nvim
     pkgs.vimPlugins.which-key-nvim
-    pkgs.vimPlugins.none-ls-nvim
+    pkgs.vimPlugins.conform-nvim
+    pkgs.vimPlugins.nvim-lint
     nviminit
   ];
 in {

@@ -7,7 +7,6 @@ let
         pkgs.lua-language-server
         pkgs.nil
         pkgs.stylua
-        pkgs.shellcheck
         pkgs.shfmt
     ];
 in pkgs.neovim.override {
