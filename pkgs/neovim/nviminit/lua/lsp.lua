@@ -7,7 +7,6 @@ lspconfig.tsserver.setup({
     capabilities = capabilities,
     root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json"),
     on_attach = function(client)
-        client.resolved_capabilities.document_formatting = false
         client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.documentRangeFormattingProvider = false
     end,

@@ -8,6 +8,7 @@ let
         pkgs.nil
         pkgs.stylua
         pkgs.shfmt
+        pkgs.yaml-language-server
     ];
 in pkgs.neovim.override {
     vimAlias = true;
