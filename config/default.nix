@@ -120,10 +120,7 @@ in {
   system.stateVersion = 3;
 
   fonts = {
-    fonts = [ pkgs.nerdfonts ];
-    fontDir = {
-        enable = true;
-    };
+    packages = [ pkgs.nerdfonts ];
   };
 
   nix.settings = {
