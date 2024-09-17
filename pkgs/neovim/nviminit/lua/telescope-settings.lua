@@ -1,5 +1,9 @@
 require("telescope").setup({
     defaults = {
+        path_display = {
+            "filename_first",
+            "smart",
+        },
         file_ignore_patterns = { ".git/" },
         mappings = {
             i = {
