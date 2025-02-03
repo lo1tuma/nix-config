@@ -1,5 +1,3 @@
-require("base-keymap")
-
 -- line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -83,12 +81,4 @@ vim.opt.pumblend = 13
 vim.opt.errorbells = false
 vim.opt.visualbell = true
 
--- plugin settings
-require("telescope-settings")
-require("help")
-require("lsp")
-require("completion")
-require("syntax")
-require("linter")
-require("formatter")
 require("nvim-surround").setup({})

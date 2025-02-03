@@ -10,10 +10,5 @@ let
         pkgs.shfmt
         pkgs.yaml-language-server
     ];
-in pkgs.neovim.override {
-    vimAlias = true;
-    configure = import ./config.nix { inherit pkgs; };
-    extraPython3Packages = pythonPackages: [ pythonPackages.pynvim ];
-    withNodeJs = true;
-    extraMakeWrapperArgs = "--prefix PATH : '${pkgs.lib.makeBinPath extraRuntimeDependencies}'";
-}
+    neovimConfig = pkgs.neovimUtils.makeNeovimConfig (import ./config.nix { inherit pkgs; });
+in pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped neovimConfig 

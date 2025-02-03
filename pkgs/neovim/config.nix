@@ -1,15 +1,10 @@
 { pkgs }:
 
 let
-  nviminit = pkgs.vimUtils.buildVimPlugin {
-    name = "nviminit";
-    src = ./nviminit;
-  };
   plugins = [
     pkgs.vimPlugins.catppuccin-nvim
     pkgs.vimPlugins.popup-nvim
     pkgs.vimPlugins.plenary-nvim
-    pkgs.vimPlugins.nvim-treesitter.withAllGrammars
     pkgs.vimPlugins.vim-javascript
     pkgs.vimPlugins.editorconfig-vim
     pkgs.vimPlugins.nvim-surround
@@ -27,10 +22,41 @@ let
     pkgs.vimPlugins.which-key-nvim
     pkgs.vimPlugins.conform-nvim
     pkgs.vimPlugins.nvim-lint
-    nviminit
+    (pkgs.vimPlugins.nvim-treesitter.withAllGrammars)
   ];
+  extraRuntimeDependencies = [
+        pkgs.vscode-langservers-extracted
+        pkgs.nodePackages.cspell
+        pkgs.nodePackages.typescript-language-server
+        pkgs.lua-language-server
+        pkgs.nil
+        pkgs.stylua
+        pkgs.shfmt
+        pkgs.yaml-language-server
+    ];
 in {
-  customRC = "lua require('nviminit')";
-  packages.myPlugins.start = plugins;
+  vimAlias = true;     
+  plugins = plugins;
+  withPython3 = true;
+  extraPython3Packages = pythonPackages: [ pythonPackages.pynvim ];
+  withNodeJs =true;
+  luaRcContent =
+      let
+        inherit (builtins) concatStringsSep readFile map;
+
+        sources = [
+          ./nviminit/lua/base-keymap.lua
+          ./nviminit/lua/nviminit.lua
+          ./nviminit/lua/syntax.lua
+          ./nviminit/lua/telescope-settings.lua
+          ./nviminit/lua/help.lua
+          ./nviminit/lua/linter.lua
+          ./nviminit/lua/lsp.lua
+          ./nviminit/lua/formatter.lua
+          ./nviminit/lua/completion.lua
+        ];
+      in concatStringsSep "\n" (map readFile sources);
+  extraMakeWrapperArgs = "--prefix PATH : '${pkgs.lib.makeBinPath extraRuntimeDependencies}'";
+  autowrapRuntimeDeps = true;
 }
 
