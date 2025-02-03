@@ -120,7 +120,7 @@ in {
   system.stateVersion = 3;
 
   fonts = {
-    packages = [ pkgs.nerdfonts ];
+    packages = [] ++ builtins.filter pkgs.lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   };
 
   nix.settings = {
