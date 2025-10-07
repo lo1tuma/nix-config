@@ -1,79 +1,76 @@
 ''
-colors:
-    primary:
-        background: "#1e1e2e"
-        foreground: "#cdd6f4"
-        dim_foreground: "#7f849c"
-        bright_foreground: "#cdd6f4"
+  [colors]
+  draw_bold_text_with_bright_colors = false
 
-    # Cursor colors
-    cursor:
-        text: "#1e1e2e"
-        cursor: "#f5e0dc"
-    vi_mode_cursor:
-        text: "#1e1e2e"
-        cursor: "#b4befe"
+  [[colors.indexed_colors]]
+  color = "#FAB387"
+  index = 16
 
-    # Search colors
-    search:
-        matches:
-            foreground: "#1e1e2e"
-            background: "#a6adc8"
-        focused_match:
-            foreground: "#1e1e2e"
-            background: "#a6e3a1"
-        footer_bar:
-            foreground: "#1e1e2e"
-            background: "#a6adc8"
+  [[colors.indexed_colors]]
+  color = "#F5E0DC"
+  index = 17
 
-    # Keyboard regex hints
-    hints:
-        start:
-            foreground: "#1E1E2E" # base
-            background: "#F9E2AF" # yellow
-        end:
-            foreground: "#1E1E2E" # base
-            background: "#A6ADC8" # subtext0
+  [colors.bright]
+  black = "#585b70"
+  blue = "#89b4fa"
+  cyan = "#94e2d5"
+  green = "#a6e3a1"
+  magenta = "#f5c2e7"
+  red = "#f38ba8"
+  white = "#a6adc8"
+  yellow = "#f9e2af"
 
-    # Selection colors
-    selection:
-        text: "#1E1E2E" # base
-        background: "#F5E0DC" # rosewater
+  [colors.cursor]
+  cursor = "#f5e0dc"
+  text = "#1e1e2e"
 
-    # Normal colors
-    normal:
-        black: "#45475a"
-        red: "#f38ba8"
-        green: "#a6e3a1"
-        yellow: "#f9e2af"
-        blue: "#89b4fa"
-        magenta: "#f5c2e7"
-        cyan: "#94e2d5"
-        white: "#bac2de"
+  [colors.dim]
+  black = "#45475a"
+  blue = "#89b4fa"
+  cyan = "#94e2d5"
+  green = "#a6e3a1"
+  magenta = "#f5c2e7"
+  red = "#f38ba8"
+  white = "#bac2de"
+  yellow = "#f9e2af"
 
-    # Bright colors
-    bright:
-        black: "#585b70"
-        red: "#f38ba8"
-        green: "#a6e3a1"
-        yellow: "#f9e2af"
-        blue: "#89b4fa"
-        magenta: "#f5c2e7"
-        cyan: "#94e2d5"
-        white: "#a6adc8"
+  [colors.hints.end]
+  background = "#A6ADC8"
+  foreground = "#1E1E2E"
 
-    # Dim colors
-    dim:
-        black: "#45475a"
-        red: "#f38ba8"
-        green: "#a6e3a1"
-        yellow: "#f9e2af"
-        blue: "#89b4fa"
-        magenta: "#f5c2e7"
-        cyan: "#94e2d5"
-        white: "#bac2de"
+  [colors.hints.start]
+  background = "#F9E2AF"
+  foreground = "#1E1E2E"
 
-    indexed_colors:
-        - { index: 16, color: "#FAB387" }
-        - { index: 17, color: "#F5E0DC" }
+  [colors.normal]
+  black = "#45475a"
+  blue = "#89b4fa"
+  cyan = "#94e2d5"
+  green = "#a6e3a1"
+  magenta = "#f5c2e7"
+  red = "#f38ba8"
+  white = "#bac2de"
+  yellow = "#f9e2af"
+
+  [colors.primary]
+  background = "#1e1e2e"
+  bright_foreground = "#cdd6f4"
+  dim_foreground = "#7f849c"
+  foreground = "#cdd6f4"
+
+  [colors.search.focused_match]
+  background = "#a6e3a1"
+  foreground = "#1e1e2e"
+
+  [colors.search.matches]
+  background = "#a6adc8"
+  foreground = "#1e1e2e"
+
+  [colors.selection]
+  background = "#F5E0DC"
+  text = "#1E1E2E"
+
+  [colors.vi_mode_cursor]
+  cursor = "#b4befe"
+  text = "#1e1e2e"
 ''

@@ -1,4 +1,5 @@
-{}: ''
+{ }:
+''
   [core]
         editor = vim
         hooksPath = /non-existing-path-to-prevent-hooks

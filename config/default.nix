@@ -1,4 +1,4 @@
-{  pkgs, ... }:
+{ pkgs, ... }:
 
 let
   inherit (pkgs) zsh;
@@ -16,24 +16,26 @@ let
       sed -i -e 's|''${PLUGIN_DIR}/catppuccin-selected-theme.tmuxtheme|''${TMUX_TMPDIR}/catppuccin-selected-theme.tmuxtheme|g' $target/catppuccin.tmux
     '';
   };
-in {
+in
+{
+  system.primaryUser = "mschreck";
   environment.etc = {
-    "per-user/alacritty/alacritty.yml".text = import ../dotfiles/alacritty.nix { inherit zsh; };
-    "per-user/.gitconfig".text = import ../dotfiles/gitconfig.nix {};
-    "per-user/.gitignore".text = import ../dotfiles/gitignore.nix {};
-    "per-user/.npmrc".text = import ../dotfiles/npmrc.nix {};
-    "per-user/coc-settings.json".text = builtins.toJSON (coc {});
+    "per-user/alacritty/alacritty.toml".text = import ../dotfiles/alacritty.nix { inherit zsh; };
+    "per-user/.gitconfig".text = import ../dotfiles/gitconfig.nix { };
+    "per-user/.gitignore".text = import ../dotfiles/gitignore.nix { };
+    "per-user/.npmrc".text = import ../dotfiles/npmrc.nix { };
+    "per-user/coc-settings.json".text = builtins.toJSON (coc { });
   };
-  system.activationScripts.extraUserActivation.text = ''
-    ln -sfn /etc/per-user/alacritty ~/.config/
-    ln -sfn /etc/per-user/.gitconfig ~/
-    ln -sfn /etc/per-user/.gitignore ~/
-    ln -sfn /etc/per-user/.npmrc ~/
-    mkdir -p ~/.config/nvim/
-    ln -sfn /etc/per-user/coc-settings.json ~/.config/nvim/
-  '';
+  system.activationScripts.postActivation.text = ''
+        mkdir -p /Users/mschreck/.config
+        ln -sfn /etc/per-user/alacritty /Users/mschreck/.config/
+        ln -sfn /etc/per-user/.gitconfig /Users/mschreck/
+        ln -sfn /etc/per-user/.gitignore /Users/mschreck/
+        ln -sfn /etc/per-user/.npmrc /Users/mschreck/
+        mkdir -p /Users/mschreck/.config/nvim/
+        ln -sfn /etc/per-user/coc-settings.json /Users/mschreck/.config/nvim/
+    #  '';
   environment.shells = [ pkgs.zsh ];
-  environment.loginShell = "${pkgs.zsh}/bin/zsh --login";
   environment.variables = rec {
     SHELL = "${pkgs.zsh}/bin/zsh";
     LANG = "en_US.UTF-8";
@@ -44,7 +46,11 @@ in {
   environment.systemPackages = import ./packages.nix { inherit pkgs; };
 
   nixpkgs = {
-    config = { allowUnfree = true; allowBroken = false; };
+    config = {
+      allowUnfree = true;
+      allowBroken = false;
+    };
+    hostPlatform = "aarch64-darwin";
   };
 
   environment.darwinConfig = "$HOME/projects/nix-config/config/default.nix";
@@ -73,7 +79,7 @@ in {
 
   programs.tmux = {
     enable = true;
-    defaultCommand = "${zsh}/bin/zsh";
+    #defaultCommand = "${zsh}/bin/zsh";
     enableMouse = false;
     enableVim = true;
     extraConfig = ''
@@ -120,13 +126,14 @@ in {
   system.stateVersion = 3;
 
   fonts = {
-    packages = [] ++ builtins.filter pkgs.lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+    packages =
+      [ ]
+      ++ builtins.filter pkgs.lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   };
 
   nix.settings = {
-      max-jobs = 32;
-      cores = 8;
-      auto-optimise-store = true;
+    max-jobs = 32;
+    cores = 8;
   };
-  services.nix-daemon.enable = true;
+  nix.enable = false;
 }
