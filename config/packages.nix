@@ -2,11 +2,12 @@
 
 let
   nvim = import ../pkgs/neovim/default.nix { inherit pkgs; };
-in [
+in
+[
   pkgs.cacert
   pkgs.git
   pkgs.python
-  pkgs.nodejs_22
+  pkgs.nodejs_24
   pkgs.zsh
   pkgs.wget
   pkgs.curl
