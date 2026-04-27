@@ -6,7 +6,7 @@ in
 [
   pkgs.cacert
   pkgs.git
-  pkgs.python
+  pkgs.python3
   pkgs.nodejs_24
   pkgs.zsh
   pkgs.wget
@@ -18,16 +18,13 @@ in
   pkgs.git-lfs
   pkgs.ripgrep
   pkgs.bashInteractive
-  pkgs.nix-prefetch-scripts
   pkgs.alacritty
   pkgs.bat
   pkgs.fzf
   pkgs.gnupg
-  pkgs.du-dust
+  pkgs.dust
   pkgs.starship
-  pkgs.watchman
   pkgs.tokei
   pkgs.ruplacer
-  pkgs.tree-sitter
   pkgs.xh
 ]

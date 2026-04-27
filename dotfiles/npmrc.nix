@@ -1,5 +1,5 @@
 {}:''
-spin=false
+progress=false
 loglevel=warn
 prefix=/Users/mschreck/npm
 ''
