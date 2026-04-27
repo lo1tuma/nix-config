@@ -2,7 +2,18 @@
 
 let
   inherit (pkgs) zsh;
-  coc = import ../dotfiles/coc.nix;
+  primaryUser = "mschreck";
+  homeDir = "/Users/${primaryUser}";
+  configDir = "${homeDir}/.config";
+  repoRoot = "${homeDir}/projects/nix-config";
+  perUserLinks = {
+    ".gitconfig" = "/etc/per-user/.gitconfig";
+    ".gitignore" = "/etc/per-user/.gitignore";
+    ".npmrc" = "/etc/per-user/.npmrc";
+    ".config/alacritty" = "/etc/per-user/alacritty";
+  };
+  linkCommand = path: target: "ln -sfn ${target} ${homeDir}/${path}";
+  activationLinks = pkgs.lib.mapAttrsToList linkCommand perUserLinks;
   catppuccinTmux = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "catppuccin";
     version = "unstable-2023-09-11";
@@ -18,23 +29,17 @@ let
   };
 in
 {
-  system.primaryUser = "mschreck";
+  system.primaryUser = primaryUser;
   environment.etc = {
     "per-user/alacritty/alacritty.toml".text = import ../dotfiles/alacritty.nix { inherit zsh; };
     "per-user/.gitconfig".text = import ../dotfiles/gitconfig.nix { };
     "per-user/.gitignore".text = import ../dotfiles/gitignore.nix { };
     "per-user/.npmrc".text = import ../dotfiles/npmrc.nix { };
-    "per-user/coc-settings.json".text = builtins.toJSON (coc { });
   };
-  system.activationScripts.postActivation.text = ''
-        mkdir -p /Users/mschreck/.config
-        ln -sfn /etc/per-user/alacritty /Users/mschreck/.config/
-        ln -sfn /etc/per-user/.gitconfig /Users/mschreck/
-        ln -sfn /etc/per-user/.gitignore /Users/mschreck/
-        ln -sfn /etc/per-user/.npmrc /Users/mschreck/
-        mkdir -p /Users/mschreck/.config/nvim/
-        ln -sfn /etc/per-user/coc-settings.json /Users/mschreck/.config/nvim/
-    #  '';
+  system.activationScripts.postActivation.text = pkgs.lib.concatStringsSep "\n" (
+    [ "mkdir -p ${configDir}" ]
+    ++ activationLinks
+  );
   environment.shells = [ pkgs.zsh ];
   environment.variables = rec {
     SHELL = "${pkgs.zsh}/bin/zsh";
@@ -53,7 +58,7 @@ in
     hostPlatform = "aarch64-darwin";
   };
 
-  environment.darwinConfig = "$HOME/projects/nix-config/config/default.nix";
+  environment.darwinConfig = "${repoRoot}/config/default.nix";
 
   programs.zsh = {
     enable = true;
