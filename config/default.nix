@@ -131,14 +131,15 @@ in
   system.stateVersion = 3;
 
   fonts = {
-    packages =
-      [ ]
-      ++ builtins.filter pkgs.lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+    packages = [
+      pkgs.nerd-fonts.fira-code
+    ];
   };
 
   nix.settings = {
     max-jobs = 32;
     cores = 8;
+    auto-optimise-store = true;
   };
   nix.enable = false;
 }
