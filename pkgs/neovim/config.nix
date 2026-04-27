@@ -1,11 +1,37 @@
 { pkgs }:
 
 let
+  treesitter = pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
+    bash
+    c
+    diff
+    editorconfig
+    git_config
+    gitcommit
+    gitignore
+    html
+    javascript
+    jsdoc
+    json
+    lua
+    luadoc
+    markdown
+    markdown_inline
+    nix
+    query
+    regex
+    tmux
+    toml
+    tsx
+    typescript
+    vim
+    vimdoc
+    yaml
+  ]);
   plugins = [
     pkgs.vimPlugins.catppuccin-nvim
     pkgs.vimPlugins.popup-nvim
     pkgs.vimPlugins.plenary-nvim
-    pkgs.vimPlugins.vim-javascript
     pkgs.vimPlugins.editorconfig-vim
     pkgs.vimPlugins.nvim-surround
     pkgs.vimPlugins.vim-repeat
@@ -22,14 +48,13 @@ let
     pkgs.vimPlugins.which-key-nvim
     pkgs.vimPlugins.conform-nvim
     pkgs.vimPlugins.nvim-lint
-    pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+    treesitter
   ];
 in {
   vimAlias = true;
   plugins = plugins;
   withPython3 = true;
   extraPython3Packages = pythonPackages: [ pythonPackages.pynvim ];
-  withNodeJs =true;
+  withNodeJs = true;
   autowrapRuntimeDeps = true;
 }
-

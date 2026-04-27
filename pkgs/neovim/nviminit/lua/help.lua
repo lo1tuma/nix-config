@@ -5,14 +5,14 @@ whichKey.setup({
     delay = function(ctx)
         return ctx.plugin and 0 or 500
     end,
-    filter = function(mapping)
-      return true
-      end,
-      spec = {},
-      notify = true,
-      defer = function(ctx)
-    return ctx.mode == "V" or ctx.mode == "<C-V>"
-  end,
+    filter = function(_)
+        return true
+    end,
+    spec = {},
+    notify = true,
+    defer = function(ctx)
+        return ctx.mode == "V" or ctx.mode == "<C-V>"
+    end,
     plugins = {
         marks = false, -- shows a list of your marks on ' and `
         registers = false, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
@@ -47,12 +47,12 @@ whichKey.setup({
     keys = {
         scroll_down = "<c-d>", -- binding to scroll down inside the popup
         scroll_up = "<c-u>", -- binding to scroll up inside the popup
-      },
-      sort = { "local", "order", "group", "alphanum", "mod" },
-      expand = 0, -- expand groups when <= n mappings
+    },
+    sort = { "local", "order", "group", "alphanum", "mod" },
+    expand = 0, -- expand groups when <= n mappings
     show_help = true, -- show help message on the command line when the popup is visible
     show_keys = true,
-    debug = false
+    debug = false,
 })
 
 local telescope = require("telescope.builtin")
@@ -137,14 +137,14 @@ whichKey.add({
         function()
             vim.lsp.buf.references()
         end,
-        desc = "references",
+        desc = "References",
     },
     {
         "<leader>ls",
         function()
             vim.lsp.buf.signature_help()
         end,
-        desc = "Singnature help",
+        desc = "Signature Help",
     },
     {
         "<leader>lt",
