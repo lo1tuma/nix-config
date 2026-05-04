@@ -14,6 +14,13 @@ let
   };
   linkCommand = path: target: "ln -sfn ${target} ${homeDir}/${path}";
   activationLinks = pkgs.lib.mapAttrsToList linkCommand perUserLinks;
+  trackpadDefaults = ''
+    /usr/bin/defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+    /usr/bin/defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool true
+    /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+    /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
+    /usr/bin/defaults write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
+  '';
   catppuccinTmux = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "catppuccin";
     version = "unstable-2023-09-11";
@@ -39,7 +46,10 @@ in
     "per-user/.npmrc".text = import ../dotfiles/npmrc.nix { };
   };
   system.activationScripts.postActivation.text = pkgs.lib.concatStringsSep "\n" (
-    [ "mkdir -p ${configDir}" ]
+    [
+      "mkdir -p ${configDir}"
+      trackpadDefaults
+    ]
     ++ activationLinks
   );
   environment.shells = [ pkgs.zsh ];
@@ -145,6 +155,17 @@ in
     max-jobs = 32;
     cores = 8;
     auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
+  launchd.user.agents.trackpad-defaults = {
+    script = trackpadDefaults;
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = false;
+    };
   };
   nix.enable = false;
 }

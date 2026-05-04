@@ -4,6 +4,10 @@ let
   extraRuntimeDependencies = [
     pkgs.vscode-langservers-extracted
     pkgs.cspell
+    pkgs.dprint
+    pkgs.nixfmt-rfc-style
+    pkgs.nodePackages.prettier
+    pkgs.tree-sitter
     pkgs.typescript-language-server
     pkgs.lua-language-server
     pkgs.nil
