@@ -66,6 +66,26 @@ vim.diagnostic.config({
     },
 })
 
+vim.keymap.set("n", "gj", function()
+    vim.diagnostic.jump({ count = 1, float = true })
+end, { silent = true, desc = "Next diagnostic" })
+
+vim.keymap.set("n", "gk", function()
+    vim.diagnostic.jump({ count = -1, float = true })
+end, { silent = true, desc = "Previous diagnostic" })
+
+vim.keymap.set("n", "gJ", function()
+    vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
+end, { silent = true, desc = "Next error" })
+
+vim.keymap.set("n", "gK", function()
+    vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
+end, { silent = true, desc = "Previous error" })
+
+vim.keymap.set("n", "gl", function()
+    vim.diagnostic.open_float()
+end, { silent = true, desc = "Line diagnostics" })
+
 -- completion
 vim.opt.completeopt = "menu,menuone,preview,noinsert,noselect"
 

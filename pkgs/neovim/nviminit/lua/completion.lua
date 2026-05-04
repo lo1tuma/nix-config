@@ -4,7 +4,6 @@ cmp.setup({
     preselect = cmp.PreselectMode.None,
     sources = cmp.config.sources({
         { name = "nvim_lsp" },
-        { name = "nvim_lsp_document_symbol" },
         { name = "buffer" },
         { name = "path" },
         { name = "emoji" },

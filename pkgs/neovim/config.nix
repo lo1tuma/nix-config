@@ -35,7 +35,7 @@ let
     pkgs.vimPlugins.editorconfig-vim
     pkgs.vimPlugins.nvim-surround
     pkgs.vimPlugins.vim-repeat
-    pkgs.vimPlugins.vim-gitgutter
+    pkgs.vimPlugins.gitsigns-nvim
     pkgs.vimPlugins.telescope-nvim
     pkgs.vimPlugins.nvim-web-devicons
     pkgs.vimPlugins.nvim-lspconfig

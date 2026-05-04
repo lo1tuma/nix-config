@@ -24,6 +24,7 @@ let
         ./nviminit/lua/base-keymap.lua
         ./nviminit/lua/nviminit.lua
         ./nviminit/lua/syntax.lua
+        ./nviminit/lua/git.lua
         ./nviminit/lua/telescope-settings.lua
         ./nviminit/lua/help.lua
         ./nviminit/lua/linter.lua

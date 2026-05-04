@@ -1,4 +1,5 @@
 local whichKey = require("which-key")
+local gitsigns = require("gitsigns")
 
 whichKey.setup({
     preset = "modern",
@@ -65,9 +66,9 @@ whichKey.add({
     { "<leader>fh", telescope.help_tags, desc = "Open Help Entries" },
     { "<leader>fr", telescope.oldfiles, desc = "Open Recent File" },
     { "<leader>h", group = "Git Hunk" },
-    { "<leader>hp", desc = "Preview" },
-    { "<leader>hs", desc = "Stage" },
-    { "<leader>hu", desc = "Undo / Revert" },
+    { "<leader>hp", gitsigns.preview_hunk, desc = "Preview" },
+    { "<leader>hs", gitsigns.stage_hunk, desc = "Stage" },
+    { "<leader>hu", gitsigns.reset_hunk, desc = "Undo / Revert" },
     { "<leader>l", group = "LSP" },
     {
         "<leader>lD",
@@ -102,7 +103,14 @@ whichKey.add({
         function()
             telescope.diagnostics()
         end,
-        desc = "File Diagnostics",
+        desc = "Diagnostics",
+    },
+    {
+        "<leader>ll",
+        function()
+            vim.diagnostic.open_float()
+        end,
+        desc = "Line Diagnostics",
     },
     {
         "<leader>lf",
