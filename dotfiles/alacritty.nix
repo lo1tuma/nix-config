@@ -1,4 +1,4 @@
-{ zsh }:
+{ shellProgram }:
 let
   colorScheme = import ./alacritty-catppuccin-mocha-color-scheme.nix;
 in
@@ -569,7 +569,7 @@ in
 
   [terminal.shell]
   args = ["--login"]
-  program = "${zsh}/bin/zsh"
+  program = "${shellProgram}"
 
   [window]
   decorations = "full"

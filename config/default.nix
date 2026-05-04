@@ -1,11 +1,11 @@
 { pkgs, ... }:
 
 let
-  inherit (pkgs) zsh;
   primaryUser = "mschreck";
   homeDir = "/Users/${primaryUser}";
   configDir = "${homeDir}/.config";
   repoRoot = "${homeDir}/projects/nix-config";
+  systemZsh = "/run/current-system/sw/bin/zsh";
   perUserLinks = {
     ".gitconfig" = "/etc/per-user/.gitconfig";
     ".gitignore" = "/etc/per-user/.gitignore";
@@ -31,7 +31,9 @@ in
 {
   system.primaryUser = primaryUser;
   environment.etc = {
-    "per-user/alacritty/alacritty.toml".text = import ../dotfiles/alacritty.nix { inherit zsh; };
+    "per-user/alacritty/alacritty.toml".text = import ../dotfiles/alacritty.nix {
+      shellProgram = systemZsh;
+    };
     "per-user/.gitconfig".text = import ../dotfiles/gitconfig.nix { };
     "per-user/.gitignore".text = import ../dotfiles/gitignore.nix { };
     "per-user/.npmrc".text = import ../dotfiles/npmrc.nix { };
@@ -42,7 +44,6 @@ in
   );
   environment.shells = [ pkgs.zsh ];
   environment.variables = rec {
-    SHELL = "${pkgs.zsh}/bin/zsh";
     LANG = "en_US.UTF-8";
     LC_ALL = LANG;
     LESSCHARSET = "utf-8";
@@ -68,23 +69,26 @@ in
     enableFzfGit = true;
     enableFzfHistory = true;
     enableSyntaxHighlighting = true;
+
     promptInit = ''
-      eval "$(starship init zsh)"
+      eval "$(${pkgs.starship}/bin/starship init zsh)"
     '';
+
     interactiveShellInit = ''
       autoload -U up-line-or-beginning-search
-      bindkey '^[[A' up-line-or-beginning-search
       zle -N up-line-or-beginning-search
-      HISTSIZE=10000000
-      SAVEHIST=10000000
-      alias npm="node --dns-result-order=ipv4first $(which npm)"
+      bindkey '^[[A' up-line-or-beginning-search
+
+      npm() {
+        command node --dns-result-order=ipv4first "$(whence -p npm)" "$@"
+      }
+
       alias git="git config --unset --local core.hooksPath; git"
     '';
   };
 
   programs.tmux = {
     enable = true;
-    #defaultCommand = "${zsh}/bin/zsh";
     enableMouse = false;
     enableVim = true;
     extraConfig = ''
@@ -107,7 +111,8 @@ in
       set -g @catppuccin_session_text "#{?client_prefix,#S: prefix,#S: normal}"
 
       set -sg escape-time 0
-      set-option -g default-shell "${zsh}/bin/zsh"
+      set-option -g default-shell "${systemZsh}"
+      set-option -g default-command "exec ${systemZsh} -l"
       set-option -g focus-events on
 
       set -g default-terminal "alacritty"
@@ -122,7 +127,7 @@ in
         send-keys "vim '+Telescope find_files'" 'Enter' \; \
 
       # git-popup: (ctrl-b + ctrl-g)
-      bind-key C-g display-popup -E -d "#{pane_current_path}" -xC -yC -w 80% -h 75% "git status && ${zsh}/bin/zsh -i"
+      bind-key C-g display-popup -E -d "#{pane_current_path}" -xC -yC -w 80% -h 75% "git status && exec ${systemZsh} -il"
     '';
   };
 
