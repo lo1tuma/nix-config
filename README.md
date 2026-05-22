@@ -10,3 +10,10 @@ This repository contains my darwin-specific nix configuration and dotfiles.
 ## Install
 * clone this repository to `$HOME/projects/nix-config`
 * run `darwin-rebuild switch -I darwin-config=$HOME/projects/nix-config/config/default.nix`
+
+## Agent dotfiles
+* shared agent instructions live in `dotfiles/ai-agents/AGENTS.md`
+* managed skills live under `dotfiles/ai-agents/skills/`
+* `darwin-rebuild switch` links managed files into `~/.codex` and `~/.claude`
+* activation also ensures Codex accepts both `AGENTS.md` and `agents.md` as project instruction filenames
+* the home directories stay real writable directories, so both tools can still create runtime state there

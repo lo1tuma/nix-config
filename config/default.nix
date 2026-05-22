@@ -36,6 +36,10 @@ let
   };
 in
 {
+  imports = [
+    ./agent-dotfiles.nix
+  ];
+
   system.primaryUser = primaryUser;
   environment.etc = {
     "per-user/alacritty/alacritty.toml".text = import ../dotfiles/alacritty.nix {
