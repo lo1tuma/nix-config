@@ -1,0 +1,9 @@
+interface:
+  display_name: "Grill Me"
+  short_description: "Stress-test a plan with focused questions"
+  icon_small: "./assets/grill-me-small.svg"
+  icon_large: "./assets/grill-me.svg"
+  default_prompt: "Use $grill-me to challenge this plan until the key decisions, risks, and assumptions are clear."
+
+policy:
+  allow_implicit_invocation: true

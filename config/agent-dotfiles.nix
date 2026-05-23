@@ -2,7 +2,10 @@
 
 let
   lib = pkgs.lib;
-  homeDir = "/Users/${config.system.primaryUser}";
+  primaryUser = config.system.primaryUser;
+  primaryGroup = "staff";
+  managedOwner = "${primaryUser}:${primaryGroup}";
+  homeDir = "/Users/${primaryUser}";
   sourceRoot = ../dotfiles/ai-agents;
   instructionsSource = sourceRoot + "/AGENTS.md";
   skillsSource = sourceRoot + "/skills";
@@ -36,15 +39,29 @@ let
     targetPrefix:
     lib.mapAttrs' (relativePath: source: lib.nameValuePair "${targetPrefix}/${relativePath}" source);
 
-  managedFiles =
+  managedLinkedFiles =
     {
       ".claude/CLAUDE.md" = instructionsSource;
       ".codex/agents.md" = instructionsSource;
-    }
-    // mapFilesToTarget ".claude/skills" managedSkillFiles
+    };
+
+  managedCopiedFiles =
+    mapFilesToTarget ".claude/skills" managedSkillFiles
     // mapFilesToTarget ".codex/skills" managedSkillFiles;
 
-  ensureDirectory = relativePath: "mkdir -p ${lib.escapeShellArg "${homeDir}/${relativePath}"}";
+  runAsPrimaryUser = command: "/usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg command}";
+
+  ensureDirectory =
+    relativePath:
+    let
+      targetPath = "${homeDir}/${relativePath}";
+    in
+    ''
+      if [ -e ${lib.escapeShellArg targetPath} ]; then
+        /usr/sbin/chown ${lib.escapeShellArg managedOwner} ${lib.escapeShellArg targetPath}
+      fi
+      ${runAsPrimaryUser "mkdir -p ${lib.escapeShellArg targetPath}"}
+    '';
 
   linkFile =
     relativePath: source:
@@ -52,8 +69,38 @@ let
       targetPath = "${homeDir}/${relativePath}";
     in
     ''
-      mkdir -p ${lib.escapeShellArg (builtins.dirOf targetPath)}
-      ln -sfn ${lib.escapeShellArg (toString source)} ${lib.escapeShellArg targetPath}
+      if [ -e ${lib.escapeShellArg (builtins.dirOf targetPath)} ]; then
+        /usr/sbin/chown ${lib.escapeShellArg managedOwner} ${lib.escapeShellArg (builtins.dirOf targetPath)}
+      fi
+      if [ -L ${lib.escapeShellArg targetPath} ] || [ -e ${lib.escapeShellArg targetPath} ]; then
+        /usr/sbin/chown -h ${lib.escapeShellArg managedOwner} ${lib.escapeShellArg targetPath} 2>/dev/null || true
+      fi
+      ${runAsPrimaryUser ''
+        mkdir -p ${lib.escapeShellArg (builtins.dirOf targetPath)}
+        ln -sfn ${lib.escapeShellArg (toString source)} ${lib.escapeShellArg targetPath}
+      ''}
+    '';
+
+  copyFile =
+    relativePath: source:
+    let
+      targetPath = "${homeDir}/${relativePath}";
+      targetDir = builtins.dirOf targetPath;
+      tmpPath = "${targetPath}.nix-config.tmp";
+    in
+    ''
+      if [ -e ${lib.escapeShellArg targetDir} ]; then
+        /usr/sbin/chown ${lib.escapeShellArg managedOwner} ${lib.escapeShellArg targetDir}
+      fi
+      if [ -L ${lib.escapeShellArg targetPath} ] || [ -e ${lib.escapeShellArg targetPath} ]; then
+        /usr/sbin/chown -h ${lib.escapeShellArg managedOwner} ${lib.escapeShellArg targetPath} 2>/dev/null || true
+      fi
+      ${runAsPrimaryUser ''
+        mkdir -p ${lib.escapeShellArg targetDir}
+        rm -f ${lib.escapeShellArg tmpPath}
+        /bin/cp ${lib.escapeShellArg (toString source)} ${lib.escapeShellArg tmpPath}
+        /bin/mv ${lib.escapeShellArg tmpPath} ${lib.escapeShellArg targetPath}
+      ''}
     '';
 
   activationCommands =
@@ -64,24 +111,35 @@ let
       (ensureDirectory ".codex/skills")
       ''
         codexConfig=${lib.escapeShellArg "${homeDir}/.codex/config.toml"}
-        codexDesired='project_doc_fallback_filenames = ["AGENTS.md", "agents.md"]'
         codexTmp="$codexConfig.nix-config.tmp"
-        if [ -f "$codexConfig" ]; then
-          if /usr/bin/grep -q '^project_doc_fallback_filenames[[:space:]]*=' "$codexConfig"; then
-            /usr/bin/awk -v desired="$codexDesired" '
-              /^project_doc_fallback_filenames[[:space:]]*=/ { print desired; next }
+        codexDesired=${lib.escapeShellArg ''project_doc_fallback_filenames = ["AGENTS.md", "agents.md"]''}
+        if [ -e "$codexConfig" ]; then
+          /usr/sbin/chown ${lib.escapeShellArg managedOwner} "$codexConfig"
+          /usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg ''
+            /usr/bin/awk -v desired="$1" '
+              /^project_doc_fallback_filenames[[:space:]]*=/ { print desired; seen = 1; next }
               { print }
-            ' "$codexConfig" > "$codexTmp"
-            /bin/mv "$codexTmp" "$codexConfig"
-          else
-            /bin/printf '\n%s\n' "$codexDesired" >> "$codexConfig"
-          fi
+              END {
+                if (!seen) {
+                  if (NR > 0) {
+                    print ""
+                  }
+                  print desired
+                }
+              }
+            ' "$2" > "$3"
+          ''} dummy "$codexDesired" "$codexConfig" "$codexTmp"
+          /bin/mv "$codexTmp" "$codexConfig"
+          /usr/sbin/chown ${lib.escapeShellArg managedOwner} "$codexConfig"
         else
-          /bin/printf '%s\n' "$codexDesired" > "$codexConfig"
+          /usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg ''
+            printf '%s\n' 'project_doc_fallback_filenames = ["AGENTS.md", "agents.md"]' > "$1"
+          ''} dummy "$codexConfig"
         fi
       ''
     ]
-    ++ lib.mapAttrsToList linkFile managedFiles;
+    ++ lib.mapAttrsToList linkFile managedLinkedFiles
+    ++ lib.mapAttrsToList copyFile managedCopiedFiles;
 in
 {
   system.activationScripts.postActivation.text = lib.mkAfter (

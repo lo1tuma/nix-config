@@ -1,6 +1,8 @@
 ---
 name: handover
 description: Turn the current session into a compact handover note for a fresh agent. Use when the user wants a continuation brief, restart context, or a document for the next session.
+metadata:
+  short-description: Create a compact continuation note
 ---
 
 # Handover

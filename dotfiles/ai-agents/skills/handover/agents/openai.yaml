@@ -1,0 +1,9 @@
+interface:
+  display_name: "Handover"
+  short_description: "Create a compact continuation note"
+  icon_small: "./assets/handover-small.svg"
+  icon_large: "./assets/handover.svg"
+  default_prompt: "Use $handover to prepare a compact continuation note for the next session."
+
+policy:
+  allow_implicit_invocation: true
