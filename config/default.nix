@@ -164,6 +164,7 @@ in
 {
   imports = [
     ./agent-dotfiles.nix
+    ./defaults-activation.nix
   ];
 
   system.primaryUser = primaryUser;
@@ -174,6 +175,11 @@ in
     "per-user/.gitconfig".text = import ../dotfiles/gitconfig.nix { };
     "per-user/.gitignore".text = import ../dotfiles/gitignore.nix { };
     "per-user/.npmrc".text = import ../dotfiles/npmrc.nix { };
+    "nix/nix.custom.conf".text = ''
+      max-jobs = 32
+      cores = 8
+      auto-optimise-store = true
+    '';
   };
   system.activationScripts.postActivation.text = pkgs.lib.concatStringsSep "\n" (
     [
@@ -313,17 +319,7 @@ in
     ];
   };
 
-  nix.settings = {
-    max-jobs = 32;
-    cores = 8;
-    auto-optimise-store = true;
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-  };
   power = {
-    restartAfterPowerFailure = false;
     restartAfterFreeze = false;
     sleep = {
       allowSleepByPowerButton = false;

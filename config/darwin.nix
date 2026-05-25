@@ -31,7 +31,6 @@
     NSAutomaticSpellingCorrectionEnabled = true;
     NSDisableAutomaticTermination = true;
     NSDocumentSaveNewDocumentsToCloud = false;
-    NSQuitAlwaysKeepsWindows = false;
     NSNavPanelExpandedStateForSaveMode = true;
     NSNavPanelExpandedStateForSaveMode2 = true;
     NSTextShowsControlCharacters = false;
@@ -133,7 +132,6 @@
     ShutDownDisabled = false;
     ShutDownDisabledWhileLoggedIn = false;
     SleepDisabled = false;
-    TALLogoutSavesState = false;
   };
 
   screensaver = {
@@ -157,6 +155,7 @@
   CustomUserPreferences = {
     NSGlobalDomain = {
       AppleSpacesSwitchOnActivate = false;
+      NSQuitAlwaysKeepsWindows = false;
       NSRecentDocumentsLimit = 0;
     };
     "com.apple.AdLib" = {
@@ -204,6 +203,9 @@
     };
     "com.apple.ncprefs" = {
       content_visibility = 2;
+    };
+    "com.apple.loginwindow" = {
+      TALLogoutSavesState = false;
     };
     "com.apple.preferences.sharing.SharingPrefsExtension" = {
       mediaSharingUIStatus = 0;
