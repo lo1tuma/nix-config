@@ -58,10 +58,10 @@
     minimize-to-application = true;
     mru-spaces = false;
     orientation = "left";
-    showAppExposeGestureEnabled = false;
+    showAppExposeGestureEnabled = true;
     showDesktopGestureEnabled = false;
     showLaunchpadGestureEnabled = false;
-    showMissionControlGestureEnabled = false;
+    showMissionControlGestureEnabled = true;
     show-process-indicators = true;
     showhidden = false;
     static-only = false;
@@ -100,7 +100,7 @@
     TrackpadRotate = true;
     TrackpadThreeFingerTapGesture = 2;
     TrackpadThreeFingerDrag = true;
-    TrackpadThreeFingerVertSwipeGesture = 0;
+    TrackpadThreeFingerVertSwipeGesture = 2;
     TrackpadTwoFingerDoubleTapGesture = false;
     TrackpadTwoFingerFromRightEdgeSwipeGesture = 0;
   };
