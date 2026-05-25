@@ -21,6 +21,132 @@ let
     /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
     /usr/bin/defaults write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
   '';
+  reduceSpotlightIndexing = ''
+    /usr/bin/mdutil -i off /nix >/dev/null 2>&1 || true
+  '';
+  disableBackgroundWake = ''
+    /usr/bin/pmset -a powernap 0 tcpkeepalive 0 >/dev/null 2>&1 || true
+  '';
+  configureFirewallLogging = ''
+    /usr/bin/defaults write /Library/Preferences/com.apple.alf loggingenabled -bool true >/dev/null 2>&1 || true
+    /usr/bin/defaults write /Library/Preferences/com.apple.alf loggingoption -string brief >/dev/null 2>&1 || true
+    launchctl kickstart -k system/com.apple.alf >/dev/null 2>&1 || true
+  '';
+  disableTtyWake = ''
+    /usr/bin/pmset -a ttyskeepawake 0 >/dev/null 2>&1 || true
+  '';
+  disableProximityWake = ''
+    /usr/bin/pmset -a proximitywake 0 >/dev/null 2>&1 || true
+  '';
+  disableAirPlayReceiver = ''
+    airplay_gui_domain="gui/$(id -u -- ${primaryUser})"
+
+    launchctl bootout system/com.apple.AirPlayXPCHelper >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.AirPlayXPCHelper >/dev/null 2>&1 || true
+
+    launchctl bootout "$airplay_gui_domain"/com.apple.AirPlayUIAgent >/dev/null 2>&1 || true
+    launchctl disable "$airplay_gui_domain"/com.apple.AirPlayUIAgent >/dev/null 2>&1 || true
+  '';
+  disableAirDrop = ''
+    sharing_gui_domain="gui/$(id -u -- ${primaryUser})"
+
+    launchctl bootout "$sharing_gui_domain"/com.apple.sharingd >/dev/null 2>&1 || true
+    launchctl disable "$sharing_gui_domain"/com.apple.sharingd >/dev/null 2>&1 || true
+  '';
+  disableDictation = ''
+    dictation_gui_domain="gui/$(id -u -- ${primaryUser})"
+
+    launchctl bootout "$dictation_gui_domain"/com.apple.DictationIM >/dev/null 2>&1 || true
+    launchctl disable "$dictation_gui_domain"/com.apple.DictationIM >/dev/null 2>&1 || true
+  '';
+  disableVoiceOver = ''
+    voiceover_gui_domain="gui/$(id -u -- ${primaryUser})"
+
+    launchctl bootout "$voiceover_gui_domain"/com.apple.VoiceOver >/dev/null 2>&1 || true
+    launchctl disable "$voiceover_gui_domain"/com.apple.VoiceOver >/dev/null 2>&1 || true
+  '';
+  disableSwitchControl = ''
+    switch_control_gui_domain="gui/$(id -u -- ${primaryUser})"
+
+    launchctl bootout "$switch_control_gui_domain"/com.apple.AssistiveControl >/dev/null 2>&1 || true
+    launchctl disable "$switch_control_gui_domain"/com.apple.AssistiveControl >/dev/null 2>&1 || true
+  '';
+  disableDwellControl = ''
+    dwell_control_gui_domain="gui/$(id -u -- ${primaryUser})"
+
+    launchctl bootout "$dwell_control_gui_domain"/com.apple.DwellControl >/dev/null 2>&1 || true
+    launchctl disable "$dwell_control_gui_domain"/com.apple.DwellControl >/dev/null 2>&1 || true
+  '';
+  disableRemoteAppleEvents = ''
+    /usr/sbin/systemsetup -setremoteappleevents off >/dev/null
+  '';
+  disableRemoteManagement = ''
+    remote_gui_domain="gui/$(id -u -- ${primaryUser})"
+
+    launchctl bootout system/com.apple.screensharing >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.screensharing >/dev/null 2>&1 || true
+
+    launchctl bootout system/com.apple.RemoteDesktop.PrivilegeProxy >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.RemoteDesktop.PrivilegeProxy >/dev/null 2>&1 || true
+
+    launchctl bootout system/com.apple.remotemanagementd >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.remotemanagementd >/dev/null 2>&1 || true
+
+    launchctl bootout "$remote_gui_domain"/com.apple.RemoteDesktop.agent >/dev/null 2>&1 || true
+    launchctl disable "$remote_gui_domain"/com.apple.RemoteDesktop.agent >/dev/null 2>&1 || true
+
+    launchctl bootout "$remote_gui_domain"/com.apple.RemoteManagementAgent >/dev/null 2>&1 || true
+    launchctl disable "$remote_gui_domain"/com.apple.RemoteManagementAgent >/dev/null 2>&1 || true
+
+    launchctl bootout "$remote_gui_domain"/com.apple.screensharing.agent >/dev/null 2>&1 || true
+    launchctl disable "$remote_gui_domain"/com.apple.screensharing.agent >/dev/null 2>&1 || true
+
+    launchctl bootout "$remote_gui_domain"/com.apple.screensharing.MessagesAgent >/dev/null 2>&1 || true
+    launchctl disable "$remote_gui_domain"/com.apple.screensharing.MessagesAgent >/dev/null 2>&1 || true
+  '';
+  disableFileSharing = ''
+    launchctl bootout system/com.apple.smbd >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.smbd >/dev/null 2>&1 || true
+  '';
+  disableInternetSharing = ''
+    launchctl bootout system/com.apple.NetworkSharing >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.NetworkSharing >/dev/null 2>&1 || true
+  '';
+  disableMediaSharing = ''
+    media_gui_domain="gui/$(id -u -- ${primaryUser})"
+    launchctl bootout "$media_gui_domain"/com.apple.amp.mediasharingd >/dev/null 2>&1 || true
+    launchctl disable "$media_gui_domain"/com.apple.amp.mediasharingd >/dev/null 2>&1 || true
+  '';
+  disableContentCaching = ''
+    cache_gui_domain="gui/$(id -u -- ${primaryUser})"
+
+    launchctl bootout system/com.apple.AssetCache.builtin >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.AssetCache.builtin >/dev/null 2>&1 || true
+
+    launchctl bootout system/com.apple.AssetCacheManagerService >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.AssetCacheManagerService >/dev/null 2>&1 || true
+
+    launchctl bootout system/com.apple.AssetCacheTetheratorService >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.AssetCacheTetheratorService >/dev/null 2>&1 || true
+
+    launchctl bootout system/com.apple.AssetCacheLocatorService >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.AssetCacheLocatorService >/dev/null 2>&1 || true
+
+    launchctl bootout "$cache_gui_domain"/com.apple.AssetCache.agent >/dev/null 2>&1 || true
+    launchctl disable "$cache_gui_domain"/com.apple.AssetCache.agent >/dev/null 2>&1 || true
+  '';
+  disableLocationServices = ''
+    location_gui_domain="gui/$(id -u -- ${primaryUser})"
+
+    /usr/bin/defaults write /private/var/db/locationd/Library/Preferences/ByHost/com.apple.locationd LocationServicesEnabled -int 0 >/dev/null 2>&1 || true
+    find /private/var/db/locationd/Library/Preferences/ByHost -maxdepth 1 -name 'com.apple.locationd*.plist' -exec /usr/sbin/chown _locationd:_locationd {} + >/dev/null 2>&1 || true
+
+    launchctl bootout system/com.apple.locationd >/dev/null 2>&1 || true
+    launchctl disable system/com.apple.locationd >/dev/null 2>&1 || true
+
+    launchctl bootout "$location_gui_domain"/com.apple.CoreLocationAgent >/dev/null 2>&1 || true
+    launchctl disable "$location_gui_domain"/com.apple.CoreLocationAgent >/dev/null 2>&1 || true
+  '';
   catppuccinTmux = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "catppuccin";
     version = "unstable-2023-09-11";
@@ -52,6 +178,24 @@ in
   system.activationScripts.postActivation.text = pkgs.lib.concatStringsSep "\n" (
     [
       "mkdir -p ${configDir}"
+      disableBackgroundWake
+      configureFirewallLogging
+      disableTtyWake
+      disableProximityWake
+      disableAirPlayReceiver
+      disableAirDrop
+      disableDictation
+      disableVoiceOver
+      disableSwitchControl
+      disableDwellControl
+      reduceSpotlightIndexing
+      disableRemoteAppleEvents
+      disableRemoteManagement
+      disableFileSharing
+      disableInternetSharing
+      disableMediaSharing
+      disableContentCaching
+      disableLocationServices
       trackpadDefaults
     ]
     ++ activationLinks
@@ -74,6 +218,16 @@ in
   };
 
   environment.darwinConfig = "${repoRoot}/config/default.nix";
+
+  networking.applicationFirewall = {
+    allowSigned = true;
+    allowSignedApp = true;
+    blockAllIncoming = false;
+    enable = true;
+    enableStealthMode = true;
+  };
+  networking.wakeOnLan.enable = false;
+  services.openssh.enable = false;
 
   programs.zsh = {
     enable = true;
@@ -124,6 +278,8 @@ in
       set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M"
       set -g @catppuccin_session_text "#{?client_prefix,#S: prefix,#S: normal}"
 
+      set -g @continuum-restore 'on'
+
       set -sg escape-time 0
       set-option -g default-shell "${systemZsh}"
       set-option -g default-command "exec ${systemZsh} -l"
@@ -133,6 +289,8 @@ in
       set-option -a terminal-overrides ",alacritty:RGB"
 
       run-shell ${catppuccinTmux}/share/tmux-plugins/catppuccin/catppuccin.tmux
+      run-shell ${pkgs.tmuxPlugins.resurrect.rtp}
+      run-shell ${pkgs.tmuxPlugins.continuum.rtp}
 
       # dev-split: (ctrl-b + ctrl-d) two splits with vim open in big pane
       bind-key C-d split-window -c "#{pane_current_path}" -v -l 13 \; \
@@ -163,6 +321,15 @@ in
       "nix-command"
       "flakes"
     ];
+  };
+  power = {
+    restartAfterPowerFailure = false;
+    restartAfterFreeze = false;
+    sleep = {
+      allowSleepByPowerButton = false;
+      computer = 15;
+      display = 15;
+    };
   };
   launchd.user.agents.trackpad-defaults = {
     script = trackpadDefaults;

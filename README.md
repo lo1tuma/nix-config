@@ -17,3 +17,8 @@ This repository contains my darwin-specific nix configuration and dotfiles.
 * `darwin-rebuild switch` links managed files into `~/.codex` and `~/.claude`
 * activation also ensures Codex accepts both `AGENTS.md` and `agents.md` as project instruction filenames
 * the home directories stay real writable directories, so both tools can still create runtime state there
+
+## tmux
+* tmux restores the last saved layout after reboot via `tmux-resurrect` and `tmux-continuum`
+* restore runs automatically when the tmux server starts
+* manual save and restore: `prefix + Ctrl-s`, `prefix + Ctrl-r`
