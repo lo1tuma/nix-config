@@ -32,6 +32,14 @@
 - Document behavior, usage, decisions.
 - Usually not implementation details.
 
+### Comments
+
+- Avoid code comments.
+- If a comment feels necessary: reshape the code so names, structure, and boundaries express the intent.
+- Treat the need for a comment as a design failure by default.
+- Comments are allowed only in rare cases with strong justification.
+- Exception: if the project contribution guidelines explicitly require comments, follow them.
+
 ### TypeScript
 
 - Avoid optional properties.
@@ -67,13 +75,21 @@
 - Concise.
 - Changelog-style.
 - Not vague.
-- Example: `Fix module A to prevent problem B`.
+- Use inline code fences for code-like identifiers.
+- Include scope when the change is otherwise ambiguous.
+- Name the exact affected unit when that is the real scope: rule, command, module, package, feature, endpoint.
+- If adding, removing, renaming, or merging named units: name those units in the title.
+- Wrap package names, rule names, commands, variables, paths, and versions in inline code fences.
+- Example: Fix `deploy` command to preserve existing environment variables.
 
 ### Description
 
 - Concise.
 - Brief explanation only.
 - Proper Markdown.
+- Use inline code fences for code-like identifiers.
+- Wrap package names, rule names, commands, variables, paths, and versions in inline code fences.
+- Use fenced code blocks for multi-line commands, config, logs, examples, and patches.
 - No AI-slop.
 - No filler like test plans or verification steps unless useful.
 
