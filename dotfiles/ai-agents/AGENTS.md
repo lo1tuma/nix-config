@@ -99,6 +99,9 @@
 
 - Expressive.
 - Precise.
+- One concrete change or outcome.
+- Do not bundle multiple independent fixes under one subject.
+- No vague subjects like `Fix CI issues` or `Address review feedback`.
 - No low-value implementation detail already obvious from the diff.
 
 ### Body
@@ -113,5 +116,7 @@
 
 - As small as possible.
 - Atomic.
+- One fix, refactor, or behavior change per commit.
+- If multiple independent things need changes: split them into separate commits.
 - Always leaves the repo working.
 - Prefer baby-step commits.
