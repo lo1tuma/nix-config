@@ -28,7 +28,7 @@
     NSAutomaticInlinePredictionEnabled = false;
     NSAutomaticPeriodSubstitutionEnabled = false;
     NSAutomaticQuoteSubstitutionEnabled = false;
-    NSAutomaticSpellingCorrectionEnabled = true;
+    NSAutomaticSpellingCorrectionEnabled = false;
     NSDisableAutomaticTermination = true;
     NSDocumentSaveNewDocumentsToCloud = false;
     NSNavPanelExpandedStateForSaveMode = true;
