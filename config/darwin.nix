@@ -155,8 +155,10 @@
   CustomUserPreferences = {
     NSGlobalDomain = {
       AppleSpacesSwitchOnActivate = false;
+      NSPreferredSpellServerLanguage = "Multilingual";
       NSQuitAlwaysKeepsWindows = false;
       NSRecentDocumentsLimit = 0;
+      NSSpellCheckerAutomaticallyIdentifiesLanguages = true;
     };
     "com.apple.AdLib" = {
       allowApplePersonalizedAdvertising = false;
