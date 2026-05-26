@@ -87,6 +87,11 @@
 - Concise.
 - Brief explanation only.
 - Proper Markdown.
+- Repository-scoped.
+- Reference only files, folders, and commands that are part of the current repository or are otherwise reviewable by the PR reader.
+- Never mention local-only paths or machine-specific locations.
+- Never mention parent-relative paths like `../foo`, home-directory paths, absolute filesystem paths, or scratch files outside the repo.
+- If outside context matters: describe it generically or link to the canonical upstream repository, package, or documentation instead of a local path.
 - Use inline code fences for code-like identifiers.
 - Wrap package names, rule names, commands, variables, paths, and versions in inline code fences.
 - Use fenced code blocks for multi-line commands, config, logs, examples, and patches.
