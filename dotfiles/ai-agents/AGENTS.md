@@ -94,6 +94,10 @@ Specifically: do **not** add any of the following sections unless the user expli
 - `## Test plan`, `## Testing`, `## How to test`, `## Verification`, `## Validation`
 - `## Notes`, `## Checklist`, `## Screenshots`, `## Related`
 
+This also rules out the heading-less equivalent: do **not** enumerate the changed files as a bullet list with one bullet per file describing what changed. GitHub's diff view already shows that, so it is pure noise in the description.
+
+Focus the description on the high-level approach and intent — the *why* and the *shape* of the change. Leave per-file mechanics to the diff.
+
 A good PR description is often two or three sentences with no headings at all.
 
 Rules:
