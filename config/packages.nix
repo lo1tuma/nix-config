@@ -7,7 +7,7 @@ in
   pkgs.cacert
   pkgs.git
   pkgs.python3
-  pkgs.nodejs_24
+  pkgs.nodejs_26
   pkgs.zsh
   pkgs.wget
   pkgs.curl
