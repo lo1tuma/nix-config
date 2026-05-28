@@ -149,16 +149,13 @@ let
   '';
   catppuccinTmux = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "catppuccin";
-    version = "unstable-2023-09-11";
+    version = "2.3.0";
     src = pkgs.fetchFromGitHub {
       owner = "catppuccin";
       repo = "tmux";
-      rev = "89ad057ebd47a3052d55591c2dcab31be3825a49";
-      sha256 = "sha256-4JFuX9clpPr59vnCUm6Oc5IOiIc/v706fJmkaCiY2Hc=";
+      rev = "v2.3.0";
+      sha256 = "sha256-3CJRQCgS8NAN7vOLBjNGiHbGXTIrIyY/FLmfZrXcEYc=";
     };
-    postInstall = ''
-      sed -i -e 's|''${PLUGIN_DIR}/catppuccin-selected-theme.tmuxtheme|''${TMUX_TMPDIR}/catppuccin-selected-theme.tmuxtheme|g' $target/catppuccin.tmux
-    '';
   };
 in
 {
@@ -266,19 +263,16 @@ in
     enableMouse = false;
     enableVim = true;
     extraConfig = ''
-      set -g @catppuccin_flavour 'mocha'
+      set -g @catppuccin_flavor 'mocha'
+      set -g @catppuccin_window_status_style "custom"
       set -g @catppuccin_window_left_separator ""
       set -g @catppuccin_window_right_separator " "
       set -g @catppuccin_window_middle_separator " | "
       set -g @catppuccin_window_number_position "right"
-      set -g @catppuccin_window_default_fill "none"
-      set -g @catppuccin_window_current_fill "all"
       set -g @catppuccin_window_current_text "#{b:pane_current_path}"
       set -g @catppuccin_window_default_text "#{b:pane_current_path}"
-      set -g @catppuccin_status_modules_right "application session"
       set -g @catppuccin_status_left_separator ""
       set -g @catppuccin_status_right_separator "█"
-      set -g @catppuccin_status_right_separator_inverse "no"
       set -g @catppuccin_status_fill "icon"
       set -g @catppuccin_status_connect_separator "yes"
       set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M"
@@ -297,6 +291,8 @@ in
       run-shell ${catppuccinTmux}/share/tmux-plugins/catppuccin/catppuccin.tmux
       run-shell ${pkgs.tmuxPlugins.resurrect.rtp}
       run-shell ${pkgs.tmuxPlugins.continuum.rtp}
+
+      set -g status-right "#{E:@catppuccin_status_application}#{E:@catppuccin_status_session}"
 
       # dev-split: (ctrl-b + ctrl-d) two splits with vim open in big pane
       bind-key C-d split-window -c "#{pane_current_path}" -v -l 13 \; \
