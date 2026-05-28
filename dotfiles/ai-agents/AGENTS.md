@@ -66,8 +66,6 @@
 - Read and understand repo contribution guidelines first.
 - Follow repo guidelines strictly.
 - If the repo forbids AI assistance: hard stop, inform the user.
-- Otherwise infer conventions from the repo, git history, and PR history.
-- Infer patterns like semantic commits when the convention is clear.
 
 ### Title
 
@@ -84,6 +82,22 @@
 
 ### Description
 
+The rules in this section are **mandatory**. They are not defaults, suggestions, or starting points. Do not override them based on:
+
+- A repo's PR template, unless that template is enforced by CI.
+- Training-data conventions about how PR descriptions "usually look".
+- A desire to be thorough or helpful.
+
+Specifically: do **not** add any of the following sections unless the user explicitly asks for them or the diff genuinely requires them to be understood:
+
+- `## Summary`, `## Overview`, `## Changes`, `## Motivation`, `## Background`
+- `## Test plan`, `## Testing`, `## How to test`, `## Verification`, `## Validation`
+- `## Notes`, `## Checklist`, `## Screenshots`, `## Related`
+
+A good PR description is often two or three sentences with no headings at all.
+
+Rules:
+
 - Concise.
 - Brief explanation only.
 - Proper Markdown.
@@ -96,7 +110,6 @@
 - Wrap package names, rule names, commands, variables, paths, and versions in inline code fences.
 - Use fenced code blocks for multi-line commands, config, logs, examples, and patches.
 - No AI-slop.
-- No filler like test plans or verification steps unless useful.
 
 ## Commits
 
@@ -108,6 +121,7 @@
 - Do not bundle multiple independent fixes under one subject.
 - No vague subjects like `Fix CI issues` or `Address review feedback`.
 - No low-value implementation detail already obvious from the diff.
+- Match the dominant style in `git log --oneline -30`: capitalization, mood (imperative vs. indicative), length, and any prefix convention (e.g. `feat:`, `fix:`, ticket IDs). If the repo's history is mixed or empty, default to capitalized imperative with no prefix.
 
 ### Body
 
