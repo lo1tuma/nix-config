@@ -16,7 +16,7 @@
       clean-local-branches-main  = "!git branch --merged main | grep -v '^* ' | grep -v ' main$' | xargs git branch -d"
   [user]
       name = Mathias Schreck
-      email = schreck.mathias@gmail.com
+      email = mathias.schreck@misterspex.de
   [filter "lfs"]
       clean = git-lfs clean -- %f
       smudge = git-lfs smudge -- %f
