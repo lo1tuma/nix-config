@@ -17,6 +17,13 @@
   [user]
       name = Mathias Schreck
       email = mathias.schreck@misterspex.de
+      signingkey = ~/.ssh/id_ed25519.pub
+  [gpg]
+      format = ssh
+  [commit]
+      gpgsign = true
+  [tag]
+      gpgsign = true
   [filter "lfs"]
       clean = git-lfs clean -- %f
       smudge = git-lfs smudge -- %f
