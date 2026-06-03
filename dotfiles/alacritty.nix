@@ -536,7 +536,7 @@ in
   ${colorScheme}
 
   [env]
-  TERM = "alacritty-direct"
+  TERM = "alacritty"
 
   [font]
   size = 12.0
