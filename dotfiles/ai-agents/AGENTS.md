@@ -116,6 +116,36 @@ Rules:
 - Use fenced code blocks for multi-line commands, config, logs, examples, and patches.
 - No AI-slop.
 
+## GitHub Issues
+
+### Conventions
+
+- Read the project's AI policy first (often in `CONTRIBUTING`, an `AI_POLICY` doc, or similar). If absent, apply the rules below anyway.
+- If the project forbids AI assistance for issues: hard stop, inform the user.
+- Acknowledging a policy is not the same as following it. Enforce its substance, not just its presence.
+- Most policies require the human to fully understand and defend the proposal without AI. Treat this as the default even when no policy says so.
+- Before filing: confirm the user understands every claim, design choice, and edge case. Challenge them interactively with concrete questions: motivation, alternatives, false positives, general applicability, whether the proposal actually solves the stated problem.
+- If the user cannot defend the proposal: do not file. Keep iterating, switch to a project discussion forum if one exists and the idea is exploratory, or hand back to the user.
+- One topic per issue. Split unrelated ideas.
+
+### Title
+
+- Same rules as PR titles.
+
+### Body
+
+The rules in this section are **mandatory** and follow the same spirit as PR descriptions.
+
+- Concise. No AI-slop. No padding. No off-topic context.
+- State the problem, the proposal, and only what the reader needs to evaluate it.
+- No sketched implementations, no speculative options, no list-of-three filler (e.g. `no X, no Y, no Z`) unless each item carries real weight.
+- No repetition: each point lands in one place.
+- Coherent register: mark open questions as open questions. Do not assert confident defaults (e.g. `default: true`) for things the proposal admits are unsettled.
+- Address the substance: does the proposal actually solve the stated problem? False positives and negatives? General audience or only the user's specific context?
+- Repository-scoped: no local paths, no machine-specific references.
+- Inline code fences for identifiers, package names, paths. Fenced blocks for code, config, commands, logs.
+- Supporting evidence: only include if it actually supports the proposal. If counter-examples equal or outnumber the supporting ones, that is an argument against. Rework or frame honestly as an open question.
+
 ## Commits
 
 ### Subject
