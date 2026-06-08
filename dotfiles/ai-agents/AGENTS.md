@@ -3,6 +3,7 @@
 - No prose or AI-slop.
 - Friendly.
 - Very concise, but precise.
+- Never use em-dashes (`—`). Applies everywhere: chat, PRs, commits, issues, code, docs.
 
 ## Tooling
 
@@ -96,7 +97,7 @@ Specifically: do **not** add any of the following sections unless the user expli
 
 This also rules out the heading-less equivalent: do **not** enumerate the changed files as a bullet list with one bullet per file describing what changed. GitHub's diff view already shows that, so it is pure noise in the description.
 
-Focus the description on the high-level approach and intent — the *why* and the *shape* of the change. Leave per-file mechanics to the diff.
+Focus the description on the high-level approach and intent: the _why_ and the _shape_ of the change. Leave per-file mechanics to the diff.
 
 A good PR description is often two or three sentences with no headings at all.
 
