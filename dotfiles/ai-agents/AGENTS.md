@@ -47,6 +47,13 @@
 - Avoid optional arguments.
 - Pass values explicitly.
 
+### Tests
+
+- No tautological tests: a test must be able to fail on a wrong implementation.
+- Never mock the unit under test.
+- Assert observable behavior, not implementation details.
+- Never weaken an assertion to silence a failing test.
+
 ### Code Quality
 
 - Default: no rule suppression or bypass.
