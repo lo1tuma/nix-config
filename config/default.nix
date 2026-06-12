@@ -1,11 +1,11 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 let
   primaryUser = "mschreck";
   homeDir = "/Users/${primaryUser}";
   configDir = "${homeDir}/.config";
   repoRoot = "${homeDir}/projects/nix-config";
-  localSettings = pkgs.lib.recursiveUpdate (import ./local-settings-default.nix) (
+  localSettings = lib.recursiveUpdate (import ./local-settings-default.nix) (
     if builtins.pathExists ./local-settings.nix then import ./local-settings.nix else { }
   );
   systemZsh = "/run/current-system/sw/bin/zsh";
@@ -16,7 +16,7 @@ let
     ".config/alacritty" = "/etc/per-user/alacritty";
   };
   linkCommand = path: target: "ln -sfn ${target} ${homeDir}/${path}";
-  activationLinks = pkgs.lib.mapAttrsToList linkCommand perUserLinks;
+  activationLinks = lib.mapAttrsToList linkCommand perUserLinks;
   trackpadDefaults = ''
     /usr/bin/defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
     /usr/bin/defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool true
@@ -180,10 +180,10 @@ in
     "nix/nix.custom.conf".text = ''
       max-jobs = 32
       cores = 8
-      auto-optimise-store = ${pkgs.lib.boolToString localSettings.nix.autoOptimiseStore}
+      auto-optimise-store = ${lib.boolToString localSettings.nix.autoOptimiseStore}
     '';
   };
-  system.activationScripts.postActivation.text = pkgs.lib.concatStringsSep "\n" (
+  system.activationScripts.postActivation.text = lib.concatStringsSep "\n" (
     [
       "mkdir -p ${configDir}"
       disableBackgroundWake
