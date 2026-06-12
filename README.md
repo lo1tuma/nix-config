@@ -11,6 +11,11 @@ This repository contains my darwin-specific nix configuration and dotfiles.
 * clone this repository to `$HOME/projects/nix-config`
 * run `darwin-rebuild switch -I darwin-config=$HOME/projects/nix-config/config/default.nix`
 
+## Local settings
+* committed defaults live in `config/local-settings-default.nix`
+* local overrides live in ignored `config/local-settings.nix`
+* use local overrides for values like `git.userEmail` and `git.sshPublicKey`
+
 ## Agent dotfiles
 * shared agent instructions live in `dotfiles/ai-agents/AGENTS.md`
 * managed skills live under `dotfiles/ai-agents/skills/`

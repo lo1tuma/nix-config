@@ -5,6 +5,9 @@ let
   homeDir = "/Users/${primaryUser}";
   configDir = "${homeDir}/.config";
   repoRoot = "${homeDir}/projects/nix-config";
+  localSettings = pkgs.lib.recursiveUpdate (import ./local-settings-default.nix) (
+    if builtins.pathExists ./local-settings.nix then import ./local-settings.nix else { }
+  );
   systemZsh = "/run/current-system/sw/bin/zsh";
   perUserLinks = {
     ".gitconfig" = "/etc/per-user/.gitconfig";
@@ -169,7 +172,9 @@ in
     "per-user/alacritty/alacritty.toml".text = import ../dotfiles/alacritty.nix {
       shellProgram = systemZsh;
     };
-    "per-user/.gitconfig".text = import ../dotfiles/gitconfig.nix { };
+    "per-user/.gitconfig".text = import ../dotfiles/gitconfig.nix {
+      git = localSettings.git;
+    };
     "per-user/.gitignore".text = import ../dotfiles/gitignore.nix { };
     "per-user/.npmrc".text = import ../dotfiles/npmrc.nix { };
     "nix/nix.custom.conf".text = ''

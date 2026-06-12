@@ -1,4 +1,4 @@
-{ }:
+{ git }:
 ''
   [core]
         editor = vim
@@ -15,9 +15,9 @@
       clean-local-branches  = "!git branch --merged master | grep -v '^* ' | grep -v ' master$' | xargs git branch -d"
       clean-local-branches-main  = "!git branch --merged main | grep -v '^* ' | grep -v ' main$' | xargs git branch -d"
   [user]
-      name = Mathias Schreck
-      email = mathias.schreck@misterspex.de
-      signingkey = ~/.ssh/id_ed25519.pub
+      name = ${git.userName}
+      email = ${git.userEmail}
+      signingkey = ${git.sshPublicKey}
   [gpg]
       format = ssh
   [commit]
