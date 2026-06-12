@@ -93,13 +93,13 @@
     ForceSuppressed = false;
     SecondClickThreshold = 1;
     TrackpadFourFingerPinchGesture = 0;
-    TrackpadFourFingerVertSwipeGesture = 0;
+    TrackpadFourFingerVertSwipeGesture = 2;
     TrackpadMomentumScroll = true;
     TrackpadPinch = true;
     TrackpadRightClick = true;
     TrackpadRotate = true;
     TrackpadThreeFingerTapGesture = 2;
-    TrackpadThreeFingerDrag = true;
+    TrackpadThreeFingerDrag = false;
     TrackpadThreeFingerVertSwipeGesture = 2;
     TrackpadTwoFingerDoubleTapGesture = false;
     TrackpadTwoFingerFromRightEdgeSwipeGesture = 0;
@@ -159,6 +159,9 @@
       NSQuitAlwaysKeepsWindows = false;
       NSRecentDocumentsLimit = 0;
       NSSpellCheckerAutomaticallyIdentifiesLanguages = true;
+      "com.apple.trackpad.threeFingerDragGesture" = false;
+      "com.apple.trackpad.threeFingerVertSwipeGesture" = 2;
+      "com.apple.trackpad.fourFingerVertSwipeGesture" = 2;
     };
     "com.apple.AdLib" = {
       allowApplePersonalizedAdvertising = false;

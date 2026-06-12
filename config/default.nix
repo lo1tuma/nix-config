@@ -20,9 +20,18 @@ let
   trackpadDefaults = ''
     /usr/bin/defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
     /usr/bin/defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool true
+    /usr/bin/defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool false
+    /usr/bin/defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerVertSwipeGesture -int 2
+    /usr/bin/defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerVertSwipeGesture -int 2
     /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
     /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
+    /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool false
+    /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerVertSwipeGesture -int 2
+    /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerVertSwipeGesture -int 2
     /usr/bin/defaults write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
+    /usr/bin/defaults write NSGlobalDomain com.apple.trackpad.threeFingerDragGesture -bool false
+    /usr/bin/defaults write NSGlobalDomain com.apple.trackpad.threeFingerVertSwipeGesture -int 2
+    /usr/bin/defaults write NSGlobalDomain com.apple.trackpad.fourFingerVertSwipeGesture -int 2
   '';
   reduceSpotlightIndexing = ''
     /usr/bin/mdutil -i off /nix >/dev/null 2>&1 || true
