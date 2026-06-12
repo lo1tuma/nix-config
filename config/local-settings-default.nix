@@ -5,6 +5,7 @@
     sshPublicKey = "~/.ssh/id_ed25519.pub";
   };
   nix = {
+    autoOptimiseStore = true;
     hostPlatform = "aarch64-darwin";
   };
 }

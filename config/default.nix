@@ -180,7 +180,7 @@ in
     "nix/nix.custom.conf".text = ''
       max-jobs = 32
       cores = 8
-      auto-optimise-store = true
+      auto-optimise-store = ${pkgs.lib.boolToString localSettings.nix.autoOptimiseStore}
     '';
   };
   system.activationScripts.postActivation.text = pkgs.lib.concatStringsSep "\n" (
