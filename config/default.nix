@@ -222,7 +222,7 @@ in
       allowUnfree = true;
       allowBroken = false;
     };
-    hostPlatform = "aarch64-darwin";
+    hostPlatform = localSettings.nix.hostPlatform;
   };
 
   environment.darwinConfig = "${repoRoot}/config/default.nix";

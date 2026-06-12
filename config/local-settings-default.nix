@@ -4,4 +4,7 @@
     userEmail = "schreck.mathias@gmail.com";
     sshPublicKey = "~/.ssh/id_ed25519.pub";
   };
+  nix = {
+    hostPlatform = "aarch64-darwin";
+  };
 }
