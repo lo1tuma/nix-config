@@ -142,7 +142,7 @@ let
     ++ lib.mapAttrsToList copyFile managedCopiedFiles;
 in
 {
-  system.activationScripts.postActivation.text = lib.mkAfter (
+  system.activationScripts.postActivation.text = lib.mkBefore (
     lib.concatStringsSep "\n" activationCommands
   );
 }
