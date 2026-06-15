@@ -303,10 +303,11 @@ in
       set-option -a terminal-overrides ",alacritty:RGB"
 
       run-shell ${catppuccinTmux}/share/tmux-plugins/catppuccin/catppuccin.tmux
-      run-shell ${pkgs.tmuxPlugins.resurrect.rtp}
-      run-shell ${pkgs.tmuxPlugins.continuum.rtp}
 
       set -g status-right "#{E:@catppuccin_status_application}#{E:@catppuccin_status_session}"
+
+      run-shell ${pkgs.tmuxPlugins.resurrect.rtp}
+      run-shell ${pkgs.tmuxPlugins.continuum.rtp}
 
       # dev-split: (ctrl-b + ctrl-d) two splits with vim open in big pane
       bind-key C-d split-window -c "#{pane_current_path}" -v -l 13 \; \
