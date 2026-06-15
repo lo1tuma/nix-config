@@ -313,12 +313,6 @@
         }
       ];
     };
-    "com.apple.SoftwareUpdate" = {
-      AutomaticCheckEnabled = true;
-      AutomaticDownload = false;
-      ConfigDataInstall = true;
-      CriticalUpdateInstall = false;
-    };
     "com.apple.suggestions" = {
       AppCanShowSiriSuggestionsBlacklist = [ "com.apple.Spotlight" ];
       SuggestionsAllowGeocode = false;
@@ -346,6 +340,12 @@
     };
     "/Library/Preferences/com.apple.AssetCache" = {
       Activated = false;
+    };
+    "/Library/Preferences/com.apple.SoftwareUpdate" = {
+      AutomaticCheckEnabled = true;
+      AutomaticDownload = false;
+      ConfigDataInstall = true;
+      CriticalUpdateInstall = false;
     };
   };
 
