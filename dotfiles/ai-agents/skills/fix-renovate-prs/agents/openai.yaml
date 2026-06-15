@@ -1,0 +1,7 @@
+interface:
+  display_name: "Fix Renovate PRs"
+  short_description: "Fix failing Renovate PRs"
+  default_prompt: "Use $fix-renovate-prs to fix open failing Renovate PRs in this repository."
+
+policy:
+  allow_implicit_invocation: true
