@@ -61,6 +61,15 @@
 - Examples: `eslint-disable`, `c8 ignore`, `cspell:disable`.
 - No shortcut changes in files like `eslint.config.js` or `.prettierignore`.
 - Exception: only with explicit user approval or explicit reporting afterward.
+- Before writing new code, actively look for reuse options.
+- Prefer existing project code.
+- If existing code is close but too narrow, consider making it more generic.
+- Prefer standard library, runtime, framework, platform, and environment features when they fit.
+- Check the project-pinned versions of languages, runtimes, frameworks, and platforms before deciding a built-in feature is unavailable.
+- Use newer built-in features when the project already targets versions that support them, even if those features are not widely adopted yet.
+- Prefer existing third-party libraries when they fit.
+- Consider adding a focused third-party library when it replaces substantial hand-rolled logic.
+- New hand-rolled code is the last option.
 - Do not game the rules.
 - Do not worsen code just to satisfy a rule.
 - Optimize for rule intent: readability, maintainability, structure.
