@@ -1,7 +1,7 @@
 interface:
   display_name: "Simplify Codebase"
   short_description: "Remove needless custom code"
-  default_prompt: "Use $simplify-codebase to remove unnecessary hand-rolled code and deepen shallow modules."
+  default_prompt: "Use $simplify-codebase to deeply analyze this repository and create focused PRs for the highest-impact simplifications."
 
 policy:
   allow_implicit_invocation: true

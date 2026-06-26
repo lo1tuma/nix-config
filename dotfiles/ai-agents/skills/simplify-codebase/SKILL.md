@@ -1,6 +1,6 @@
 ---
 name: simplify-codebase
-description: Find and remove unnecessary hand-rolled code, shallow modules, narrow wrappers, and premature abstractions by reusing project code, platform features, runtime APIs, or focused libraries. Use when the user asks to simplify, defactor, deepen modules, replace custom implementations, or reduce codebase complexity without changing behavior.
+description: Deeply analyze a codebase for unnecessary hand-rolled code, shallow modules, narrow wrappers, and premature abstractions, then prioritize and implement the highest-impact simplifications as dedicated PRs. Use when the user asks to simplify, defactor, deepen modules, replace custom implementations, reduce codebase complexity, or run a broad refactoring pass without changing behavior.
 metadata:
   short-description: Remove needless custom code
 ---
@@ -23,17 +23,25 @@ Prefer, in order:
 ## Operating rules
 
 - Preserve observable behavior unless the user explicitly approves a behavior change.
+- Default to a full analysis pass before editing.
 - Work in small, reviewable steps.
+- Do not stop after one minor refactor if other high-value candidates remain and the user asked for broad simplification.
+- Create a dedicated branch and PR for each independent refactor.
+- Keep each PR coherent: one simplification theme, one module family, or one replaceable custom mechanism.
+- Prefer multiple focused PRs over one broad PR.
 - Do not introduce a new dependency without user approval.
+- Ask before public interface changes, behavior changes, broad moves, or unclear ownership changes.
 - Do not create a seam unless there are at least two real adapters or a concrete testing need.
 - Delete speculative extension points, pass-through wrappers, and one-off indirection when they do not provide leverage.
 - Before rejecting a platform, runtime, framework, or standard library feature as unavailable, inspect the project-pinned versions.
 - Use newer built-in features when the project already targets versions that support them, even if they are not yet common in older codebases.
 - Run the relevant tests or quality gate after each coherent refactor.
 
-## Find candidates
+## Analyze first
 
-Scan the requested area, or the current diff if no area is named.
+Scan the requested area, or the whole codebase if no area is named.
+
+Build a candidate list before editing. Use code search, dependency manifests, lockfiles, module graphs, tests, and recent diffs where useful.
 
 Look for:
 
@@ -53,7 +61,33 @@ Apply the deletion test:
 - If deleting the module makes complexity vanish, it was shallow.
 - If deleting the module spreads complexity across callers, it is probably earning its place.
 
-## Choose the refactor
+## Prioritize candidates
+
+Rank candidates before implementing.
+
+Score higher when a candidate:
+
+- deletes substantial custom code
+- removes a risky or standards-driven hand-rolled mechanism
+- improves many call sites
+- deepens a central module with a smaller caller interface
+- replaces duplicate concepts with one project-owned concept
+- reduces maintenance burden across tests and production code
+- is behavior-preserving and low risk
+- has clear local verification
+
+Score lower when a candidate:
+
+- only changes style
+- affects unclear product behavior
+- needs a new dependency
+- changes public interfaces
+- touches many unrelated areas
+- has weak test coverage
+
+Pick the highest-impact safe candidate first. If several independent candidates are clearly valuable, plan multiple PRs and execute them one by one.
+
+## Choose each refactor
 
 For each candidate, compare these options before editing:
 
@@ -77,7 +111,21 @@ Prefer a library when the custom implementation is generic infrastructure, secur
 
 ## Implement
 
-Make a full plan but consider splitting the work into multiple PRs which only contain the smallest coherent change (stacked PRs are ok). Create the PRs automatically using the `gh` tool.
+Make a full plan. Split the work into multiple PRs when candidates are independent or review would be clearer.
+
+Use this execution loop:
+
+1. Start from an up-to-date base branch.
+2. Create a branch for the highest-priority candidate.
+3. Apply only that coherent refactor.
+4. Verify behavior.
+5. Commit and create a concise PR with `gh`.
+6. Return to the base branch or previous stacked branch.
+7. Continue with the next highest-priority candidate while time and confidence remain.
+
+Stacked PRs are ok when one simplification naturally depends on another. Independent simplifications should be separate PRs from the base branch.
+
+Use `gh` through `nix-shell`, following the repository instructions.
 
 When replacing hand-rolled code:
 
@@ -103,7 +151,9 @@ When deleting an abstraction:
 
 Keep the report concise:
 
+- candidates found and their priority order
+- PRs created, with branch names and links
 - what was removed or replaced
 - why the new shape has more leverage or locality
 - behavior verification run
-- any simplification candidate intentionally left alone
+- candidates intentionally left alone and why
