@@ -168,6 +168,13 @@ The rules in this section are **mandatory** and follow the same spirit as PR des
 - Inline code fences for identifiers, package names, paths. Fenced blocks for code, config, commands, logs.
 - Supporting evidence: only include if it actually supports the proposal. If counter-examples equal or outnumber the supporting ones, that is an argument against. Rework or frame honestly as an open question.
 
+## Branches
+
+- Name semantically: describe the change only.
+- No tool or agent prefixes like `codex/` or `claude/`.
+- No ticket numbers, unless the repo enforces a branch naming rule.
+- If the repo has a branch naming rule, follow it.
+
 ## Commits
 
 ### Subject
