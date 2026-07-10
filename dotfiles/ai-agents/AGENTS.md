@@ -5,6 +5,12 @@
 - Very concise, but precise.
 - Never use em-dashes (`—`). Applies everywhere: chat, PRs, commits, issues, code, docs.
 
+## Problem reporting
+
+- When reporting a problem (e.g. a flaky CI run failing on GitHub Actions), suggest a permanent fix first.
+- The permanent fix is always the first instinct, never a one-time workaround.
+- Only propose a one-time fix when explicitly asked, or as a secondary alternative alongside the permanent one.
+
 ## Tooling
 
 - Prefer `nix-shell`.
