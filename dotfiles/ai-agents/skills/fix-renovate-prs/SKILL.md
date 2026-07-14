@@ -1,6 +1,6 @@
 ---
 name: fix-renovate-prs
-description: Find open failing Renovate PRs in the current repository, fix small mechanical failures immediately, amend and force-push when appropriate, and ask the user before larger or risky fixes. Use when the user asks to fix Renovate PRs, unblock dependency update PRs, or run a workflow like /fix-renovate-prs.
+description: Find open failing Renovate PRs in the current repository, fix small mechanical failures with follow-up commits, push normally, and ask the user before larger or risky fixes. Use when the user asks to fix Renovate PRs, unblock dependency update PRs, or run a workflow like /fix-renovate-prs.
 metadata:
   short-description: Fix failing Renovate PRs
 ---
@@ -15,8 +15,11 @@ For each failing Renovate PR:
 
 - Fix small mechanical issues immediately.
 - Ask the user before larger, risky, or ambiguous changes.
-- Prefer `git commit --amend --no-edit` plus `git push --force-with-lease` for small fixes on Renovate's branch, especially when the PR has one bot commit and automerge depends on keeping the PR shape simple.
-- Never use plain `git push --force`.
+- Never amend Renovate commits.
+- Never rewrite Renovate branch history.
+- Do not use `git commit --amend`, `git rebase`, `git reset`, `git push --force`, or `git push --force-with-lease` on Renovate PR branches.
+- Add a new follow-up commit for every fix.
+- Push Renovate PR fixes with a normal `git push`.
 - Do not change CI, lint, formatter, type, or coverage rules to make a PR pass unless the user explicitly approves that exact change.
 - Do not approve, merge, close, or enable automerge unless the user asks.
 
@@ -126,7 +129,7 @@ If the failure is larger or ambiguous, present exactly one PR to the user:
 - failing check names
 - suspected cause
 - proposed fix
-- whether the push will amend or add a commit
+- the follow-up commit that will be added
 
 Wait for explicit confirmation or revised instructions before editing.
 
@@ -145,15 +148,15 @@ Do not weaken assertions, broaden snapshots, or relax quality rules only to make
 
 ## Step 6: Commit and push
 
-For small fixes, default to amending:
+For small fixes, create a follow-up commit:
 
 ```bash
 git add .
-git commit --amend --no-edit
-git push --force-with-lease origin HEAD:HEAD_REF_NAME
+git commit -m "Fix Renovate PR"
+git push origin HEAD:HEAD_REF_NAME
 ```
 
-For larger confirmed fixes, use the push strategy confirmed with the user. If unsure, ask before committing.
+For larger confirmed fixes, still add a follow-up commit and push normally. If unsure about the commit message or scope, ask before committing.
 
 After pushing, wait for checks or fetch the new check state:
 
