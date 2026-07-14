@@ -50,6 +50,14 @@ let
   disableProximityWake = ''
     /usr/bin/pmset -a proximitywake 0 >/dev/null 2>&1 || true
   '';
+  warnEnforcedUpdate = ''
+    enforced=$(/usr/bin/log show --last 26h \
+      --predicate 'process == "softwareupdated" AND eventMessage CONTAINS "EnforcedInstallDate"' 2>/dev/null \
+      | /usr/bin/grep -oE 'EnforcedInstallDate:[0-9-]+T[0-9:]+' \
+      | /usr/bin/sort -u | /usr/bin/tail -1 | /usr/bin/sed 's/EnforcedInstallDate://')
+    [ -n "''${enforced:-}" ] || exit 0
+    /usr/bin/osascript -e "display notification \"macOS will force-install an update and RESTART at ''${enforced}. Save your work and install on your own terms first: sudo softwareupdate -ia --restart\" with title \"MDM update deadline approaching\" sound name \"Basso\"" >/dev/null 2>&1 || true
+  '';
   disableAirPlayReceiver = ''
     airplay_gui_domain="gui/$(id -u -- ${primaryUser})"
 
@@ -343,6 +351,13 @@ in
     serviceConfig = {
       RunAtLoad = true;
       KeepAlive = false;
+    };
+  };
+  launchd.user.agents.enforced-update-warning = {
+    script = warnEnforcedUpdate;
+    serviceConfig = {
+      RunAtLoad = true;
+      StartInterval = 7200;
     };
   };
   nix.enable = false;
