@@ -58,6 +58,68 @@ let
     [ -n "''${enforced:-}" ] || exit 0
     /usr/bin/osascript -e "display notification \"macOS will force-install an update and RESTART at ''${enforced}. Save your work and install on your own terms first: sudo softwareupdate -ia --restart\" with title \"MDM update deadline approaching\" sound name \"Basso\"" >/dev/null 2>&1 || true
   '';
+  claudeLauncher = pkgs.writeShellScriptBin "claude" ''
+    set -u
+
+    pass_through=0
+    sid=""
+    prev=""
+    for arg in "$@"; do
+      case "$prev" in
+        -r|--resume|--session-id) sid="$arg" ;;
+      esac
+      case "$arg" in
+        -r|--resume|--session-id|-c|--continue|--from-pr) pass_through=1 ;;
+      esac
+      prev="$arg"
+    done
+
+    if [ "$pass_through" -eq 0 ]; then
+      sid="$(/usr/bin/uuidgen | /usr/bin/tr 'A-Z' 'a-z')"
+      set -- --session-id "$sid" "$@"
+    fi
+
+    if [ -n "''${TMUX:-}" ] && [ -n "$sid" ]; then
+      tmux set -p @claude_session_id "$sid" >/dev/null 2>&1 || true
+    fi
+
+    exec nix shell github:NixOS/nixpkgs/master#claude-code --impure --command claude "$@"
+  '';
+  tmuxSaveClaudeSessions = pkgs.writeShellScriptBin "tmux-save-claude-sessions" ''
+    set -u
+    dir="$HOME/.tmux/resurrect"
+    mkdir -p "$dir"
+    tab=$(printf '\t')
+    tmux list-panes -a \
+      -F "#{session_name}$tab#{window_index}$tab#{pane_index}$tab#{@claude_session_id}" \
+      | awk -F"$tab" 'NF==4 && $4 != ""' > "$dir/claude-map.tsv" || true
+  '';
+  tmuxRestoreClaudeAgents = pkgs.writeShellScriptBin "tmux-restore-claude-agents" ''
+    set -u
+    map="$HOME/.tmux/resurrect/claude-map.tsv"
+    [ -f "$map" ] || exit 0
+    tab=$(printf '\t')
+    while IFS="$tab" read -r sess win pane sid; do
+      [ -n "''${sid:-}" ] || continue
+      tmux send-keys -t "$sess:$win.$pane" "claude --resume $sid" C-m >/dev/null 2>&1 || true
+    done < "$map"
+  '';
+  tmuxLauncher = pkgs.writeShellScriptBin "tm" ''
+    set -u
+    if tmux has-session >/dev/null 2>&1; then
+      exec tmux attach
+    fi
+    tmux start-server
+    i=0
+    while [ "$i" -lt 40 ]; do
+      if tmux has-session >/dev/null 2>&1; then
+        exec tmux attach
+      fi
+      /bin/sleep 0.25
+      i=$((i + 1))
+    done
+    exec tmux new-session
+  '';
   disableAirPlayReceiver = ''
     airplay_gui_domain="gui/$(id -u -- ${primaryUser})"
 
@@ -232,7 +294,12 @@ in
     LESSCHARSET = "utf-8";
   };
   system.defaults = import ./darwin.nix { inherit pkgs; };
-  environment.systemPackages = import ./packages.nix { inherit pkgs; };
+  environment.systemPackages = import ./packages.nix { inherit pkgs; } ++ [
+    claudeLauncher
+    tmuxSaveClaudeSessions
+    tmuxRestoreClaudeAgents
+    tmuxLauncher
+  ];
 
   nixpkgs = {
     config = {
@@ -298,6 +365,11 @@ in
       set -g @catppuccin_session_text "#{?client_prefix,#S: prefix,#S: normal}"
 
       set -g @continuum-restore 'on'
+      set -g @continuum-save-interval '5'
+      set -g @resurrect-capture-pane-contents 'on'
+      set -g @resurrect-strategy-nvim 'session'
+      set -g @resurrect-hook-post-save-all '${tmuxSaveClaudeSessions}/bin/tmux-save-claude-sessions'
+      set -g @resurrect-hook-post-restore-all '${tmuxRestoreClaudeAgents}/bin/tmux-restore-claude-agents'
 
       set -sg escape-time 0
       set-option -g default-shell "${systemZsh}"
