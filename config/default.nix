@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, claudeCode, ... }:
 
 let
   primaryUser = "mschreck";
@@ -83,7 +83,7 @@ let
       tmux set -p @claude_session_id "$sid" >/dev/null 2>&1 || true
     fi
 
-    exec nix shell github:NixOS/nixpkgs/master#claude-code --impure --command claude "$@"
+    exec ${claudeCode}/bin/claude "$@"
   '';
   tmuxSaveClaudeSessions = pkgs.writeShellScriptBin "tmux-save-claude-sessions" ''
     set -u
