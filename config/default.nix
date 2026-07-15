@@ -1,4 +1,4 @@
-{ lib, pkgs, claudeCode, ... }:
+{ lib, pkgs, ... }:
 
 let
   primaryUser = "mschreck";
@@ -9,6 +9,14 @@ let
     if builtins.pathExists ./local-settings.nix then import ./local-settings.nix else { }
   );
   systemZsh = "/run/current-system/sw/bin/zsh";
+  claudeCode = (import
+    (builtins.fetchTarball {
+      url = "https://github.com/NixOS/nixpkgs/archive/master.tar.gz";
+    })
+    {
+      system = localSettings.nix.hostPlatform;
+      config.allowUnfree = true;
+    }).claude-code;
   perUserLinks = {
     ".gitconfig" = "/etc/per-user/.gitconfig";
     ".gitignore" = "/etc/per-user/.gitignore";
