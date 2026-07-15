@@ -1,33 +1,34 @@
 ---
 name: address-review-comments
-description: Walk through unresolved GitHub PR review threads interactively, one by one. For each thread summarize the comment, propose a fix and a reply, and confirm with the user. Apply code changes locally but stage every reply and thread resolution; only after a final confirmation post all replies, resolve all threads, and commit and push, as one atomic batch. Use when the user wants to triage or address pending PR review feedback.
+description: Triage unresolved GitHub PR review threads. First read every thread as a whole and consolidate ones that a single fix resolves (the same point often gets raised across several files or lines). Then walk through each fix group interactively, propose one fix and a reply per thread, and confirm with the user. Apply code changes locally but stage every reply and thread resolution; only after a final confirmation post all replies, resolve all threads, and commit and push, as one atomic batch. Use when the user wants to triage or address pending PR review feedback.
 ---
 
 # Address PR review comments
 
 ## Operating rules - read first
 
-This skill is an interactive walkthrough with a batched submission. You decide each thread's fix and reply one at a time, but nothing reaches GitHub or git until a single final batch at the end.
+This skill is an interactive walkthrough with a batched submission. You first consolidate the threads into fix groups, then decide each group's fix and replies one at a time, but nothing reaches GitHub or git until a single final batch at the end.
 
-Two phases:
+Three phases:
 
-1. **Walkthrough**: for every unresolved thread, propose a fix and reply, get the user's confirmation, then apply the code edit locally and record the reply and resolution in a local batch ledger.
-2. **Submission**: after every thread is handled and the user confirms one final time, apply the whole batch at once: commit, push, post all replies, resolve all threads.
+1. **Consolidation**: read every unresolved thread and its full comment chain together, then group threads that a single fix would resolve. Confirm the grouping with the user.
+2. **Walkthrough**: for every fix group, propose one fix and a reply per member thread, get the user's confirmation, then apply the code edit locally and record the replies and resolutions in a local batch ledger.
+3. **Submission**: after every group is handled and the user confirms one final time, apply the whole batch at once: commit, push, post all replies, resolve all threads.
 
-For every thread you MUST:
+For every group you MUST:
 
-1. Present the thread and propose both the **code fix** and the **reply text**.
+1. Present the group and propose both the **single code fix** and the **reply text** for each member thread.
 2. Wait for the user's explicit confirmation via `AskUserQuestion`.
-3. Only then apply the local code edit and add the reply and thread id to the batch ledger.
+3. Only then apply the local code edit and add the replies and thread ids to the batch ledger.
 
 You MUST NOT, at any point before the final batch confirmation:
 
 - Post any reply to GitHub.
 - Resolve any thread.
 - Commit or push anything.
-- Apply a thread's code edit before the user confirms that specific thread.
+- Apply a group's code edit before the user confirms that specific group.
 
-Applying local code edits for each confirmed thread is fine and expected; they stay uncommitted until the batch. If at any point you are unsure whether the user has confirmed: stop and ask.
+Applying local code edits for each confirmed group is fine and expected; they stay uncommitted until the batch. If at any point you are unsure whether the user has confirmed: stop and ask.
 
 ## Scope
 
@@ -87,58 +88,80 @@ gh api graphql -f query='
 
 Filter to `isResolved == false`. Keep top-to-bottom order (by file, then PR-level). For each thread keep: `thread.id` (node ID, starts with `PRRT_`), `path`, `line`, first comment author + body, last reply (if any), and the **first comment's `databaseId`** (needed for the REST reply endpoint).
 
-Report the count before iterating: e.g. "7 unresolved threads. Walking through them now."
+Report the count before iterating: e.g. "7 unresolved threads. Consolidating them now."
 
-Start an empty **batch ledger** now. You append one entry per handled thread during Step 3 and drain it in Step 4. Each entry holds: thread node id (`PRRT_`), first comment `databaseId`, `path:line`, the confirmed reply text, and a short note of what changed (or "no change needed because X").
+Start an empty **batch ledger** now. You append one entry per handled thread during Step 4 and drain it in Step 5. Each entry holds: thread node id (`PRRT_`), first comment `databaseId`, `path:line`, the confirmed reply text, and a short note of what changed (or "no change needed because X").
 
-## Step 3 - walk through each unresolved thread
+## Step 3 - consolidate related threads into fix groups
 
-Strict order: 3a → 3b → 3c. This phase decides and stages only. It performs **no** GitHub writes, commits, or pushes. Do not start the next thread until 3c is done (or the user skips).
+Before proposing anything, read every unresolved thread and its full comment chain together, as one set. Reviewers routinely raise the same underlying point in several places: the same issue duplicated across files, repeated on multiple lines, or split into separate threads. Usually one fix resolves all of them, and the replies should reflect that rather than pretending each is independent.
 
-### 3a. Present the thread, propose fix and reply
+Group the threads:
+
+- Put every thread that a single code (or doc) change would resolve into one **fix group**.
+- Group by the underlying cause, not by surface wording or location. Same file is not required; a pattern flagged across several files belongs in one group.
+- A thread with no sibling is a group of one.
+- Do **not** merge threads that merely look similar but genuinely need distinct fixes. When unsure, keep them separate and note the uncertainty.
+
+Order groups top-to-bottom by each group's earliest thread.
+
+Present the proposed grouping in one message: for each group, list its member threads (`path:line` each, or "PR-level") and one sentence on the shared underlying ask. Call out explicitly which threads you consider duplicates of each other.
+
+Confirm with `AskUserQuestion`:
+
+- **Accept** - proceed with this grouping.
+- **Adjust** - user splits or merges groups; capture the direction, re-present, and confirm again.
+
+The walkthrough in Step 4 iterates over the confirmed groups, not individual threads. A group still produces one reply and one resolution per member thread; it just shares a single fix.
+
+## Step 4 - walk through each fix group
+
+Strict order: 4a → 4b → 4c. This phase decides and stages only. It performs **no** GitHub writes, commits, or pushes. Do not start the next group until 4c is done (or the user skips).
+
+### 4a. Present the group, propose one fix and the replies
 
 Show the user, in one message:
 
-- **Location**: `path:line` or "PR-level" if `path` is null.
-- **Reviewer**: original author, latest comment quoted verbatim (truncate only if very long).
-- **Summary**: one sentence on what the reviewer is asking for.
-- **Proposed fix**: concrete code change, doc edit, clarification, or "no change needed because X". If on code, read the file around the line first so the suggestion reflects current code (comments may be outdated).
-- **Proposed reply**: the exact 1-2 sentence reply you would post to the thread, in plain prose. State what was done or why no change. No filler, no sign-off.
+- **Members**: each member thread's `path:line` (or "PR-level"), with the latest comment quoted verbatim per thread (truncate only if very long). For a single-thread group this is just the one.
+- **Reviewer(s)**: the authors involved.
+- **Summary**: one sentence on the shared ask.
+- **Proposed fix**: the single concrete change that resolves the whole group, or "no change needed because X". If on code, read the file around each member's line first so the suggestion reflects current code (comments may be outdated).
+- **Proposed replies**: the exact 1-2 sentence reply for each member thread, in plain prose. Wording may be shared across members, but each thread gets its own reply. State what was done or why no change. No filler, no sign-off.
 
 Do not edit any file at this stage. The proposal is text only.
 
-### 3b. Ask for confirmation
+### 4b. Ask for confirmation
 
 Use `AskUserQuestion` with these options:
 
-- **Apply** - apply the proposed fix locally and stage the proposed reply as-is.
+- **Apply** - apply the proposed fix locally once and stage the proposed replies as-is for every member thread.
 - **Adjust fix** - user wants to change the code/doc change; capture their direction.
-- **Adjust reply** - user wants to change the reply wording; capture their direction.
-- **Skip** - leave the thread unresolved and unstaged, move to the next.
+- **Adjust replies** - user wants to change the reply wording; capture their direction.
+- **Skip** - leave the whole group unresolved and unstaged, move to the next.
 
 Treat "Stop" as available via the standard chat; the user can interrupt at any time.
 
-If the user picks **Adjust fix** or **Adjust reply**, loop back to 3a with the revised proposal. Keep looping until they pick **Apply** or **Skip**.
+If the user picks **Adjust fix** or **Adjust replies**, loop back to 4a with the revised proposal. Keep looping until they pick **Apply** or **Skip**. If while working a group you conclude the grouping itself is wrong, say so and re-group the affected threads via Step 3 before continuing.
 
-### 3c. Stage locally (only after Apply)
+### 4c. Stage locally (only after Apply)
 
-- For code/doc changes: edit the files now. Leave them **uncommitted**.
-- Append an entry to the batch ledger: thread node id, first comment `databaseId`, the confirmed reply text, and a short note of what changed (or "no change needed because X").
-- Do **not** post the reply, resolve the thread, commit, or push. Move to the next thread.
+- For code/doc changes: apply the single fix now. Leave the files **uncommitted**.
+- Append one entry to the batch ledger **per member thread**: thread node id, first comment `databaseId`, the confirmed reply text, and a short note of what changed (or "no change needed because X"). Use the same change note across the group's entries so the shared fix is obvious.
+- Do **not** post the replies, resolve the threads, commit, or push. Move to the next group.
 
-## Step 4 - apply the full batch
+## Step 5 - apply the full batch
 
-Reach this only after every unresolved thread has been applied or skipped.
+Reach this only after every fix group has been applied or skipped.
 
-### 4a. Consolidated review
+### 5a. Consolidated review
 
 Show a single summary of the staged batch:
 
-- Each ledger entry: `path:line`, one-line note of the local change, and the reply that will be posted.
+- Grouped by fix group: the one-line note of the local change, and for each member thread its `path:line` and the reply that will be posted.
 - Which threads will be resolved, and which were skipped (and stay unresolved).
 - Files touched.
 
-### 4b. Quality gate
+### 5b. Quality gate
 
 If any code changed, run the gate now and report PASS/FAIL:
 
@@ -148,15 +171,15 @@ npx just quality-gate agentic > /dev/null 2>&1 && echo PASS || echo FAIL
 
 If it FAILs, surface it and let the user decide whether to fix first or submit anyway; do not submit silently over a failing gate.
 
-### 4c. Final confirmation
+### 5c. Final confirmation
 
 Use `AskUserQuestion`:
 
 - **Submit all** - commit, push, post every reply, resolve every thread.
-- **Adjust** - go back to a specific staged thread (re-run 3a-3c for it), then return here.
+- **Adjust** - go back to a specific staged group (re-run 4a-4c for it), then return here.
 - **Abort** - leave everything local. Post nothing, resolve nothing, commit nothing.
 
-### 4d. Execute the batch (only after Submit all)
+### 5d. Execute the batch (only after Submit all)
 
 Run in this exact order so replies and resolutions reference pushed code:
 
@@ -185,7 +208,7 @@ Run in this exact order so replies and resolutions reference pushed code:
 
    Verify `isResolved: true` in each response.
 
-### 4e. Report
+### 5e. Report
 
 Summarize: commit(s) pushed, replies posted, threads resolved, threads skipped.
 
@@ -193,8 +216,9 @@ If any batch step fails (push rejected, a reply post fails, a resolve permission
 
 ## Notes and edge cases
 
-- **Outdated threads** (`isOutdated: true`): still walk through them. The reviewer's intent may already be addressed; confirm by reading the current code, then either stage a reply "addressed in <commit/refactor>" for the batch, or treat like any other thread.
+- **Duplicate or related threads**: this is common and the reason Step 3 exists. The same fix may resolve threads on different files or lines; group them and apply the fix once, but still reply to and resolve each thread individually.
+- **Outdated threads** (`isOutdated: true`): still include them. The reviewer's intent may already be addressed; confirm by reading the current code, then either stage a reply "addressed in <commit/refactor>" for the batch, or treat like any other thread.
 - **Multiple comments in one thread**: read the whole conversation before summarizing; the last reply often narrows the ask.
-- **Threads authored by the current user**: still walk through them (the user may have left TODOs for themselves).
-- **Pagination**: if `hasNextPage` is true, fetch the next page with `cursor` before iterating.
+- **Threads authored by the current user**: still include them (the user may have left TODOs for themselves).
+- **Pagination**: if `hasNextPage` is true, fetch the next page with `cursor` before consolidating.
 - **Suggested-change blocks** (` ```suggestion `): if the reviewer included one and the user picks **Apply**, use that exact diff.
