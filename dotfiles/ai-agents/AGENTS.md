@@ -134,7 +134,9 @@ Rules:
 - Reference only files, folders, and commands that are part of the current repository or are otherwise reviewable by the PR reader.
 - Never mention local-only paths or machine-specific locations.
 - Never mention parent-relative paths like `../foo`, home-directory paths, absolute filesystem paths, or scratch files outside the repo.
-- If outside context matters: describe it generically or link to the canonical upstream repository, package, or documentation instead of a local path.
+- Never mention or link to non-public projects, repositories, packages, services, documents, tickets, dashboards, or internal names outside the current repository.
+- If outside context matters and is public, describe it generically or link to the canonical upstream repository, package, or documentation instead of a local path.
+- If outside context matters but is non-public, describe only the relevant behavior or constraint generically. Do not name the source.
 - Use inline code fences for code-like identifiers.
 - Wrap package names, rule names, commands, variables, paths, and versions in inline code fences.
 - Use fenced code blocks for multi-line commands, config, logs, examples, and patches.
@@ -166,7 +168,8 @@ The rules in this section are **mandatory** and follow the same spirit as PR des
 - No repetition: each point lands in one place.
 - Coherent register: mark open questions as open questions. Do not assert confident defaults (e.g. `default: true`) for things the proposal admits are unsettled.
 - Address the substance: does the proposal actually solve the stated problem? False positives and negatives? General audience or only the user's specific context?
-- Repository-scoped: no local paths, no machine-specific references.
+- Repository-scoped: no local paths, no machine-specific references, no parent-relative paths, and no private or non-public project references.
+- Never mention or link to non-public projects, repositories, packages, services, documents, tickets, dashboards, or internal names outside the current repository.
 - Inline code fences for identifiers, package names, paths. Fenced blocks for code, config, commands, logs.
 - Supporting evidence: only include if it actually supports the proposal. If counter-examples equal or outnumber the supporting ones, that is an argument against. Rework or frame honestly as an open question.
 
@@ -196,6 +199,7 @@ The rules in this section are **mandatory** and follow the same spirit as PR des
 - Plain text, not Markdown.
 - Prefer ASCII.
 - ASCII art is acceptable when it clarifies a complicated change.
+- Repository-scoped: no local paths, no machine-specific references, no parent-relative paths, and no private or non-public project references.
 
 ### Scope
 
