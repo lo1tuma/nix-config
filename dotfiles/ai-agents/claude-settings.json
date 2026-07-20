@@ -1,0 +1,10 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "model": "opus[1m]",
+  "effortLevel": "xhigh",
+  "skipDangerousModePermissionPrompt": true,
+  "autoMemoryEnabled": false
+}

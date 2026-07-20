@@ -8,6 +8,7 @@ let
   homeDir = "/Users/${primaryUser}";
   sourceRoot = ../dotfiles/ai-agents;
   instructionsSource = sourceRoot + "/AGENTS.md";
+  claudeSettingsSource = sourceRoot + "/claude-settings.json";
   skillsSource = sourceRoot + "/skills";
 
   isVisibleEntry = name: builtins.substring 0 1 name != ".";
@@ -46,7 +47,10 @@ let
     };
 
   managedCopiedFiles =
-    mapFilesToTarget ".claude/skills" managedSkillFiles
+    {
+      ".claude/settings.json" = claudeSettingsSource;
+    }
+    // mapFilesToTarget ".claude/skills" managedSkillFiles
     // mapFilesToTarget ".codex/skills" managedSkillFiles;
 
   runAsPrimaryUser = command: "/usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg command}";
