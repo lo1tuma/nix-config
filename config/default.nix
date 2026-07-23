@@ -9,14 +9,16 @@ let
     if builtins.pathExists ./local-settings.nix then import ./local-settings.nix else { }
   );
   systemZsh = "/run/current-system/sw/bin/zsh";
-  claudeCode = (import
-    (builtins.fetchTarball {
-      url = "https://github.com/NixOS/nixpkgs/archive/master.tar.gz";
-    })
-    {
-      system = localSettings.nix.hostPlatform;
-      config.allowUnfree = true;
-    }).claude-code;
+  claudeCode =
+    (import
+      (builtins.fetchTarball {
+        url = localSettings.nix.nixpkgsSource;
+      })
+      {
+        system = localSettings.nix.hostPlatform;
+        config.allowUnfree = true;
+      }
+    ).claude-code;
   perUserLinks = {
     ".gitconfig" = "/etc/per-user/.gitconfig";
     ".gitignore" = "/etc/per-user/.gitignore";
@@ -267,6 +269,7 @@ in
     "nix/nix.custom.conf".text = ''
       max-jobs = 32
       cores = 8
+      nix-path = nixpkgs=${localSettings.nix.nixpkgsSource}
       auto-optimise-store = ${lib.boolToString localSettings.nix.autoOptimiseStore}
     '';
   };
@@ -302,12 +305,17 @@ in
     LESSCHARSET = "utf-8";
   };
   system.defaults = import ./darwin.nix { inherit pkgs; };
-  environment.systemPackages = import ./packages.nix { inherit pkgs; } ++ [
-    claudeLauncher
-    tmuxSaveClaudeSessions
-    tmuxRestoreClaudeAgents
-    tmuxLauncher
-  ];
+  environment.systemPackages =
+    import ./packages.nix {
+      inherit pkgs;
+      packages = localSettings.packages;
+    }
+    ++ [
+      claudeLauncher
+      tmuxSaveClaudeSessions
+      tmuxRestoreClaudeAgents
+      tmuxLauncher
+    ];
 
   nixpkgs = {
     config = {

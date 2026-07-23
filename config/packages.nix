@@ -1,4 +1,4 @@
-{ pkgs }:
+{ packages, pkgs }:
 
 let
   nvim = import ../pkgs/neovim/default.nix { inherit pkgs; };
@@ -7,7 +7,7 @@ in
   pkgs.cacert
   pkgs.git
   pkgs.python3
-  pkgs.nodejs_26
+  pkgs.${packages.nodejs}
   pkgs.zsh
   pkgs.wget
   pkgs.curl

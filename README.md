@@ -14,7 +14,7 @@ This repository contains my darwin-specific nix configuration and dotfiles.
 ## Local settings
 * committed defaults live in `config/local-settings-default.nix`
 * local overrides live in ignored `config/local-settings.nix`
-* use local overrides for values like `git.userEmail`, `git.sshPublicKey`, `nix.hostPlatform`, and `nix.autoOptimiseStore`
+* use local overrides for values like `git.userEmail`, `git.sshPublicKey`, `nix.hostPlatform`, `nix.nixpkgsSource`, `nix.autoOptimiseStore`, and `packages.nodejs`
 
 ## Agent dotfiles
 * shared agent instructions live in `dotfiles/ai-agents/AGENTS.md`

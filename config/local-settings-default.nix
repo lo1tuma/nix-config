@@ -7,5 +7,9 @@
   nix = {
     autoOptimiseStore = true;
     hostPlatform = "aarch64-darwin";
+    nixpkgsSource = "https://github.com/NixOS/nixpkgs/archive/master.tar.gz";
+  };
+  packages = {
+    nodejs = "nodejs_26";
   };
 }
