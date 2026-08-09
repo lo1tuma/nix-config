@@ -17,6 +17,18 @@
 - Do not assume `homebrew` or machine-local tools.
 - Tools like `gh`: invoke through `nix-shell`.
 
+## Git operations
+
+- Treat the working tree as user-owned.
+- Before any command that can stage, commit, rewrite, delete, move, or publish changes: inspect `git status --short` and decide which paths belong to the current task.
+- For commands that accept pathspecs, use explicit repo-relative file paths. Do not pass folders, globs, or `.` unless the user explicitly asks.
+- Pathspec discipline applies to commands including `git add`, `git commit`, `git checkout`, `git restore`, `git reset`, `git rm`, and `git clean`.
+- Never stage, commit, rewrite, delete, or publish unrelated files.
+- Never include untracked files unless they were created for the current task or the user explicitly names them.
+- Treat untracked Markdown and text files, especially TODO-like notes, as personal by default. Leave them untracked and uncommitted.
+- For whole-branch operations such as `git rebase`, `git merge`, `git cherry-pick`, `git pull`, or `git push`: first check whether unrelated or untracked files, staged changes, or outgoing commits could be affected or included. If the right scope is unclear, ask the user before continuing.
+- When in doubt, leave files untracked or uncommitted and report what remains.
+
 ## Coding
 
 ### Naming
