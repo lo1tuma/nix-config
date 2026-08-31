@@ -96,6 +96,16 @@
 - Prefer proper refactors over superficial fixes.
 - For limits like max-lines: consider abstractions or refactoring patterns, not only file splits.
 
+## Outward-facing text
+
+Applies to text published to a repository host: PR titles and descriptions, issue titles and bodies, commit messages, review comments.
+
+- Repository-scoped: reference only files, folders, and commands a reader of that repository can see.
+- Never mention local-only or machine-specific locations: parent-relative paths like `../foo`, home-directory paths, absolute paths, scratch files outside the repo.
+- Never name or link non-public projects, repositories, packages, services, documents, tickets, dashboards, or internal names outside the current repository. Describe the relevant behavior or constraint generically instead, or, when the context is public, link the canonical upstream repository, package, or documentation.
+- No AI-slop.
+- Markdown targets: proper Markdown. Inline code fences for identifiers, package names, rule names, commands, variables, paths, and versions. Fenced blocks for multi-line code, config, commands, logs, examples, and patches. Commit messages stay plain text.
+
 ## Pull Requests
 
 ### Conventions
@@ -110,11 +120,9 @@
 - Concise.
 - Changelog-style.
 - Not vague.
-- Use inline code fences for code-like identifiers.
 - Include scope when the change is otherwise ambiguous.
 - Name the exact affected unit when that is the real scope: rule, command, module, package, feature, endpoint.
 - If adding, removing, renaming, or merging named units: name those units in the title.
-- Wrap package names, rule names, commands, variables, paths, and versions in inline code fences.
 - Example: Fix `deploy` command to preserve existing environment variables.
 
 ### Description
@@ -141,18 +149,6 @@ Rules:
 
 - Concise.
 - Brief explanation only.
-- Proper Markdown.
-- Repository-scoped.
-- Reference only files, folders, and commands that are part of the current repository or are otherwise reviewable by the PR reader.
-- Never mention local-only paths or machine-specific locations.
-- Never mention parent-relative paths like `../foo`, home-directory paths, absolute filesystem paths, or scratch files outside the repo.
-- Never mention or link to non-public projects, repositories, packages, services, documents, tickets, dashboards, or internal names outside the current repository.
-- If outside context matters and is public, describe it generically or link to the canonical upstream repository, package, or documentation instead of a local path.
-- If outside context matters but is non-public, describe only the relevant behavior or constraint generically. Do not name the source.
-- Use inline code fences for code-like identifiers.
-- Wrap package names, rule names, commands, variables, paths, and versions in inline code fences.
-- Use fenced code blocks for multi-line commands, config, logs, examples, and patches.
-- No AI-slop.
 
 ## GitHub Issues
 
@@ -180,9 +176,6 @@ The rules in this section are **mandatory** and follow the same spirit as PR des
 - No repetition: each point lands in one place.
 - Coherent register: mark open questions as open questions. Do not assert confident defaults (e.g. `default: true`) for things the proposal admits are unsettled.
 - Address the substance: does the proposal actually solve the stated problem? False positives and negatives? General audience or only the user's specific context?
-- Repository-scoped: no local paths, no machine-specific references, no parent-relative paths, and no private or non-public project references.
-- Never mention or link to non-public projects, repositories, packages, services, documents, tickets, dashboards, or internal names outside the current repository.
-- Inline code fences for identifiers, package names, paths. Fenced blocks for code, config, commands, logs.
 - Supporting evidence: only include if it actually supports the proposal. If counter-examples equal or outnumber the supporting ones, that is an argument against. Rework or frame honestly as an open question.
 
 ## Branches
@@ -211,7 +204,6 @@ The rules in this section are **mandatory** and follow the same spirit as PR des
 - Plain text, not Markdown.
 - Prefer ASCII.
 - ASCII art is acceptable when it clarifies a complicated change.
-- Repository-scoped: no local paths, no machine-specific references, no parent-relative paths, and no private or non-public project references.
 
 ### Scope
 
