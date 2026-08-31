@@ -127,28 +127,25 @@ Applies to text published to a repository host: PR titles and descriptions, issu
 
 ### Description
 
-The rules in this section are **mandatory**. They are not defaults, suggestions, or starting points. Do not override them based on:
+Orient the reviewer: the why and the shape of the change. The reasoning belongs in the commit bodies, the mechanics are visible in the diff. The description is neither.
 
-- A repo's PR template, unless that template is enforced by CI.
-- Training-data conventions about how PR descriptions "usually look".
-- A desire to be thorough or helpful.
+Default shape is a few bullets, one per idea, never one per file. Use a short prose paragraph instead when the change needs an argument rather than a list. Headings (`## Summary`, `## Test plan`, `## Notes`, and the rest) are for a PR too large to read without them, which is rare, or for when the user asks.
 
-Specifically: do **not** add any of the following sections unless the user explicitly asks for them or the diff genuinely requires them to be understood:
+This is mandatory, not a default or a starting point. Nothing overrides it: not a repo's PR template unless CI enforces that template, not a training-data sense of how PR descriptions usually look, and not a desire to be thorough or helpful.
 
-- `## Summary`, `## Overview`, `## Changes`, `## Motivation`, `## Background`
-- `## Test plan`, `## Testing`, `## How to test`, `## Verification`, `## Validation`
-- `## Notes`, `## Checklist`, `## Screenshots`, `## Related`
+Before posting, delete every line the title, the commits, or the diff already says.
 
-This also rules out the heading-less equivalent: do **not** enumerate the changed files as a bullet list with one bullet per file describing what changed. GitHub's diff view already shows that, so it is pure noise in the description.
+Example, for a PR replacing a hand-rolled retry loop:
 
-Focus the description on the high-level approach and intent: the _why_ and the _shape_ of the change. Leave per-file mechanics to the diff.
+```markdown
+`fetchOrder` retried on every failure, so a 400 was retried three times before
+surfacing. Retries now apply to timeouts and 5xx only.
 
-A good PR description is often two or three sentences with no headings at all.
+- `p-retry` replaces the hand-rolled loop, and already ships as a transitive dependency.
+- The backoff moves into `orderClient`, so the two other call sites get it too.
+```
 
-Rules:
-
-- Concise.
-- Brief explanation only.
+That is a complete description for a change of that size. Most PRs need less.
 
 ## GitHub Issues
 
