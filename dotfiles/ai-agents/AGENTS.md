@@ -113,6 +113,7 @@ Applies to text published to a repository host: PR titles and descriptions, issu
 - Read and understand repo contribution guidelines first.
 - Follow repo guidelines strictly.
 - If the repo forbids AI assistance: hard stop, inform the user.
+- Before running `gh pr create` or editing a PR body: print the exact title and body to yourself, apply the PR body preflight, then post only the reduced version.
 
 ### Title
 
@@ -133,8 +134,6 @@ Default shape is a few bullets, one per idea, never one per file. Use a short pr
 
 This is mandatory, not a default or a starting point. Nothing overrides it: not a repo's PR template unless CI enforces that template, not a training-data sense of how PR descriptions usually look, and not a desire to be thorough or helpful.
 
-Before posting, delete every line the title, the commits, or the diff already says.
-
 Example, for a PR replacing a hand-rolled retry loop:
 
 ```markdown
@@ -146,6 +145,19 @@ surfacing. Retries now apply to timeouts and 5xx only.
 ```
 
 That is a complete description for a change of that size. Most PRs need less.
+
+### PR body preflight
+
+Before running `gh pr create` or editing a PR body, stop and check the final body line by line:
+
+- Does this line help the reviewer understand why the change exists?
+- Does this line describe the shape of the change at the right level?
+- Is this line already visible from the title, commit, diff, or chat?
+- Is this line local process detail, test output, or verification?
+
+Delete every line that fails. Never include verification text in PR descriptions, including `Verified with ...`, `Tested with ...`, `Tests: ...`, command lists, or local workflow notes.
+
+Verification belongs only in chat unless the user explicitly asks to include it in the PR body.
 
 ## GitHub Issues
 
