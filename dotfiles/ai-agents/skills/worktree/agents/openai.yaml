@@ -1,0 +1,7 @@
+interface:
+  display_name: "Worktree"
+  short_description: "Work in a fresh isolated worktree"
+  default_prompt: "Use $worktree to run this task in a fresh git worktree branched off the base branch."
+
+policy:
+  allow_implicit_invocation: false
