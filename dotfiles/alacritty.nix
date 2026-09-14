@@ -537,6 +537,12 @@ in
 
   [env]
   TERM = "alacritty"
+  TMUX = ""
+  TMUX_PANE = ""
+  __ETC_ZSHENV_SOURCED = ""
+  __ETC_ZSHRC_SOURCED = ""
+  __NIX_DARWIN_SET_ENVIRONMENT_DONE = ""
+  NOSYSZSHRC = ""
 
   [font]
   size = 12.0

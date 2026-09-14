@@ -26,4 +26,8 @@ This repository contains my darwin-specific nix configuration and dotfiles.
 ## tmux
 * tmux restores the last saved layout after reboot via `tmux-resurrect` and `tmux-continuum`
 * restore runs automatically when the tmux server starts
+* use `tm` or `tmux-attach-latest` after reboot to attach the session that was active in the last saved layout
 * manual save and restore: `prefix + Ctrl-s`, `prefix + Ctrl-r`
+
+## Git
+* `/usr/local/bin/git` points to Nix Git so default macOS PATH lookup avoids the Apple developer-tools shim

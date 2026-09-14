@@ -60,6 +60,14 @@ let
   disableProximityWake = ''
     /usr/bin/pmset -a proximitywake 0 >/dev/null 2>&1 || true
   '';
+  installNixGitCommand = ''
+    /bin/mkdir -p /usr/local/bin
+    if [ ! -e /usr/local/bin/git ] || [ -L /usr/local/bin/git ]; then
+      /bin/ln -sfn /run/current-system/sw/bin/git /usr/local/bin/git
+    else
+      echo "warning: /usr/local/bin/git exists and is not a symlink; leaving it unchanged" >&2
+    fi
+  '';
   warnEnforcedUpdate = ''
     enforced=$(/usr/bin/log show --last 26h \
       --predicate 'process == "softwareupdated" AND eventMessage CONTAINS "EnforcedInstallDate"' 2>/dev/null \
@@ -116,19 +124,38 @@ let
   '';
   tmuxLauncher = pkgs.writeShellScriptBin "tm" ''
     set -u
-    if tmux has-session >/dev/null 2>&1; then
+
+    resurrect_last="$HOME/.tmux/resurrect/last"
+
+    saved_session() {
+      [ -e "$resurrect_last" ] || return 1
+      awk '$1 == "state" && $2 != "" { print $2; exit }' "$resurrect_last"
+    }
+
+    attach_session() {
+      target="$(saved_session)"
+      if [ -n "''${target:-}" ] && tmux has-session -t "$target" >/dev/null 2>&1; then
+        exec tmux attach -t "$target"
+      fi
       exec tmux attach
+    }
+
+    if tmux has-session >/dev/null 2>&1; then
+      attach_session
     fi
     tmux start-server
     i=0
     while [ "$i" -lt 40 ]; do
       if tmux has-session >/dev/null 2>&1; then
-        exec tmux attach
+        attach_session
       fi
       /bin/sleep 0.25
       i=$((i + 1))
     done
     exec tmux new-session
+  '';
+  tmuxAttachLatest = pkgs.writeShellScriptBin "tmux-attach-latest" ''
+    exec ${tmuxLauncher}/bin/tm "$@"
   '';
   disableAirPlayReceiver = ''
     airplay_gui_domain="gui/$(id -u -- ${primaryUser})"
@@ -280,6 +307,7 @@ in
       configureFirewallLogging
       disableTtyWake
       disableProximityWake
+      installNixGitCommand
       disableAirPlayReceiver
       disableAirDrop
       disableDictation
@@ -315,6 +343,7 @@ in
       tmuxSaveClaudeSessions
       tmuxRestoreClaudeAgents
       tmuxLauncher
+      tmuxAttachLatest
     ];
 
   nixpkgs = {
@@ -360,6 +389,15 @@ in
       }
 
       alias git="git config --unset --local core.hooksPath; git"
+      alias tmux-attach-latest=tm
+
+      tmux_attach_latest_hint() {
+        precmd_functions=(''${precmd_functions:#tmux_attach_latest_hint})
+        if [ -z "''${TMUX:-}" ] && [ -e "$HOME/.tmux/resurrect/last" ]; then
+          print -r -- "tmux: run tmux-attach-latest"
+        fi
+      }
+      precmd_functions+=(tmux_attach_latest_hint)
     '';
   };
 
