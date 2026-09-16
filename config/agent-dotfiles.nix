@@ -116,29 +116,60 @@ let
       ''
         codexConfig=${lib.escapeShellArg "${homeDir}/.codex/config.toml"}
         codexTmp="$codexConfig.nix-config.tmp"
-        codexDesired=${lib.escapeShellArg ''project_doc_fallback_filenames = ["AGENTS.md", "agents.md"]''}
+        codexProjectDocs=${lib.escapeShellArg ''project_doc_fallback_filenames = ["AGENTS.md", "agents.md"]''}
+        codexDefaultModeRequestUserInput=${lib.escapeShellArg ''default_mode_request_user_input = true''}
         if [ -e "$codexConfig" ]; then
           /usr/sbin/chown ${lib.escapeShellArg managedOwner} "$codexConfig"
           /usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg ''
-            /usr/bin/awk -v desired="$1" '
-              /^project_doc_fallback_filenames[[:space:]]*=/ { print desired; seen = 1; next }
+            /usr/bin/awk -v projectDocs="$1" -v defaultModeRequestUserInput="$2" '
+              function leaveFeatures() {
+                if (inFeatures && !seenDefaultModeRequestUserInput) {
+                  print defaultModeRequestUserInput
+                }
+                inFeatures = 0
+              }
+
+              /^project_doc_fallback_filenames[[:space:]]*=/ { print projectDocs; seenProjectDocs = 1; next }
+
+              /^\[[^]]+\][[:space:]]*$/ {
+                leaveFeatures()
+                inFeatures = ($0 == "[features]")
+                if (inFeatures) {
+                  seenFeatures = 1
+                }
+                print
+                next
+              }
+
+              inFeatures && /^default_mode_request_user_input[[:space:]]*=/ {
+                print defaultModeRequestUserInput
+                seenDefaultModeRequestUserInput = 1
+                next
+              }
+
               { print }
               END {
-                if (!seen) {
+                leaveFeatures()
+                if (!seenProjectDocs) {
                   if (NR > 0) {
                     print ""
                   }
-                  print desired
+                  print projectDocs
+                }
+                if (!seenFeatures) {
+                  print ""
+                  print "[features]"
+                  print defaultModeRequestUserInput
                 }
               }
-            ' "$2" > "$3"
-          ''} dummy "$codexDesired" "$codexConfig" "$codexTmp"
+            ' "$3" > "$4"
+          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexConfig" "$codexTmp"
           /bin/mv "$codexTmp" "$codexConfig"
           /usr/sbin/chown ${lib.escapeShellArg managedOwner} "$codexConfig"
         else
           /usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg ''
-            printf '%s\n' 'project_doc_fallback_filenames = ["AGENTS.md", "agents.md"]' > "$1"
-          ''} dummy "$codexConfig"
+            printf '%s\n\n%s\n%s\n' "$1" '[features]' "$2" > "$3"
+          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexConfig"
         fi
       ''
     ]
