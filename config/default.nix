@@ -108,14 +108,24 @@ let
     [ -n "''${TMUX_PANE:-}" ] || exit 0
     tmux set -p -t "$TMUX_PANE" -u @claude_session_id >/dev/null 2>&1 || true
   '';
+  claudeSessionMap = "$HOME/.tmux/resurrect/claude-map.tsv";
   tmuxSaveClaudeSessions = pkgs.writeShellScriptBin "tmux-save-claude-sessions" ''
     set -u
-    dir="$HOME/.tmux/resurrect"
-    mkdir -p "$dir"
+    map="${claudeSessionMap}"
+    staging="$map.staging"
+    mkdir -p "$(dirname "$map")"
     tab=$(printf '\t')
-    tmux list-panes -a \
+
+    if ! tmux list-panes -a \
       -F "#{session_name}$tab#{window_index}$tab#{pane_index}$tab#{@claude_session_id}" \
-      | awk -F"$tab" 'NF==4 && $4 != ""' > "$dir/claude-map.tsv" || true
+      > "$staging" 2>/dev/null; then
+      rm -f "$staging"
+      exit 0
+    fi
+
+    awk -F"$tab" 'NF == 4 && $4 != ""' "$staging" > "$staging.claude"
+    rm -f "$staging"
+    mv "$staging.claude" "$map"
   '';
   tmuxRestoreClaudeAgents = pkgs.writeShellScriptBin "tmux-restore-claude-agents" ''
     set -u
