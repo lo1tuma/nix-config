@@ -6,5 +6,27 @@
   "model": "opus[1m]",
   "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
-  "autoMemoryEnabled": false
+  "autoMemoryEnabled": false,
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/run/current-system/sw/bin/tmux-remember-claude-session"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/run/current-system/sw/bin/tmux-forget-claude-session"
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -93,32 +93,20 @@ let
     /usr/bin/sqlite3 "$db" "DELETE FROM access WHERE $rotted;" || exit 0
     /usr/bin/killall tccd >/dev/null 2>&1 || true
   '';
-  claudeLauncher = pkgs.writeShellScriptBin "claude" ''
+  tmuxRememberClaudeSession = pkgs.writeShellScriptBin "tmux-remember-claude-session" ''
     set -u
-
-    pass_through=0
-    sid=""
-    prev=""
-    for arg in "$@"; do
-      case "$prev" in
-        -r|--resume|--session-id) sid="$arg" ;;
-      esac
-      case "$arg" in
-        -r|--resume|--session-id|-c|--continue|--from-pr) pass_through=1 ;;
-      esac
-      prev="$arg"
-    done
-
-    if [ "$pass_through" -eq 0 ]; then
-      sid="$(/usr/bin/uuidgen | /usr/bin/tr 'A-Z' 'a-z')"
-      set -- --session-id "$sid" "$@"
-    fi
-
-    if [ -n "''${TMUX:-}" ] && [ -n "$sid" ]; then
-      tmux set -p @claude_session_id "$sid" >/dev/null 2>&1 || true
-    fi
-
-    exec ${claudeCode}/bin/claude "$@"
+    [ "''${CLAUDE_CODE_ENTRYPOINT:-}" = "cli" ] || exit 0
+    [ -n "''${TMUX:-}" ] || exit 0
+    [ -n "''${TMUX_PANE:-}" ] || exit 0
+    [ -n "''${CLAUDE_CODE_SESSION_ID:-}" ] || exit 0
+    tmux set -p -t "$TMUX_PANE" @claude_session_id "$CLAUDE_CODE_SESSION_ID" >/dev/null 2>&1 || true
+  '';
+  tmuxForgetClaudeSession = pkgs.writeShellScriptBin "tmux-forget-claude-session" ''
+    set -u
+    [ "''${CLAUDE_CODE_ENTRYPOINT:-}" = "cli" ] || exit 0
+    [ -n "''${TMUX:-}" ] || exit 0
+    [ -n "''${TMUX_PANE:-}" ] || exit 0
+    tmux set -p -t "$TMUX_PANE" -u @claude_session_id >/dev/null 2>&1 || true
   '';
   tmuxSaveClaudeSessions = pkgs.writeShellScriptBin "tmux-save-claude-sessions" ''
     set -u
@@ -356,7 +344,9 @@ in
       packages = localSettings.packages;
     }
     ++ [
-      claudeLauncher
+      claudeCode
+      tmuxRememberClaudeSession
+      tmuxForgetClaudeSession
       tmuxSaveClaudeSessions
       tmuxRestoreClaudeAgents
       tmuxLauncher
