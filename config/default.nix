@@ -76,6 +76,23 @@ let
     [ -n "''${enforced:-}" ] || exit 0
     /usr/bin/osascript -e "display notification \"macOS will force-install an update and RESTART at ''${enforced}. Save your work and install on your own terms first: sudo softwareupdate -ia --restart\" with title \"MDM update deadline approaching\" sound name \"Basso\"" >/dev/null 2>&1 || true
   '';
+  pruneStaleTccGrants = ''
+    db="$HOME/Library/Application Support/com.apple.TCC/TCC.db"
+    [ -f "$db" ] || exit 0
+
+    rotted="client LIKE '/nix/store/%' AND service IN (
+      'kTCCServiceSystemPolicyDesktopFolder',
+      'kTCCServiceSystemPolicyDocumentsFolder',
+      'kTCCServiceSystemPolicyDownloadsFolder',
+      'kTCCServiceSystemPolicyNetworkVolumes',
+      'kTCCServiceSystemPolicyRemovableVolumes')"
+
+    stale=$(/usr/bin/sqlite3 "$db" "SELECT count(*) FROM access WHERE $rotted;" 2>/dev/null) || exit 0
+    [ "''${stale:-0}" -gt 0 ] || exit 0
+
+    /usr/bin/sqlite3 "$db" "DELETE FROM access WHERE $rotted;" || exit 0
+    /usr/bin/killall tccd >/dev/null 2>&1 || true
+  '';
   claudeLauncher = pkgs.writeShellScriptBin "claude" ''
     set -u
 
@@ -477,6 +494,13 @@ in
     serviceConfig = {
       RunAtLoad = true;
       KeepAlive = false;
+    };
+  };
+  launchd.user.agents.prune-stale-tcc-grants = {
+    script = pruneStaleTccGrants;
+    serviceConfig = {
+      RunAtLoad = true;
+      StartInterval = 1800;
     };
   };
   launchd.user.agents.enforced-update-warning = {
