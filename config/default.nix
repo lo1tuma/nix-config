@@ -127,14 +127,35 @@ let
     rm -f "$staging"
     mv "$staging.claude" "$map"
   '';
-  tmuxRestoreClaudeAgents = pkgs.writeShellScriptBin "tmux-restore-claude-agents" ''
+  tmuxOfferClaudeResume = pkgs.writeShellScriptBin "tmux-offer-claude-resume" ''
     set -u
-    map="$HOME/.tmux/resurrect/claude-map.tsv"
+    map="${claudeSessionMap}"
     [ -f "$map" ] || exit 0
+
+    restored_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index}") || exit 0
     tab=$(printf '\t')
-    while IFS="$tab" read -r sess win pane sid; do
+
+    pane_runs_shell() {
+      case "$(tmux display-message -p -t "$1" "#{pane_current_command}" 2>/dev/null)" in
+        zsh | bash | sh | fish) return 0 ;;
+        *) return 1 ;;
+      esac
+    }
+
+    while IFS="$tab" read -r session window pane sid; do
       [ -n "''${sid:-}" ] || continue
-      tmux send-keys -t "$sess:$win.$pane" "claude --resume $sid" C-m >/dev/null 2>&1 || true
+      printf '%s\n' "$restored_panes" | grep -Fxq "$session:$window.$pane" || continue
+
+      target="=$session:$window.$pane"
+      attempt=0
+      while [ "$attempt" -lt 40 ] && ! pane_runs_shell "$target"; do
+        /bin/sleep 0.25
+        attempt=$((attempt + 1))
+      done
+      pane_runs_shell "$target" || continue
+
+      tmux set -p -t "$target" @claude_session_id "$sid" >/dev/null 2>&1 || true
+      tmux send-keys -t "$target" -l "claude --resume $sid" >/dev/null 2>&1 || true
     done < "$map"
   '';
   tmuxLauncher = pkgs.writeShellScriptBin "tm" ''
@@ -358,7 +379,7 @@ in
       tmuxRememberClaudeSession
       tmuxForgetClaudeSession
       tmuxSaveClaudeSessions
-      tmuxRestoreClaudeAgents
+      tmuxOfferClaudeResume
       tmuxLauncher
       tmuxAttachLatest
     ];
@@ -440,7 +461,7 @@ in
       set -g @resurrect-capture-pane-contents 'on'
       set -g @resurrect-strategy-nvim 'session'
       set -g @resurrect-hook-post-save-all '${tmuxSaveClaudeSessions}/bin/tmux-save-claude-sessions'
-      set -g @resurrect-hook-post-restore-all '${tmuxRestoreClaudeAgents}/bin/tmux-restore-claude-agents'
+      set -g @resurrect-hook-post-restore-all '${tmuxOfferClaudeResume}/bin/tmux-offer-claude-resume'
 
       set -sg escape-time 0
       set-option -g default-shell "${systemZsh}"
