@@ -83,71 +83,6 @@ let
     /usr/bin/sqlite3 "$db" "DELETE FROM access WHERE $rotted;" || exit 0
     /usr/bin/killall tccd >/dev/null 2>&1 || true
   '';
-  tmuxRememberClaudeSession = pkgs.writeShellScriptBin "tmux-remember-claude-session" ''
-    set -u
-    [ "''${CLAUDE_CODE_ENTRYPOINT:-}" = "cli" ] || exit 0
-    [ -n "''${TMUX:-}" ] || exit 0
-    [ -n "''${TMUX_PANE:-}" ] || exit 0
-    [ -n "''${CLAUDE_CODE_SESSION_ID:-}" ] || exit 0
-    tmux set -p -t "$TMUX_PANE" @claude_session_id "$CLAUDE_CODE_SESSION_ID" >/dev/null 2>&1 || true
-  '';
-  tmuxForgetClaudeSession = pkgs.writeShellScriptBin "tmux-forget-claude-session" ''
-    set -u
-    [ "''${CLAUDE_CODE_ENTRYPOINT:-}" = "cli" ] || exit 0
-    [ -n "''${TMUX:-}" ] || exit 0
-    [ -n "''${TMUX_PANE:-}" ] || exit 0
-    tmux set -p -t "$TMUX_PANE" -u @claude_session_id >/dev/null 2>&1 || true
-  '';
-  claudeSessionMap = "$HOME/.tmux/resurrect/claude-map.tsv";
-  tmuxSaveClaudeSessions = pkgs.writeShellScriptBin "tmux-save-claude-sessions" ''
-    set -u
-    map="${claudeSessionMap}"
-    staging="$map.staging"
-    mkdir -p "$(dirname "$map")"
-    tab=$(printf '\t')
-
-    if ! tmux list-panes -a \
-      -F "#{session_name}$tab#{window_index}$tab#{pane_index}$tab#{@claude_session_id}" \
-      > "$staging" 2>/dev/null; then
-      rm -f "$staging"
-      exit 0
-    fi
-
-    awk -F"$tab" 'NF == 4 && $4 != ""' "$staging" > "$staging.claude"
-    rm -f "$staging"
-    mv "$staging.claude" "$map"
-  '';
-  tmuxOfferClaudeResume = pkgs.writeShellScriptBin "tmux-offer-claude-resume" ''
-    set -u
-    map="${claudeSessionMap}"
-    [ -f "$map" ] || exit 0
-
-    restored_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index}") || exit 0
-    tab=$(printf '\t')
-
-    pane_runs_shell() {
-      case "$(tmux display-message -p -t "$1" "#{pane_current_command}" 2>/dev/null)" in
-        zsh | bash | sh | fish) return 0 ;;
-        *) return 1 ;;
-      esac
-    }
-
-    while IFS="$tab" read -r session window pane sid; do
-      [ -n "''${sid:-}" ] || continue
-      printf '%s\n' "$restored_panes" | grep -Fxq "$session:$window.$pane" || continue
-
-      target="=$session:$window.$pane"
-      attempt=0
-      while [ "$attempt" -lt 40 ] && ! pane_runs_shell "$target"; do
-        /bin/sleep 0.25
-        attempt=$((attempt + 1))
-      done
-      pane_runs_shell "$target" || continue
-
-      tmux set -p -t "$target" @claude_session_id "$sid" >/dev/null 2>&1 || true
-      tmux send-keys -t "$target" -l "claude --resume $sid" >/dev/null 2>&1 || true
-    done < "$map"
-  '';
   tmuxLauncher = pkgs.writeShellScriptBin "tm" ''
     set -u
 
@@ -365,10 +300,6 @@ in
       packages = localSettings.packages;
     }
     ++ [
-      tmuxRememberClaudeSession
-      tmuxForgetClaudeSession
-      tmuxSaveClaudeSessions
-      tmuxOfferClaudeResume
       tmuxLauncher
       tmuxAttachLatest
     ];
@@ -449,8 +380,6 @@ in
       set -g @continuum-save-interval '5'
       set -g @resurrect-capture-pane-contents 'on'
       set -g @resurrect-strategy-nvim 'session'
-      set -g @resurrect-hook-post-save-all '${tmuxSaveClaudeSessions}/bin/tmux-save-claude-sessions'
-      set -g @resurrect-hook-post-restore-all '${tmuxOfferClaudeResume}/bin/tmux-offer-claude-resume'
 
       set -sg escape-time 0
       set-option -g default-shell "${systemZsh}"
