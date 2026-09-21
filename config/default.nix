@@ -9,16 +9,6 @@ let
     if builtins.pathExists ./local-settings.nix then import ./local-settings.nix else { }
   );
   systemZsh = "/run/current-system/sw/bin/zsh";
-  claudeCode =
-    (import
-      (builtins.fetchTarball {
-        url = localSettings.nix.nixpkgsSource;
-      })
-      {
-        system = localSettings.nix.hostPlatform;
-        config.allowUnfree = true;
-      }
-    ).claude-code;
   perUserLinks = {
     ".gitconfig" = "/etc/per-user/.gitconfig";
     ".gitignore" = "/etc/per-user/.gitignore";
@@ -375,7 +365,6 @@ in
       packages = localSettings.packages;
     }
     ++ [
-      claudeCode
       tmuxRememberClaudeSession
       tmuxForgetClaudeSession
       tmuxSaveClaudeSessions
