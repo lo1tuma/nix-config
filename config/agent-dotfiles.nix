@@ -36,6 +36,54 @@ let
     else
       { };
 
+  pstackRevision = "6ed0f7a9504f577d7529064103cecce9be7dfc5e";
+
+  pstackFile =
+    path: sha256:
+    pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/cursor/plugins/${pstackRevision}/pstack/${path}";
+      inherit sha256;
+    };
+
+  pstackLicense = pstackFile "LICENSE" "03i0gfkks9vl2q35gw3wwz34gqh2bq88s0hsd9b949z0psk7r5dw";
+
+  pstackSkills = {
+    unslop = {
+      sha256 = "1jh0hqjdxndlgi1mkjk6nklr1114kag0c88r44la8cyrjhi5gln6";
+      displayName = "Unslop";
+      shortDescription = "Cut AI tells from any writing";
+      defaultPrompt = "Use $unslop to strip AI writing patterns from this text.";
+    };
+    technical-writing = {
+      sha256 = "0k5qz0k93fxb7kpdaxm7rim7qg90v5pyp3fz6s7yw4p4b9i9wvbd";
+      displayName = "Technical Writing";
+      shortDescription = "Write docs a tired engineer gets first read";
+      defaultPrompt = "Use $technical-writing to write or review this document.";
+    };
+  };
+
+  codexDescriptor =
+    name: skill:
+    pkgs.writeText "${name}-openai.yaml" ''
+      interface:
+        display_name: "${skill.displayName}"
+        short_description: "${skill.shortDescription}"
+        default_prompt: "${skill.defaultPrompt}"
+
+      policy:
+        allow_implicit_invocation: false
+    '';
+
+  pstackSkillFiles = lib.foldl' lib.recursiveUpdate { } (
+    lib.mapAttrsToList (name: skill: {
+      "${name}/SKILL.md" = pstackFile "skills/${name}/SKILL.md" skill.sha256;
+      "${name}/LICENSE" = pstackLicense;
+      "${name}/agents/openai.yaml" = codexDescriptor name skill;
+    }) pstackSkills
+  );
+
+  skillFiles = managedSkillFiles // pstackSkillFiles;
+
   mapFilesToTarget =
     targetPrefix:
     lib.mapAttrs' (relativePath: source: lib.nameValuePair "${targetPrefix}/${relativePath}" source);
@@ -50,8 +98,8 @@ let
     {
       ".claude/settings.json" = claudeSettingsSource;
     }
-    // mapFilesToTarget ".claude/skills" managedSkillFiles
-    // mapFilesToTarget ".codex/skills" managedSkillFiles;
+    // mapFilesToTarget ".claude/skills" skillFiles
+    // mapFilesToTarget ".codex/skills" skillFiles;
 
   runAsPrimaryUser = command: "/usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg command}";
 
