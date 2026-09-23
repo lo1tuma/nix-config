@@ -6,5 +6,7 @@
   "model": "opus[1m]",
   "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
-  "autoMemoryEnabled": false
+  "autoMemoryEnabled": false,
+  "syncClaudeAiSkills": false,
+  "syncClaudeAiPlugins": false
 }
