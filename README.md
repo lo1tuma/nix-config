@@ -25,10 +25,22 @@ This repository contains my darwin-specific nix configuration and dotfiles.
 * the home directories stay real writable directories, so both tools can still create runtime state there
 
 ### Skill layers
-* entry points are the skills invoked by hand, one per kind of work
+* entry points are the skills invoked by hand, one per kind of work, and are named `flow-*` so typing `/flow` narrows to them
 * lenses carry the judgment an entry point needs; they install to `~/.agent-skill-library/` instead of the scanned skill directories, so they cost no context until something reads one
 * `~/.agent-skill-library/CATALOG.md` is generated from the same nix attribute set that pins the skills, so it cannot drift from what is installed
 * keeping lenses out of the scanned directories holds the skill list inside Codex's 8000-character budget; with everything visible it was roughly 23000
+
+### Which entry point for which work
+
+| Work | Entry points, in order |
+| --- | --- |
+| Large feature, concept first | `concept`, then `deep-dive` per open topic, then `delivery-plan`, then the feature flow per milestone |
+| Feature or milestone | `/plan`, `code-design`, `grill-me`, `implement-plan`, `address-review-comments` |
+| Refactoring session | `plan-refactoring`, `grill-me` when the plan is large, then `refactor-next` per step |
+| Reviewing a pull request | `review-design` |
+| Deep security audit | `flow-security-audit` |
+
+`grill-me`, `address-review-comments`, `simplify-codebase`, `worktree`, `handover` and `fix-renovate-prs` keep their own names and sit alongside the `flow-*` entry points.
 
 ## tmux
 * tmux restores the last saved layout after reboot via `tmux-resurrect` and `tmux-continuum`

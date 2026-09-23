@@ -1,0 +1,7 @@
+interface:
+  display_name: "Refactor Next"
+  short_description: "Execute the next refactoring step"
+  default_prompt: "Use $flow-refactor-next to execute the next step of the refactoring plan."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Concept"
+  short_description: "Draft and stress-test a large concept"
+  default_prompt: "Use $flow-concept to work out the concept for this before planning it."
+
+policy:
+  allow_implicit_invocation: false

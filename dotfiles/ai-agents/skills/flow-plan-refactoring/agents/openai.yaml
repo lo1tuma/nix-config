@@ -1,0 +1,7 @@
+interface:
+  display_name: "Plan Refactoring"
+  short_description: "Find and plan a refactoring campaign"
+  default_prompt: "Use $flow-plan-refactoring to survey this codebase and plan a refactoring campaign."
+
+policy:
+  allow_implicit_invocation: false

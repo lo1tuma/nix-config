@@ -1,0 +1,7 @@
+interface:
+  display_name: "Delivery Plan"
+  short_description: "Turn a concept into ordered milestones"
+  default_prompt: "Use $flow-delivery-plan to cut this concept into milestones."
+
+policy:
+  allow_implicit_invocation: false

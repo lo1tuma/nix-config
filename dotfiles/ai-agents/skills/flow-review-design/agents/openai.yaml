@@ -1,0 +1,7 @@
+interface:
+  display_name: "Review Design"
+  short_description: "Review a diff through the design lenses"
+  default_prompt: "Use $flow-review-design to review the design of this change."
+
+policy:
+  allow_implicit_invocation: false

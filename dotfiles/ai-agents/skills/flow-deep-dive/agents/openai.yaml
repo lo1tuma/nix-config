@@ -1,0 +1,7 @@
+interface:
+  display_name: "Deep Dive"
+  short_description: "Deep-dive one open topic of a concept"
+  default_prompt: "Use $flow-deep-dive to resolve this topic of the concept."
+
+policy:
+  allow_implicit_invocation: false

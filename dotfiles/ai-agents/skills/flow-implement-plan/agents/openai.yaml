@@ -1,0 +1,7 @@
+interface:
+  display_name: "Implement Plan"
+  short_description: "Implement a grilled plan and open the PR"
+  default_prompt: "Use $flow-implement-plan to build this plan and open the pull request."
+
+policy:
+  allow_implicit_invocation: false

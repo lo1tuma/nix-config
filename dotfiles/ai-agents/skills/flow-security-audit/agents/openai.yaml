@@ -1,0 +1,7 @@
+interface:
+  display_name: "Security Audit"
+  short_description: "Hunt, refute and report vulnerabilities"
+  default_prompt: "Use $flow-security-audit to run a deep security audit of this codebase."
+
+policy:
+  allow_implicit_invocation: false

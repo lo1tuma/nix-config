@@ -1,0 +1,7 @@
+interface:
+  display_name: "Code Design"
+  short_description: "Design types and boundaries before coding"
+  default_prompt: "Use $flow-code-design to decide the shape of this change before implementing it."
+
+policy:
+  allow_implicit_invocation: false
