@@ -29,6 +29,12 @@
 - For whole-branch operations such as `git rebase`, `git merge`, `git cherry-pick`, `git pull`, or `git push`: first check whether unrelated or untracked files, staged changes, or outgoing commits could be affected or included. If the right scope is unclear, ask the user before continuing.
 - When in doubt, leave files untracked or uncommitted and report what remains.
 
+## Skill library
+
+- Deeper judgment on design, refactoring, patterns and security lives in `~/.agent-skill-library/`.
+- These are reference skills, not commands. They are outside the scanned skill directories on purpose, so nothing loads until it is needed.
+- `~/.agent-skill-library/CATALOG.md` lists every one with its purpose and path. Consult it when a task calls for judgment the current context does not already carry, then read that skill's `SKILL.md`.
+
 ## Coding
 
 ### Naming
