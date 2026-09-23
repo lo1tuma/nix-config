@@ -150,8 +150,8 @@ let
       ${runAsPrimaryUser ''
         mkdir -p ${lib.escapeShellArg targetDir}
         rm -f ${lib.escapeShellArg tmpPath}
-        /bin/cp ${lib.escapeShellArg (toString source)} ${lib.escapeShellArg tmpPath}
-        /bin/mv ${lib.escapeShellArg tmpPath} ${lib.escapeShellArg targetPath}
+        /bin/cp -f ${lib.escapeShellArg (toString source)} ${lib.escapeShellArg tmpPath}
+        /bin/mv -f ${lib.escapeShellArg tmpPath} ${lib.escapeShellArg targetPath}
       ''}
     '';
 
@@ -212,7 +212,7 @@ let
               }
             ' "$3" > "$4"
           ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexConfig" "$codexTmp"
-          /bin/mv "$codexTmp" "$codexConfig"
+          /bin/mv -f "$codexTmp" "$codexConfig"
           /usr/sbin/chown ${lib.escapeShellArg managedOwner} "$codexConfig"
         else
           /usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg ''
