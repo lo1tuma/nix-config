@@ -47,6 +47,12 @@
 - Prefer effect or domain meaning.
 - Bad: `onClick = handleClick()`
 - Better: `onClick = incrementCount()`
+- Name a function when the name states intent the call site does not already state.
+- Bad: `array.filter((value) => value !== 42)`
+- Better: `array.filter(function isEligibleForBar(value) { return value !== 42; })`
+- Leave a function anonymous when a name would only repeat what is already stated.
+- Bad: `test('verify foo works', function verifyFooWorks() { ... })`
+- Better: `test('verify foo works', () => { ... })`
 
 ### Documentation
 
