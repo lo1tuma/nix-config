@@ -20,7 +20,6 @@ let
     nix
     query
     regex
-    tmux
     toml
     tsx
     typescript
