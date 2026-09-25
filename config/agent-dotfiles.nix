@@ -785,10 +785,11 @@ let
         codexTmp="$codexConfig.nix-config.tmp"
         codexProjectDocs=${lib.escapeShellArg ''project_doc_fallback_filenames = ["AGENTS.md", "agents.md"]''}
         codexDefaultModeRequestUserInput=${lib.escapeShellArg ''default_mode_request_user_input = true''}
+        codexTuiAlternateScreen=${lib.escapeShellArg ''alternate_screen = "never"''}
         if [ -e "$codexConfig" ]; then
           /usr/sbin/chown ${lib.escapeShellArg managedOwner} "$codexConfig"
           /usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg ''
-            /usr/bin/awk -v projectDocs="$1" -v defaultModeRequestUserInput="$2" '
+            /usr/bin/awk -v projectDocs="$1" -v defaultModeRequestUserInput="$2" -v tuiAlternateScreen="$3" '
               function leaveFeatures() {
                 if (inFeatures && !seenDefaultModeRequestUserInput) {
                   print defaultModeRequestUserInput
@@ -796,13 +797,25 @@ let
                 inFeatures = 0
               }
 
+              function leaveTui() {
+                if (inTui && !seenTuiAlternateScreen) {
+                  print tuiAlternateScreen
+                }
+                inTui = 0
+              }
+
               /^project_doc_fallback_filenames[[:space:]]*=/ { print projectDocs; seenProjectDocs = 1; next }
 
               /^\[[^]]+\][[:space:]]*$/ {
                 leaveFeatures()
+                leaveTui()
                 inFeatures = ($0 == "[features]")
+                inTui = ($0 == "[tui]")
                 if (inFeatures) {
                   seenFeatures = 1
+                }
+                if (inTui) {
+                  seenTui = 1
                 }
                 print
                 next
@@ -814,9 +827,16 @@ let
                 next
               }
 
+              inTui && /^alternate_screen[[:space:]]*=/ {
+                print tuiAlternateScreen
+                seenTuiAlternateScreen = 1
+                next
+              }
+
               { print }
               END {
                 leaveFeatures()
+                leaveTui()
                 if (!seenProjectDocs) {
                   if (NR > 0) {
                     print ""
@@ -828,15 +848,20 @@ let
                   print "[features]"
                   print defaultModeRequestUserInput
                 }
+                if (!seenTui) {
+                  print ""
+                  print "[tui]"
+                  print tuiAlternateScreen
+                }
               }
-            ' "$3" > "$4"
-          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexConfig" "$codexTmp"
+            ' "$4" > "$5"
+          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexTuiAlternateScreen" "$codexConfig" "$codexTmp"
           /bin/mv -f "$codexTmp" "$codexConfig"
           /usr/sbin/chown ${lib.escapeShellArg managedOwner} "$codexConfig"
         else
           /usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg ''
-            printf '%s\n\n%s\n%s\n' "$1" '[features]' "$2" > "$3"
-          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexConfig"
+            printf '%s\n\n%s\n%s\n\n%s\n%s\n' "$1" '[features]' "$2" '[tui]' "$3" > "$4"
+          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexTuiAlternateScreen" "$codexConfig"
         fi
       ''
     ]
