@@ -38,7 +38,7 @@ Read `~/.agent-skill-library/CATALOG.md`, then read the lenses this change actua
 
 1. **Sketch the call site first.** Write how a caller uses the thing before writing the thing. If the call site is awkward, the design is wrong and nothing downstream fixes it.
 2. **Produce two designs, not one.** They must differ structurally, not in naming. State what each makes easy and what each makes hard. If the second one is a straw man, you have one design and a decoration.
-3. **Choose, and say why the other lost.** The rejected design and its reason go in the output. That is what stops the same debate reappearing in review.
+3. **Put the choice to the user.** Ask through `AskUserQuestion`, with a `preview` on each design so they sit side by side and can be annotated. Lead with your recommendation and say what each one costs. The rejected design and its reason go in the output, which is what stops the same debate reappearing in review.
 4. **Write the chosen shape as code.** Types, signatures, discriminated unions, error type, module boundaries and their direction. Bodies stay unimplemented.
 5. **Check the shape against the lenses you selected.** Each one either passes or changes the design. A lens that fires and gets ignored is noted with the reason.
 
