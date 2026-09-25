@@ -11,10 +11,11 @@ Interrogate the user's plan aggressively but usefully.
 
 ## Behavior
 
-- Ask one question at a time.
+- Ask one question at a time, through `AskUserQuestion`.
 - Drive toward shared understanding.
 - Surface assumptions, risks, dependencies, and missing decisions.
-- For each question, include your recommended answer or direction.
+- Make your recommended answer the first option and mark it `(Recommended)`.
+- Put the reasoning the question rests on inside the question, and give the options a `preview` when the answer deserves a comment.
 
 ## Process
 

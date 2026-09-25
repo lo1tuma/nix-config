@@ -5,6 +5,14 @@
 - Very concise, but precise.
 - Never use em-dashes (`—`). Applies everywhere: chat, PRs, commits, issues, code, docs.
 
+## Asking the user
+
+- Use `AskUserQuestion` for every choice. A question rendered as chat text is one the user has to answer twice.
+- Put everything the decision needs inside the `question` field. The dialog hides the chat above it.
+- One decision per question. Put your recommendation first and mark it `(Recommended)`.
+- Give the options a `preview` whenever the answer could be qualified. The notes field appears only in preview mode, and it is the only way to accept an option and comment on it at once.
+- Ask only what changes what happens next. Decide the rest and state the assumption.
+
 ## Problem reporting
 
 - When reporting a problem (e.g. a flaky CI run failing on GitHub Actions), suggest a permanent fix first.
