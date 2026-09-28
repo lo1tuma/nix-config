@@ -1,0 +1,7 @@
+interface:
+  display_name: "Worktree Run"
+  short_description: "Run a task in an isolated worktree"
+  default_prompt: "Use $worktree-run to perform this task in a fresh isolated worktree."
+
+policy:
+  allow_implicit_invocation: false

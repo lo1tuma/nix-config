@@ -40,7 +40,9 @@ This repository contains my darwin-specific nix configuration and dotfiles.
 | Reviewing a pull request | `review-design` |
 | Deep security audit | `flow-security-audit` |
 
-`grill-me`, `address-review-comments`, `simplify-codebase`, `worktree`, `handover` and `fix-renovate-prs` keep their own names and sit alongside the `flow-*` entry points.
+`grill-me`, `address-review-comments`, `simplify-codebase`, `worktree-setup`,
+`worktree-run`, `handover` and `fix-renovate-prs` keep their own names and sit
+alongside the `flow-*` entry points.
 
 ## tmux
 * tmux restores the last saved layout after reboot via `tmux-resurrect` and `tmux-continuum`

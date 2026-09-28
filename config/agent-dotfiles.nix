@@ -11,7 +11,11 @@ let
   claudeSettingsSource = sourceRoot + "/claude-settings.json";
   skillsSource = sourceRoot + "/skills";
   skillLibraryDirectory = ".agent-skill-library";
-  retiredSkillNames = [ "security-audit" ];
+  retiredSkillNames = [
+    "create-worktree"
+    "security-audit"
+    "worktree"
+  ];
 
   isVisibleEntry = name: builtins.substring 0 1 name != ".";
 

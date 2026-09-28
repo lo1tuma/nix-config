@@ -1,0 +1,7 @@
+interface:
+  display_name: "Worktree Setup"
+  short_description: "Create an isolated worktree and stop"
+  default_prompt: "Use $worktree-setup with an optional topic to create a fresh worktree, then stop."
+
+policy:
+  allow_implicit_invocation: false
