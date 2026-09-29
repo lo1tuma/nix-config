@@ -52,3 +52,9 @@ alongside the `flow-*` entry points.
 
 ## Git
 * `/usr/local/bin/git` points to Nix Git so default macOS PATH lookup avoids the Apple developer-tools shim
+
+## Alacritty
+* launch Alacritty from `/Applications/Nix Apps/Alacritty.app`, never from a store path; store paths move on every bump and the Dock entry silently keeps the old one
+* TCC binds Alacritty's folder grants to its ad-hoc code signature, which changes with every rebuild, so a stale grant denies Desktop, Documents and Downloads outright
+* the `reset-alacritty-tcc-grants` agent runs `tccutil reset All org.alacritty` once per Alacritty store path change, so the next folder access prompts again instead of failing
+* a launchd agent cannot edit `TCC.db` directly: that needs Full Disk Access, which cannot be granted to a binary whose path and signature change on every rebuild

@@ -66,22 +66,12 @@ let
     [ -n "''${enforced:-}" ] || exit 0
     /usr/bin/osascript -e "display notification \"macOS will force-install an update and RESTART at ''${enforced}. Save your work and install on your own terms first: sudo softwareupdate -ia --restart\" with title \"MDM update deadline approaching\" sound name \"Basso\"" >/dev/null 2>&1 || true
   '';
-  pruneStaleTccGrants = ''
-    db="$HOME/Library/Application Support/com.apple.TCC/TCC.db"
-    [ -f "$db" ] || exit 0
-
-    rotted="client LIKE '/nix/store/%' AND service IN (
-      'kTCCServiceSystemPolicyDesktopFolder',
-      'kTCCServiceSystemPolicyDocumentsFolder',
-      'kTCCServiceSystemPolicyDownloadsFolder',
-      'kTCCServiceSystemPolicyNetworkVolumes',
-      'kTCCServiceSystemPolicyRemovableVolumes')"
-
-    stale=$(/usr/bin/sqlite3 "$db" "SELECT count(*) FROM access WHERE $rotted;" 2>/dev/null) || exit 0
-    [ "''${stale:-0}" -gt 0 ] || exit 0
-
-    /usr/bin/sqlite3 "$db" "DELETE FROM access WHERE $rotted;" || exit 0
-    /usr/bin/killall tccd >/dev/null 2>&1 || true
+  resetAlacrittyTccGrantsOnUpgrade = ''
+    marker="$HOME/.cache/alacritty-tcc-grants-store-path"
+    [ "$(/bin/cat "$marker" 2>/dev/null)" = "${pkgs.alacritty}" ] && exit 0
+    /usr/bin/tccutil reset All org.alacritty >/dev/null 2>&1 || true
+    /bin/mkdir -p "$(/usr/bin/dirname "$marker")"
+    echo "${pkgs.alacritty}" > "$marker"
   '';
   tmuxLauncher = pkgs.writeShellScriptBin "tm" ''
     set -u
@@ -435,11 +425,11 @@ in
       KeepAlive = false;
     };
   };
-  launchd.user.agents.prune-stale-tcc-grants = {
-    script = pruneStaleTccGrants;
+  launchd.user.agents.reset-alacritty-tcc-grants = {
+    script = resetAlacrittyTccGrantsOnUpgrade;
     serviceConfig = {
       RunAtLoad = true;
-      StartInterval = 1800;
+      KeepAlive = false;
     };
   };
   launchd.user.agents.enforced-update-warning = {
