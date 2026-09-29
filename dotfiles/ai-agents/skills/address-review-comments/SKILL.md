@@ -107,7 +107,7 @@ Order groups top-to-bottom by each group's earliest thread.
 
 Present the proposed grouping in one message: for each group, list its member threads (`path:line` each, or "PR-level") and one sentence on the shared underlying ask. Call out explicitly which threads you consider duplicates of each other.
 
-Confirm with `AskUserQuestion`:
+Confirm with `AskUserQuestion`. Put the grouping into the `question` field. The dialog hides the chat text before it, so a grouping that lives only in chat is one the user never saw. Options:
 
 - **Accept** - proceed with this grouping.
 - **Adjust** - user splits or merges groups; capture the direction, re-present, and confirm again.
@@ -132,7 +132,7 @@ Do not edit any file at this stage. The proposal is text only.
 
 ### 4b. Ask for confirmation
 
-Use `AskUserQuestion` with these options:
+Use `AskUserQuestion`. Put everything from 4a into the `question` field: the members with their quoted comments, the reviewers, the summary, the proposed fix, and the proposed replies in a fenced block. The dialog hides the chat text before it, so the user decides from the question alone. Options:
 
 - **Apply** - apply the proposed fix locally once and stage the proposed replies as-is for every member thread.
 - **Adjust fix** - user wants to change the code/doc change; capture their direction.
@@ -173,7 +173,7 @@ If it FAILs, surface it and let the user decide whether to fix first or submit a
 
 ### 5c. Final confirmation
 
-Use `AskUserQuestion`:
+Use `AskUserQuestion`. Put the 5a summary and the 5b gate result into the `question` field, for the same reason as in 4b. Options:
 
 - **Submit all** - commit, push, post every reply, resolve every thread.
 - **Adjust** - go back to a specific staged group (re-run 4a-4c for it), then return here.
