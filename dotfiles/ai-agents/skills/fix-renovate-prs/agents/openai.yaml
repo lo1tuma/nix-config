@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $fix-renovate-prs to fix open failing Renovate PRs in this repository."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

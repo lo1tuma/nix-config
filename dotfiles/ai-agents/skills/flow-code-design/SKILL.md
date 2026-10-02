@@ -1,6 +1,6 @@
 ---
 name: flow-code-design
-description: Decide the shape of a change before implementing it. Produces two candidate designs, then the chosen types, signatures, module boundaries and error semantics. Use after a plan exists and before implementation, or whenever a change creates or reshapes an interface, a type, or a module boundary.
+description: Decide the shape of a change before implementing it. Produces two candidate designs, then the chosen types, signatures, module boundaries and error semantics. Only on explicit user invocation or a hand-off from a skill the user invoked; never start it on your own.
 metadata:
   short-description: Design types and boundaries before coding
 ---

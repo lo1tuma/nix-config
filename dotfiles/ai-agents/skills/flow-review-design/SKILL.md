@@ -1,6 +1,6 @@
 ---
 name: flow-review-design
-description: Review a diff or a module for design quality by fanning out lenses as read-only subagents, merging their findings, and ranking what survives. Use when reviewing a pull request, self-reviewing a change before opening one, or judging the design of existing code. Read-only, it proposes changes rather than applying them.
+description: Review a diff or a module for design quality by fanning out lenses as read-only subagents, merging their findings, and ranking what survives. Only on explicit user invocation or a hand-off from a skill the user invoked; never start it on your own. Read-only, it proposes changes rather than applying them.
 metadata:
   short-description: Review a diff through the design lenses
 ---

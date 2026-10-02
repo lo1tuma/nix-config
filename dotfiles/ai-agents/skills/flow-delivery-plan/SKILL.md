@@ -1,6 +1,7 @@
 ---
 name: flow-delivery-plan
-description: Turn an agreed concept into ordered milestones, each sized for one plan, grill and implement cycle. Use once a concept document is settled and the work needs to be sequenced into deliverable pieces.
+description: Turn an agreed concept into ordered milestones, each sized for one plan, grill and implement cycle. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Turn a concept into ordered milestones
 ---

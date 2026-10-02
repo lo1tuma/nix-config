@@ -1,6 +1,7 @@
 ---
 name: handover
-description: Turn the current session into a compact handover note for a fresh agent. Use when the user wants a continuation brief, restart context, or a document for the next session.
+description: Turn the current session into a compact handover note for a fresh agent. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Create a compact continuation note
 ---

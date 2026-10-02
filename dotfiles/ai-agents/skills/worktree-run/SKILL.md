@@ -1,6 +1,7 @@
 ---
 name: worktree-run
-description: Create a fresh git worktree, enter it, and carry out the requested task in isolation. Use when the user invokes `$worktree-run` or asks to perform work in a separate worktree.
+description: Create a fresh git worktree, enter it, and carry out the requested task in isolation. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Run a task in an isolated worktree
 ---

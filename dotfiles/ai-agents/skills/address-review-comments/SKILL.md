@@ -1,6 +1,7 @@
 ---
 name: address-review-comments
-description: Triage unresolved GitHub PR review threads. First read every thread as a whole and consolidate ones that a single fix resolves (the same point often gets raised across several files or lines). Then walk through each fix group interactively, propose one fix and a reply per thread, and confirm with the user. Apply code changes locally but stage every reply and thread resolution; only after a final confirmation post all replies, resolve all threads, and commit and push, as one atomic batch. Use when the user wants to triage or address pending PR review feedback.
+description: Triage unresolved GitHub PR review threads. First read every thread as a whole and consolidate ones that a single fix resolves (the same point often gets raised across several files or lines). Then walk through each fix group interactively, propose one fix and a reply per thread, and confirm with the user. Apply code changes locally but stage every reply and thread resolution; only after a final confirmation post all replies, resolve all threads, and commit and push, as one atomic batch. Only on explicit invocation.
+disable-model-invocation: true
 ---
 
 # Address PR review comments

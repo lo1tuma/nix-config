@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: Challenge a plan, design, or proposal with focused questions until the open decisions, risks, and assumptions are resolved. Use when the user asks to be grilled, stress-tested, or challenged on an approach.
+description: Challenge a plan, design, or proposal with focused questions until the open decisions, risks, and assumptions are resolved. Only on explicit user invocation or a hand-off from a skill the user invoked; never start it on your own.
 metadata:
   short-description: Stress-test a plan with focused questions
 ---

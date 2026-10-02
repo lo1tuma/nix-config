@@ -1,6 +1,7 @@
 ---
 name: flow-implement-plan
-description: Implement an agreed plan in small verifiable commits, self-review the result, and open the pull request. Use after a plan has been designed and grilled, when the outcome is agreed and the work is ready to be built.
+description: Implement an agreed plan in small verifiable commits, self-review the result, and open the pull request. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Implement a grilled plan and open the PR
 ---

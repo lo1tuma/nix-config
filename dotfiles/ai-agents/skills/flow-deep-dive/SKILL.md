@@ -1,6 +1,6 @@
 ---
 name: flow-deep-dive
-description: Take one open topic of an existing concept and resolve it in a dedicated session, then fold the answer back into the concept document. Use when a concept is agreed in outline but one area needs to be worked out properly before it can be planned.
+description: Take one open topic of an existing concept and resolve it in a dedicated session, then fold the answer back into the concept document. Only on explicit user invocation or a hand-off from a skill the user invoked; never start it on your own.
 metadata:
   short-description: Deep-dive one open topic of a concept
 ---

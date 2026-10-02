@@ -1,6 +1,7 @@
 ---
 name: simplify-codebase
-description: Deeply analyze a codebase for unnecessary hand-rolled code, shallow modules, narrow wrappers, and premature abstractions, then prioritize and implement the highest-impact simplifications as dedicated PRs. Use when the user asks to simplify, defactor, deepen modules, replace custom implementations, reduce codebase complexity, or run a broad refactoring pass without changing behavior.
+description: Deeply analyze a codebase for unnecessary hand-rolled code, shallow modules, narrow wrappers, and premature abstractions, then prioritize and implement the highest-impact simplifications as dedicated PRs. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Remove needless custom code
 ---

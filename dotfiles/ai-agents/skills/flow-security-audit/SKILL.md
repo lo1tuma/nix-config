@@ -1,6 +1,7 @@
 ---
 name: flow-security-audit
-description: Run a deep security audit of a codebase or a diff by fanning out hunter subagents across attack surfaces, refuting every candidate with an independent verifier, and reporting only what survives with honest coverage. Use when the user asks for a security audit, a vulnerability hunt, a threat model, or a security review that goes beyond the pending diff.
+description: Run a deep security audit of a codebase or a diff by fanning out hunter subagents across attack surfaces, refuting every candidate with an independent verifier, and reporting only what survives with honest coverage. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Hunt, refute and report vulnerabilities across a codebase
 ---

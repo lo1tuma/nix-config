@@ -1,6 +1,7 @@
 ---
 name: flow-plan-refactoring
-description: Survey a codebase or a named area for design problems, then turn the findings into an ordered plan of pull-request-sized refactoring steps. Use to start a refactoring session, when a codebase feels hard to change, or when you want a campaign rather than a single cleanup.
+description: Survey a codebase or a named area for design problems, then turn the findings into an ordered plan of pull-request-sized refactoring steps. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Find and plan a refactoring campaign
 ---

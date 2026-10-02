@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $simplify-codebase to deeply analyze this repository and create focused PRs for the highest-impact simplifications."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

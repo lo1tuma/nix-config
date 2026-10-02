@@ -6,4 +6,4 @@ interface:
   default_prompt: "Use $handover to prepare a compact continuation note for the next session."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

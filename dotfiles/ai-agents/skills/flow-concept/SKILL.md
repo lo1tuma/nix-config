@@ -1,6 +1,7 @@
 ---
 name: flow-concept
-description: Work out the concept for something large before any plan exists. Proposes two competing concepts, attacks them with independent reviewers, and writes the surviving one to a markdown document. Use when a feature or change is big enough that the shape of the whole thing is the open question.
+description: Work out the concept for something large before any plan exists. Proposes two competing concepts, attacks them with independent reviewers, and writes the surviving one to a markdown document. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Draft and stress-test a large concept
 ---

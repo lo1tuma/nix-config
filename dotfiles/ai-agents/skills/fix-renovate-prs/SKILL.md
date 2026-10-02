@@ -1,6 +1,7 @@
 ---
 name: fix-renovate-prs
-description: Find open failing Renovate PRs in the current repository, fix small mechanical failures with follow-up commits, push normally, and ask the user before larger or risky fixes. Use when the user asks to fix Renovate PRs, unblock dependency update PRs, or run a workflow like /fix-renovate-prs.
+description: Find open failing Renovate PRs in the current repository, fix small mechanical failures with follow-up commits, push normally, and ask the user before larger or risky fixes. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Fix failing Renovate PRs
 ---

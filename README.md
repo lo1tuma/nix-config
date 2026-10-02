@@ -26,6 +26,7 @@ This repository contains my darwin-specific nix configuration and dotfiles.
 
 ### Skill layers
 * entry points are the skills invoked by hand, one per kind of work, and are named `flow-*` so typing `/flow` narrows to them
+* entry points carry `disable-model-invocation: true` for Claude and `allow_implicit_invocation: false` for Codex, so they only run on an explicit `/flow-...`; the skills other entry points hand off to (`grill-me`, `flow-review-design`, `flow-code-design`, `flow-deep-dive`, `worktree-setup`) stay model-invocable and say in their description that they never start on their own
 * lenses carry the judgment an entry point needs; they install to `~/.agent-skill-library/` instead of the scanned skill directories, so they cost no context until something reads one
 * `~/.agent-skill-library/CATALOG.md` is generated from the same nix attribute set that pins the skills, so it cannot drift from what is installed
 * keeping lenses out of the scanned directories holds the skill list inside Codex's 8000-character budget; with everything visible it was roughly 23000

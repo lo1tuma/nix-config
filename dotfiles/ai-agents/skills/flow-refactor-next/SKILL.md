@@ -1,6 +1,7 @@
 ---
 name: flow-refactor-next
-description: Execute the next step of a refactoring plan as its own pull request, verifying the finding still holds, applying the named move in small steps with tests green between them, and marking the step done. Use to work through a plan from flow-plan-refactoring, one step or continuously.
+description: Execute the next step of a refactoring plan as its own pull request, verifying the finding still holds, applying the named move in small steps with tests green between them, and marking the step done. Only on explicit invocation.
+disable-model-invocation: true
 metadata:
   short-description: Execute the next refactoring step
 ---

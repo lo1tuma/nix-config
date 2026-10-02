@@ -1,6 +1,6 @@
 ---
 name: worktree-setup
-description: Create a fresh git worktree from the latest remote base branch and stop without doing project work. Use when the user invokes `$worktree-setup` with an optional topic, or when another skill needs an isolated worktree.
+description: Create a fresh git worktree from the latest remote base branch and stop without doing project work. Only on explicit user invocation or a hand-off from a skill the user invoked; never start it on your own.
 metadata:
   short-description: Create an isolated worktree and stop
 ---
