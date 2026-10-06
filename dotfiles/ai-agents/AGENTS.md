@@ -8,9 +8,11 @@
 ## Asking the user
 
 - Use `AskUserQuestion` for every choice. A question rendered as chat text is one the user has to answer twice.
-- Put everything the decision needs inside the `question` field. The dialog hides the chat above it.
+- Write the context the decision needs in chat, as markdown, directly before the call: background, code excerpts, quoted comments, full proposed text. The chat stays readable above the dialog.
+- Keep the `question` field to one plain-text line that points to it. The dialog shows the question unformatted and cannot scroll.
 - One decision per question. Put your recommendation first and mark it `(Recommended)`.
-- Give the options a `preview` whenever the answer could be qualified. The notes field appears only in preview mode, and it is the only way to accept an option and comment on it at once.
+- Give every option a `preview` with what that option produces. The notes field appears only in preview mode, and it is the only way to accept an option and comment on it at once.
+- Never put ids, hashes, or commit SHAs into option labels or descriptions.
 - Ask only what changes what happens next. Decide the rest and state the assumption.
 
 ## Problem reporting

@@ -15,7 +15,7 @@ Interrogate the user's plan aggressively but usefully.
 - Drive toward shared understanding.
 - Surface assumptions, risks, dependencies, and missing decisions.
 - Make your recommended answer the first option and mark it `(Recommended)`.
-- Put the reasoning the question rests on inside the question, and give the options a `preview` when the answer deserves a comment.
+- Write the reasoning the question rests on in chat, directly before the call. Keep the question itself to one line, and give every option a `preview` with what that answer commits to.
 
 ## Process
 

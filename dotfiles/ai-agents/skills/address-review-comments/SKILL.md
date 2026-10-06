@@ -108,10 +108,10 @@ Order groups top-to-bottom by each group's earliest thread.
 
 Present the proposed grouping in one message: for each group, list its member threads (`path:line` each, or "PR-level") and one sentence on the shared underlying ask. Call out explicitly which threads you consider duplicates of each other.
 
-Confirm with `AskUserQuestion`. Put the grouping into the `question` field. The dialog hides the chat text before it, so a grouping that lives only in chat is one the user never saw. Options:
+Then confirm with `AskUserQuestion`, with a one-line question that points to the grouping above, for example `Group the 7 threads as shown above?`. Options, each with a `preview`:
 
-- **Accept** - proceed with this grouping.
-- **Adjust** - user splits or merges groups; capture the direction, re-present, and confirm again.
+- **Accept** - proceed with this grouping. Preview: the groups, one line each.
+- **Adjust** - user splits or merges groups in the notes; re-present and confirm again. Preview: `Notes change the grouping.`
 
 The walkthrough in Step 4 iterates over the confirmed groups, not individual threads. A group still produces one reply and one resolution per member thread; it just shares a single fix.
 
@@ -121,28 +121,27 @@ Strict order: 4a → 4b → 4c. This phase decides and stages only. It performs 
 
 ### 4a. Present the group, propose one fix and the replies
 
-Show the user, in one message:
+Show the user, in one chat message written as markdown, directly before the 4b question. Start it with a level-three heading `Group n/m` and the shared ask in a few words:
 
-- **Members**: each member thread's `path:line` (or "PR-level"), with the latest comment quoted verbatim per thread (truncate only if very long). For a single-thread group this is just the one.
-- **Reviewer(s)**: the authors involved.
-- **Summary**: one sentence on the shared ask.
-- **Proposed fix**: the single concrete change that resolves the whole group, or "no change needed because X". If on code, read the file around each member's line first so the suggestion reflects current code (comments may be outdated).
-- **Proposed replies**: the exact 1-2 sentence reply for each member thread, in plain prose. Wording may be shared across members, but each thread gets its own reply. State what was done or why no change. No filler, no sign-off.
+- **Members**: each member thread's `path:line` (or "PR-level").
+- **Thread**: per member, every comment of the thread quoted in full as a block quote, each with its author. Do not truncate.
+- **Background**: what the code around the threads does and why the reviewer raised the point, in short sentences, with a code excerpt in a fenced block where it helps. Enough for the user to judge the ask without opening the files.
+- **Proposed fix**: the single concrete change that resolves the whole group, as a `diff` block, or "no change needed because X". If on code, read the file around each member's line first so the suggestion reflects current code (comments may be outdated).
+- **Proposed replies**: the exact reply for each member thread, in full, as a block quote. Wording may be shared across members, but each thread gets its own reply. State what was done or why no change, with as many sentences as the reviewer needs. No filler, no sign-off.
 
 Do not edit any file at this stage. The proposal is text only.
 
 ### 4b. Ask for confirmation
 
-Use `AskUserQuestion`. Put everything from 4a into the `question` field: the members with their quoted comments, the reviewers, the summary, the proposed fix, and the proposed replies in a fenced block. The dialog hides the chat text before it, so the user decides from the question alone. Options:
+Use `AskUserQuestion` with the header `Group n/m` and a one-line question that points to the message above, for example `Apply the fix and stage the replies? Details above.`. Options, each with a `preview`:
 
-- **Apply** - apply the proposed fix locally once and stage the proposed replies as-is for every member thread.
-- **Adjust fix** - user wants to change the code/doc change; capture their direction.
-- **Adjust replies** - user wants to change the reply wording; capture their direction.
-- **Skip** - leave the whole group unresolved and unstaged, move to the next.
+- **Apply** - apply the proposed fix locally once and stage the proposed replies as-is for every member thread. Preview: the fix as a `diff` block and every reply in full.
+- **Adjust** - user writes the change to the fix or the replies in the notes. Preview: `Notes change the fix or the replies. Nothing is applied yet.`
+- **Skip** - leave the whole group unresolved and unstaged, move to the next. Preview: `Nothing changes. The threads stay open.`
 
 Treat "Stop" as available via the standard chat; the user can interrupt at any time.
 
-If the user picks **Adjust fix** or **Adjust replies**, loop back to 4a with the revised proposal. Keep looping until they pick **Apply** or **Skip**. If while working a group you conclude the grouping itself is wrong, say so and re-group the affected threads via Step 3 before continuing.
+If the user picks **Adjust**, loop back to 4a and show the revised proposal in full. Keep looping until they pick **Apply** or **Skip**. If while working a group you conclude the grouping itself is wrong, say so and re-group the affected threads via Step 3 before continuing.
 
 ### 4c. Stage locally (only after Apply)
 
@@ -174,11 +173,11 @@ If it FAILs, surface it and let the user decide whether to fix first or submit a
 
 ### 5c. Final confirmation
 
-Use `AskUserQuestion`. Put the 5a summary and the 5b gate result into the `question` field, for the same reason as in 4b. Options:
+Show the 5a summary and the 5b gate result in chat, then use `AskUserQuestion` with a one-line question that points to them, for example `Submit the batch shown above?`. Options, each with a `preview`:
 
-- **Submit all** - commit, push, post every reply, resolve every thread.
-- **Adjust** - go back to a specific staged group (re-run 4a-4c for it), then return here.
-- **Abort** - leave everything local. Post nothing, resolve nothing, commit nothing.
+- **Submit all** - commit, push, post every reply, resolve every thread. Preview: the counts of commits, replies, and resolutions, and the gate result.
+- **Adjust** - go back to the staged group the notes name (re-run 4a-4c for it), then return here. Preview: `Notes name the group to change. Nothing is posted yet.`
+- **Abort** - leave everything local. Post nothing, resolve nothing, commit nothing. Preview: `Nothing is posted, resolved, or committed. Local edits stay.`
 
 ### 5d. Execute the batch (only after Submit all)
 
