@@ -9,6 +9,11 @@ let
     if builtins.pathExists ./local-settings.nix then import ./local-settings.nix else { }
   );
   systemZsh = "/run/current-system/sw/bin/zsh";
+  gitHooksDisabledEverywhere = {
+    GIT_CONFIG_COUNT = "1";
+    GIT_CONFIG_KEY_0 = "core.hooksPath";
+    GIT_CONFIG_VALUE_0 = "/non-existing-path-to-prevent-hooks";
+  };
   perUserLinks = {
     ".gitconfig" = "/etc/per-user/.gitconfig";
     ".gitignore" = "/etc/per-user/.gitignore";
@@ -282,7 +287,8 @@ in
     LANG = "en_US.UTF-8";
     LC_ALL = LANG;
     LESSCHARSET = "utf-8";
-  };
+  } // gitHooksDisabledEverywhere;
+  launchd.user.envVariables = gitHooksDisabledEverywhere;
   system.defaults = import ./darwin.nix { inherit pkgs; };
   environment.systemPackages =
     import ./packages.nix {
@@ -336,7 +342,6 @@ in
         command node --dns-result-order=ipv4first "$(whence -p npm)" "$@"
       }
 
-      alias git="git config --unset --local core.hooksPath; git"
       alias tmux-attach-latest=tm
 
       tmux_attach_latest_hint() {
