@@ -8,5 +8,6 @@
   "skipDangerousModePermissionPrompt": true,
   "autoMemoryEnabled": false,
   "syncClaudeAiSkills": false,
-  "syncClaudeAiPlugins": false
+  "syncClaudeAiPlugins": false,
+  "cleanupPeriodDays": 3650
 }
