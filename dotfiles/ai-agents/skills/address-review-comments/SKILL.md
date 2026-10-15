@@ -41,6 +41,8 @@ Cover both threads attached to code lines and PR-level review threads (no file/l
 
 Always invoke `gh` via `nix-shell -p gh --run '<cmd>'`. Assume `gh` is not on the global PATH and the user is authenticated; do not probe `gh --version` or `gh auth status`.
 
+Run every `gh` call in the foreground with the Bash tool's `timeout` set to `600000`. A cold `nix-shell` can take minutes, and the default limit of 120 s moves the command to the background and ends the turn.
+
 ## Step 1 - identify the PR
 
 If the user passed a PR number or URL, use it. Otherwise:
