@@ -137,7 +137,7 @@ Show the user, as chat text written as markdown, in the same turn as the 4b ques
 - **Members**: each member thread's `path:line` (or "PR-level").
 - **Thread**: per member, every comment of the thread quoted in full as a block quote, each with its author. Do not truncate.
 - **Background**: what the code around the threads does and why the reviewer raised the point, in short sentences, with a code excerpt in a fenced block where it helps. Enough for the user to judge the ask without opening the files.
-- **Proposed fix**: the single concrete change that resolves the whole group, as a `diff` block, or "no change needed because X". If on code, read the file around each member's line first so the suggestion reflects current code (comments may be outdated).
+- **Proposed fix**: the single concrete change that resolves the whole group, as a `diff` block, or "no change needed because X". If on code, read the file around each member's line first so the suggestion reflects current code (comments may be outdated). The fix follows AGENTS.md and the repo guidelines like any other change: a reviewer asking to drop a comment is not asking for a shorter comment. It covers what the reviewer asked for; when consistency would carry the same change further (more call sites, more functions), say so and offer that as the **Alternative** in 4b, not as the default.
 - **Proposed replies**: the exact reply for each member thread, in full, as a block quote. Wording may be shared across members, but each thread gets its own reply. State what was done or why no change, with as many sentences as the reviewer needs. No filler, no sign-off.
 
 Do not edit any file at this stage. The proposal is text only.
