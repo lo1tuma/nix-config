@@ -93,7 +93,14 @@ gh api graphql -f query='
 
 Filter to `isResolved == false`. Keep top-to-bottom order (by file, then PR-level). For each thread keep: `thread.id` (node ID, starts with `PRRT_`), `path`, `line`, first comment author + body, last reply (if any), and the **first comment's `databaseId`** (needed for the REST reply endpoint).
 
-Report the count before iterating: e.g. "7 unresolved threads. Consolidating them now."
+Save the response to a file in the scratchpad and read the count and the paging flag from it with one expression:
+
+```bash
+jq '.data.repository.pullRequest.reviewThreads
+    | { unresolved: ([.nodes[] | select(.isResolved == false)] | length), hasNextPage: .pageInfo.hasNextPage }' threads.json
+```
+
+A jq error means the fetch failed: fix it before going on, never consolidate from partial output. Report both values in chat before consolidating: e.g. "7 unresolved threads, no further pages. Consolidating them now."
 
 Start an empty **batch ledger** now. You append one entry per handled thread during Step 4 and drain it in Step 5. Each entry holds: thread node id (`PRRT_`), first comment `databaseId`, `path:line`, the confirmed reply text, and a short note of what changed (or "no change needed because X").
 
