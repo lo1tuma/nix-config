@@ -54,6 +54,17 @@ alongside the `flow-*` entry points.
 ## Git
 * `/usr/local/bin/git` points to Nix Git so default macOS PATH lookup avoids the Apple developer-tools shim
 
+### Worktree cleanup
+* `cleanup-worktrees` previews removal; `cleanup-worktrees --apply` removes eligible worktrees
+* a launchd agent runs at login and hourly; missed calendar runs catch up after sleep
+* only linked worktrees under `~/projects/.worktrees` with 14 days without file or Git metadata changes qualify
+* branches must be ancestors of the last-fetched `origin/HEAD`, or the worktree's creation reflog must show only checkout initialization
+* missing or expired creation reflogs do not qualify an unmerged worktree; squash merges that fail the ancestry check stay for manual review
+* dirty, detached, locked, and open worktrees stay, as do worktrees containing ignored files outside known dependency and build directories
+* local branches and Git history stay; `/clear` does not mark a worktree finished
+* `git worktree lock <path>` protects a worktree until `git worktree unlock <path>`
+* logs go to `~/Library/Logs/worktree-cleanup.log`
+
 ## Alacritty
 * launch Alacritty from `/Applications/Nix Apps/Alacritty.app`, never from a store path; store paths move on every bump and the Dock entry silently keeps the old one
 * TCC binds Alacritty's folder grants to its ad-hoc code signature, which changes with every rebuild, so a stale grant denies Desktop, Documents and Downloads outright

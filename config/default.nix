@@ -237,6 +237,7 @@ in
   imports = [
     ./agent-dotfiles.nix
     ./defaults-activation.nix
+    ./worktree-cleanup.nix
   ];
 
   system.primaryUser = primaryUser;
