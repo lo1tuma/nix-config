@@ -9,6 +9,8 @@ let
   sourceRoot = ../dotfiles/ai-agents;
   instructionsSource = sourceRoot + "/AGENTS.md";
   claudeSettingsSource = sourceRoot + "/claude-settings.json";
+  claudeManagedSettingsSource = sourceRoot + "/claude-managed-settings.json";
+  claudeManagedSettingsTarget = "/Library/Application Support/ClaudeCode/managed-settings.json";
   skillsSource = sourceRoot + "/skills";
   skillLibraryDirectory = ".agent-skill-library";
   retiredSkillNames = [
@@ -776,8 +778,22 @@ let
     )
     ++ map (name: "${skillLibraryDirectory}/${name}") retiredSkillNames;
 
+  installClaudeManagedSettings =
+    let
+      targetDir = builtins.dirOf claudeManagedSettingsTarget;
+      tmpPath = "${claudeManagedSettingsTarget}.nix-config.tmp";
+    in
+    ''
+      /bin/mkdir -p ${lib.escapeShellArg targetDir}
+      /bin/cp -f ${lib.escapeShellArg (toString claudeManagedSettingsSource)} ${lib.escapeShellArg tmpPath}
+      /usr/sbin/chown root:wheel ${lib.escapeShellArg tmpPath}
+      /bin/chmod 0644 ${lib.escapeShellArg tmpPath}
+      /bin/mv -f ${lib.escapeShellArg tmpPath} ${lib.escapeShellArg claudeManagedSettingsTarget}
+    '';
+
   activationCommands =
     [
+      installClaudeManagedSettings
       (ensureDirectory ".claude")
       (ensureDirectory ".claude/skills")
       (ensureDirectory ".claude/agents")

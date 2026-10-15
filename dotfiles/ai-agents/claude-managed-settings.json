@@ -1,0 +1,8 @@
+{
+  "model": "claude-fable-5-1",
+  "modelSettings": {
+    "claude-fable-5-1": {
+      "effortLevel": "high"
+    }
+  }
+}
