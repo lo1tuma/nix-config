@@ -149,14 +149,17 @@ Use `AskUserQuestion` with the header `Group n/m` and a one-line question that p
 - **Apply** - apply the proposed fix locally once and stage the proposed replies as-is for every member thread. Preview: the fix as a `diff` block and every reply in full.
 - **Adjust** - user writes the change to the fix or the replies in the notes. Preview: `Notes change the fix or the replies. Nothing is applied yet.`
 - **Skip** - leave the whole group unresolved and unstaged, move to the next. Preview: `Nothing changes. The threads stay open.`
+- **Alternative** - only when the card presents a genuine second way to resolve the group, such as a reply without a code change or the wider consistency change. Preview: that fix as a `diff` block and its replies.
+
+Keep these labels exactly, in every attempt.
 
 Treat "Stop" as available via the standard chat; the user can interrupt at any time.
 
-If the user picks **Adjust**, loop back to 4a and show the revised proposal in full. Keep looping until they pick **Apply** or **Skip**. If while working a group you conclude the grouping itself is wrong, say so and re-group the affected threads via Step 3 before continuing.
+If the user picks **Adjust**, loop back to 4a and show the revised proposal in full. Keep looping until they pick **Apply**, **Alternative**, or **Skip**. If while working a group you conclude the grouping itself is wrong, say so and re-group the affected threads via Step 3 before continuing.
 
-### 4c. Stage locally (only after Apply)
+### 4c. Stage locally (only after Apply or Alternative)
 
-- For code/doc changes: apply the single fix now. Leave the files **uncommitted**.
+- For code/doc changes: apply the confirmed fix now. Leave the files **uncommitted**.
 - Append one entry to the batch ledger **per member thread**: thread node id, first comment `databaseId`, the confirmed reply text, and a short note of what changed (or "no change needed because X"). Use the same change note across the group's entries so the shared fix is obvious.
 - Do **not** post the replies, resolve the threads, commit, or push. Move to the next group.
 
