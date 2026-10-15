@@ -661,11 +661,12 @@ let
       ".codex/agents.md" = instructionsSource;
     };
 
+  managedImmutableFiles = {
+    ".claude/settings.json" = claudeSettingsSource;
+  };
+
   managedCopiedFiles =
-    {
-      ".claude/settings.json" = claudeSettingsSource;
-    }
-    // mapFilesToTarget ".claude/skills" skillFiles
+    mapFilesToTarget ".claude/skills" skillFiles
     // mapFilesToTarget ".claude/agents" pstackAgentFiles
     // mapFilesToTarget ".codex/skills" skillFiles
     // {
@@ -729,6 +730,19 @@ let
         /bin/cp -f ${lib.escapeShellArg (toString source)} ${lib.escapeShellArg tmpPath}
         /bin/mv -f ${lib.escapeShellArg tmpPath} ${lib.escapeShellArg targetPath}
       ''}
+    '';
+
+  copyImmutableFile =
+    relativePath: source:
+    let
+      targetPath = "${homeDir}/${relativePath}";
+    in
+    ''
+      if [ -e ${lib.escapeShellArg targetPath} ]; then
+        ${runAsPrimaryUser "/usr/bin/chflags nouchg ${lib.escapeShellArg targetPath}"}
+      fi
+      ${copyFile relativePath source}
+      ${runAsPrimaryUser "/usr/bin/chflags uchg ${lib.escapeShellArg targetPath}"}
     '';
 
   copyDirectory =
@@ -888,6 +902,7 @@ let
     ++ map removeManagedPath stalePaths
     ++ lib.mapAttrsToList linkFile managedLinkedFiles
     ++ lib.mapAttrsToList copyFile managedCopiedFiles
+    ++ lib.mapAttrsToList copyImmutableFile managedImmutableFiles
     ++ lib.mapAttrsToList copyDirectory managedCopiedDirectories;
 in
 {

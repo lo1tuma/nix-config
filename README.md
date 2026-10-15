@@ -22,6 +22,7 @@ This repository contains my darwin-specific nix configuration and dotfiles.
 * third-party skills are fetched per source repository at a pinned revision in `config/agent-dotfiles.nix`, never vendored; each one keeps its upstream licence beside it
 * `darwin-rebuild switch` links managed files into `~/.codex` and `~/.claude`
 * `darwin-rebuild switch` also installs `dotfiles/ai-agents/claude-managed-settings.json` as `/Library/Application Support/ClaudeCode/managed-settings.json`; Claude Code takes its default model and effort from there, so `/model` and `/effort` change only the running session and every launch starts from the defaults again
+* `~/.claude/settings.json` is copied with the immutable flag set (`chflags uchg`), so Claude Code cannot save a `/model` or `/effort` choice into it; `/model <name>` still switches the running session, and `/effort` switches it through the slider with `s`
 * activation also ensures Codex accepts both `AGENTS.md` and `agents.md` as project instruction filenames
 * the home directories stay real writable directories, so both tools can still create runtime state there
 
