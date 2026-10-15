@@ -151,7 +151,7 @@ Use `AskUserQuestion` with the header `Group n/m` and a one-line question that p
 - **Skip** - leave the whole group unresolved and unstaged, move to the next. Preview: `Nothing changes. The threads stay open.`
 - **Alternative** - only when the card presents a genuine second way to resolve the group, such as a reply without a code change or the wider consistency change. Preview: that fix as a `diff` block and its replies.
 
-Keep these labels exactly, in every attempt.
+Keep these labels exactly, in every attempt. Previews render as markdown: put every diff in a fenced `diff` code block, or the `+`/`-` lines turn into list bullets.
 
 Treat "Stop" as available via the standard chat; the user can interrupt at any time.
 
