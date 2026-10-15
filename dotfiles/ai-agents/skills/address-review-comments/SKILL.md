@@ -31,6 +31,8 @@ You MUST NOT, at any point before the final batch confirmation:
 
 Applying local code edits for each confirmed group is fine and expected; they stay uncommitted until the batch. If at any point you are unsure whether the user has confirmed: stop and ask.
 
+Every `AskUserQuestion` in this skill follows its context as chat text in the same turn: the grouping in Step 3, the card in Step 4a, the summary in Step 5a. Thinking is invisible to the user and does not count as showing anything. Never end a turn to wait for an "ok" before asking; the text and the question go out together.
+
 ## Scope
 
 Cover both threads attached to code lines and PR-level review threads (no file/line). Skip resolved threads. Skip issue-style PR comments; those have no thread state.
@@ -106,7 +108,7 @@ Group the threads:
 
 Order groups top-to-bottom by each group's earliest thread.
 
-Present the proposed grouping in one message: for each group, list its member threads (`path:line` each, or "PR-level") and one sentence on the shared underlying ask. Call out explicitly which threads you consider duplicates of each other.
+Present the proposed grouping as chat text, in the same turn as the question below: for each group, list its member threads (`path:line` each, or "PR-level") and one sentence on the shared underlying ask. Call out explicitly which threads you consider duplicates of each other.
 
 Then confirm with `AskUserQuestion`, with a one-line question that points to the grouping above, for example `Group the 7 threads as shown above?`. Options, each with a `preview`:
 
@@ -121,7 +123,7 @@ Strict order: 4a → 4b → 4c. This phase decides and stages only. It performs 
 
 ### 4a. Present the group, propose one fix and the replies
 
-Show the user, in one chat message written as markdown, directly before the 4b question. Start it with a level-three heading `Group n/m` and the shared ask in a few words:
+Show the user, as chat text written as markdown, in the same turn as the 4b question and directly before it. Start it with a level-three heading `Group n/m` and the shared ask in a few words:
 
 - **Members**: each member thread's `path:line` (or "PR-level").
 - **Thread**: per member, every comment of the thread quoted in full as a block quote, each with its author. Do not truncate.
