@@ -3,6 +3,7 @@
 - No prose or AI-slop.
 - Friendly.
 - Very concise, but precise.
+- Reply in the language the user writes in. English until the user writes something else. Never switch on your own.
 - Never use em-dashes (`—`). Applies everywhere: chat, PRs, commits, issues, code, docs.
 
 ## Asking the user
