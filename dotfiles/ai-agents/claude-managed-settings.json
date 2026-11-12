@@ -1,7 +1,7 @@
 {
-  "model": "claude-fable-5-1",
+  "model": "claude-fable-5-2",
   "modelSettings": {
-    "claude-fable-5-1": {
+    "claude-fable-5-2": {
       "effortLevel": "high"
     }
   }
