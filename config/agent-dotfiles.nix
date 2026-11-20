@@ -820,10 +820,11 @@ let
         codexProjectDocs=${lib.escapeShellArg ''project_doc_fallback_filenames = ["AGENTS.md", "agents.md"]''}
         codexDefaultModeRequestUserInput=${lib.escapeShellArg ''default_mode_request_user_input = true''}
         codexTuiAlternateScreen=${lib.escapeShellArg ''alternate_screen = "never"''}
+        codexDefaultModel=${lib.escapeShellArg ''model = "gpt-6.2-sol"''}
         if [ -e "$codexConfig" ]; then
           /usr/sbin/chown ${lib.escapeShellArg managedOwner} "$codexConfig"
           /usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg ''
-            /usr/bin/awk -v projectDocs="$1" -v defaultModeRequestUserInput="$2" -v tuiAlternateScreen="$3" '
+            /usr/bin/awk -v projectDocs="$1" -v defaultModeRequestUserInput="$2" -v tuiAlternateScreen="$3" -v defaultModel="$4" '
               function leaveFeatures() {
                 if (inFeatures && !seenDefaultModeRequestUserInput) {
                   print defaultModeRequestUserInput
@@ -840,7 +841,14 @@ let
 
               /^project_doc_fallback_filenames[[:space:]]*=/ { print projectDocs; seenProjectDocs = 1; next }
 
+              !inSection && /^model[[:space:]]*=/ { print defaultModel; seenDefaultModel = 1; next }
+
               /^\[[^]]+\][[:space:]]*$/ {
+                if (!inSection && !seenDefaultModel) {
+                  print defaultModel
+                  seenDefaultModel = 1
+                }
+                inSection = 1
                 leaveFeatures()
                 leaveTui()
                 inFeatures = ($0 == "[features]")
@@ -871,6 +879,9 @@ let
               END {
                 leaveFeatures()
                 leaveTui()
+                if (!seenDefaultModel) {
+                  print defaultModel
+                }
                 if (!seenProjectDocs) {
                   if (NR > 0) {
                     print ""
@@ -888,14 +899,14 @@ let
                   print tuiAlternateScreen
                 }
               }
-            ' "$4" > "$5"
-          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexTuiAlternateScreen" "$codexConfig" "$codexTmp"
+            ' "$5" > "$6"
+          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexTuiAlternateScreen" "$codexDefaultModel" "$codexConfig" "$codexTmp"
           /bin/mv -f "$codexTmp" "$codexConfig"
           /usr/sbin/chown ${lib.escapeShellArg managedOwner} "$codexConfig"
         else
           /usr/bin/sudo -u ${lib.escapeShellArg primaryUser} /bin/sh -c ${lib.escapeShellArg ''
-            printf '%s\n\n%s\n%s\n\n%s\n%s\n' "$1" '[features]' "$2" '[tui]' "$3" > "$4"
-          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexTuiAlternateScreen" "$codexConfig"
+            printf '%s\n%s\n\n%s\n%s\n\n%s\n%s\n' "$1" "$4" '[features]' "$2" '[tui]' "$3" > "$5"
+          ''} dummy "$codexProjectDocs" "$codexDefaultModeRequestUserInput" "$codexTuiAlternateScreen" "$codexDefaultModel" "$codexConfig"
         fi
       ''
     ]
